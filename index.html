@@ -1,0 +1,1267 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TIK SCAN PRO — Overlays, Alertas, Voice Bot TTS &amp; VFX 3D (.WEBM) para TikTok Live</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ts: {
+              bg: '#090c12',
+              sidebar: '#0d1119',
+              panel: '#121722',
+              card: '#181f2e',
+              border: '#242e42',
+              blue: '#2563eb',
+              cyan: '#00f0ff',
+              pink: '#ff1f8e',
+              gold: '#facc15'
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+      }
+    }
+  </script>
+
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #090c12; color: #f1f5f9; font-family: Inter, system-ui, -apple-system, sans-serif; }
+    body.obs-clean-mode { background: transparent !important; overflow: hidden; }
+
+    .checkerboard-bg {
+      background-color: #131822;
+      background-image:
+        linear-gradient(45deg, #1b2230 25%, transparent 25%),
+        linear-gradient(-45deg, #1b2230 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #1b2230 75%),
+        linear-gradient(-45deg, transparent 75%, #1b2230 75%);
+      background-size: 24px 24px;
+      background-position: 0 0, 0 12px, 12px -12px, -12px 0px;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #090c12; }
+    ::-webkit-scrollbar-thumb { background: #263147; border-radius: 999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
+
+    input[type="range"] { -webkit-appearance: none; appearance: none; height: 5px; background: #242e42; border-radius: 999px; outline: none; }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none; width: 16px; height: 16px; border-radius: 50%;
+      background: #3b82f6; cursor: pointer; border: 2px solid #fff; box-shadow: 0 0 8px rgba(59,130,246,0.7);
+    }
+    input[type="color"] { -webkit-appearance: none; border: none; width: 34px; height: 30px; border-radius: 6px; cursor: pointer; background: transparent; padding: 0; }
+    input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+    input[type="color"]::-webkit-color-swatch { border: 2px solid #334155; border-radius: 6px; }
+
+    @keyframes animGirar { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes animPulsar { 0%,100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+    @keyframes animQuicar { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+    @keyframes animBalancar { 0%,100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
+    @keyframes animBrilhar { 0%,100% { filter: drop-shadow(0 0 4px rgba(250,204,21,0.5)); } 50% { filter: drop-shadow(0 0 18px rgba(250,204,21,1)) brightness(1.18); } }
+    @keyframes popInAlert { 0% { opacity: 0; transform: scale(0.7) translateY(20px); } 65% { opacity: 1; transform: scale(1.05) translateY(-2px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+    @keyframes chestBounce { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.04); } }
+    @keyframes pulseRec { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.45; transform: scale(1.15); } }
+
+    .av-girar { animation: animGirar 4s linear infinite; }
+    .av-pulsar { animation: animPulsar 1.3s ease-in-out infinite; }
+    .av-quicar { animation: animQuicar 1s ease-in-out infinite; }
+    .av-balancar { animation: animBalancar 1.6s ease-in-out infinite; }
+    .av-brilhar { animation: animBrilhar 1.4s ease-in-out infinite; }
+    .alert-pop { animation: popInAlert 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .chest-float { animation: chestBounce 2.2s ease-in-out infinite; }
+    .rec-dot { animation: pulseRec 1s infinite ease-in-out; }
+
+    .flip-scene { perspective: 900px; }
+    .flip-card { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.85s cubic-bezier(0.4, 0.2, 0.2, 1); }
+    .flip-card.is-flipped { transform: rotateY(180deg); }
+    .flip-face { position: absolute; inset: 0; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; }
+    .flip-face.back { transform: rotateY(180deg); }
+
+    .frame-gold { box-shadow: 0 0 18px rgba(250,204,21,0.65), inset 0 0 8px rgba(250,204,21,0.5); border: 3px solid #facc15; }
+    .frame-silver { box-shadow: 0 0 15px rgba(148,163,184,0.65), inset 0 0 6px rgba(226,232,240,0.5); border: 3px solid #cbd5e1; }
+    .frame-bronze { box-shadow: 0 0 14px rgba(217,119,6,0.6), inset 0 0 6px rgba(245,158,11,0.45); border: 3px solid #d97706; }
+    .frame-crystal { box-shadow: 0 0 22px rgba(56,189,248,0.85), inset 0 0 10px rgba(125,211,252,0.7); border: 3.5px solid #38bdf8; }
+    .frame-games { box-shadow: 0 0 18px #ff1f8e, 0 0 26px #00f0ff; border: 3px solid #00f0ff; outline: 2px dashed #ff1f8e; outline-offset: 2px; }
+  </style>
+</head>
+<body class="min-h-screen lg:h-screen lg:overflow-hidden flex flex-col">
+
+  <!-- TELA DE BLOQUEIO (LINK EXPIRADO OU INVÁLIDO) -->
+  <div id="accessBlockedScreen" class="hidden fixed inset-0 z-50 bg-ts-bg flex items-center justify-center p-6">
+    <div class="bg-ts-panel border border-rose-500/50 rounded-2xl max-w-md w-full p-7 text-center space-y-4 shadow-2xl">
+      <div class="w-14 h-14 mx-auto rounded-full bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-2xl">🔒</div>
+      <h2 class="text-xl font-black text-white">Acesso Expirado ou Inválido</h2>
+      <p id="accessBlockedReason" class="text-xs text-slate-400 leading-relaxed">Este link de acesso expirou ou foi modificado. Solicite um novo link ao administrador.</p>
+      <a href="landing.html#planos" class="block w-full py-3 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 text-white font-extrabold text-xs uppercase">Ver Planos / Renovar Acesso</a>
+    </div>
+  </div>
+
+  <!-- MODO OVERLAY LIMPO (OBS BROWSER SOURCE ?overlay=...) -->
+  <div id="obsCleanScreen" class="hidden fixed inset-0 z-50 flex items-center justify-center p-6 pointer-events-none">
+    <div id="obsCleanMount" class="pointer-events-auto"></div>
+    <button id="btnExitCleanMode" type="button" class="pointer-events-auto fixed bottom-4 right-4 opacity-25 hover:opacity-100 transition px-3 py-1.5 rounded-lg bg-black/80 border border-white/20 text-xs text-white">✕ Voltar ao Painel</button>
+  </div>
+
+  <!-- MODAL ADMIN: CADASTRAR INFLUENCIADORES & GERAR LINKS AUTOMÁTICOS -->
+  <div id="adminModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-ts-panel border border-ts-border rounded-2xl max-w-3xl w-full p-5 sm:p-6 shadow-2xl relative max-h-[92vh] overflow-y-auto space-y-5">
+      <button id="btnCloseAdmin" type="button" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">✕</button>
+
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-lg">🛡️</div>
+        <div>
+          <h2 class="text-lg font-black text-white">Painel Administrador — Controle de Influenciadores</h2>
+          <p class="text-xs text-slate-400">Cadastre o @ do influenciador e gere o link de acesso automático</p>
+        </div>
+      </div>
+
+      <!-- Tela de Login Admin -->
+      <div id="adminLoginBox" class="bg-ts-bg border border-ts-border rounded-xl p-5 max-w-sm mx-auto space-y-3 text-center">
+        <div class="text-sm font-bold text-white">Digite sua Senha de Administrador</div>
+        <input id="inputAdminPass" type="password" placeholder="Senha Admin..." class="w-full bg-ts-panel border border-ts-border rounded-lg px-3 py-2 text-sm text-white text-center focus:border-emerald-400 outline-none" />
+        <button id="btnAdminLogin" type="button" class="w-full py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold">🔓 Entrar como Admin</button>
+        <p id="adminLoginErr" class="hidden text-xs text-rose-400">Senha incorreta.</p>
+      </div>
+
+      <!-- Conteúdo Desbloqueado Admin -->
+      <div id="adminContentBox" class="hidden space-y-5">
+        <!-- Formulário Novo Cadastro -->
+        <div class="bg-ts-bg border border-ts-border rounded-xl p-4 space-y-3">
+          <div class="text-xs font-bold uppercase text-emerald-400">➕ Cadastrar Novo Influenciador / Cliente</div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-[11px] text-slate-400 mb-1">@ do TikTok</label>
+              <input id="admClientUser" type="text" placeholder="@influenciador" class="w-full bg-ts-panel border border-ts-border rounded-lg px-3 py-2 text-xs text-white font-semibold" />
+            </div>
+            <div>
+              <label class="block text-[11px] text-slate-400 mb-1">Plano</label>
+              <select id="admClientPlan" class="w-full bg-ts-panel border border-ts-border rounded-lg px-3 py-2 text-xs text-white">
+                <option value="Influenciador VIP">⭐ Influenciador VIP</option>
+                <option value="PRO Mensal">💎 PRO Mensal</option>
+                <option value="Teste Parceria">⚡ Teste Parceria</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] text-slate-400 mb-1">Validade</label>
+              <select id="admClientDays" class="w-full bg-ts-panel border border-ts-border rounded-lg px-3 py-2 text-xs text-white">
+                <option value="7">7 dias</option>
+                <option value="15">15 dias</option>
+                <option value="30" selected>30 dias</option>
+                <option value="90">90 dias</option>
+                <option value="365">1 ano</option>
+                <option value="vitalicio">Vitalício</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="block text-[11px] text-slate-400 mb-1">Servidor Bridge WebSocket (Opcional — deixe vazio para Simulador/Local)</label>
+            <input id="admClientWs" type="text" placeholder="Ex: wss://meu-servidor-tiktok.onrender.com" class="w-full bg-ts-panel border border-ts-border rounded-lg px-3 py-1.5 text-xs text-white font-mono" />
+          </div>
+          <button id="btnAdminCreateClient" type="button" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950 font-black text-xs uppercase shadow">✨ Cadastrar e Gerar Link Exclusivo</button>
+        </div>
+
+        <!-- Lista de Cadastrados -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase text-slate-400">👥 Influenciadores &amp; Clientes Cadastrados</span>
+            <span id="admCountBadge" class="text-[11px] font-mono text-slate-400">0</span>
+          </div>
+          <div id="admClientList" class="space-y-2 max-h-56 overflow-y-auto pr-1"></div>
+        </div>
+
+        <!-- Alterar Senha Admin -->
+        <div class="bg-ts-bg border border-ts-border rounded-xl p-3 flex flex-wrap items-center justify-between gap-2">
+          <span class="text-xs font-bold text-slate-300">🔑 Alterar Senha do Admin:</span>
+          <div class="flex gap-2">
+            <input id="admNewPassInput" type="password" placeholder="Nova senha..." class="bg-ts-panel border border-ts-border rounded-lg px-3 py-1 text-xs text-white" />
+            <button id="btnAdminChangePass" type="button" class="px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE PLANOS & DIVULGAÇÃO (EM R$) -->
+  <div id="plansModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-ts-panel border border-ts-border rounded-2xl max-w-3xl w-full p-6 space-y-5 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      <button id="btnClosePlans" type="button" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">✕</button>
+      <div class="text-center space-y-1">
+        <span class="text-[11px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">100% Brasileiro • Suporte PT-BR • Preço Fixo em Reais (R$)</span>
+        <h2 class="text-2xl font-black text-white pt-2">Planos TIK SCAN PRO</h2>
+        <p class="text-xs text-slate-400">Alternativa nacional completa ao TikFinity, sem variação do dólar no cartão.</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-ts-card border border-ts-border rounded-xl p-5 space-y-3">
+          <div class="text-sm font-bold text-slate-300">Teste Gratuito</div>
+          <div class="text-3xl font-black text-white">R$ 0 <span class="text-xs font-normal text-slate-400">/ 7 dias</span></div>
+          <ul class="text-xs text-slate-300 space-y-1.5">
+            <li>✅ Rankings de Moedas, Likes e Shares</li>
+            <li>✅ Notificações de Seguidor &amp; HeartMe</li>
+            <li>✅ Voice Bot (Google TTS Gratuito)</li>
+            <li>✅ 100% compatível com OBS &amp; TikTok Studio</li>
+          </ul>
+          <button type="button" onclick="document.getElementById('plansModal').classList.add('hidden')" class="w-full py-2.5 rounded-lg bg-ts-bg border border-ts-border text-xs font-bold text-white hover:border-cyan-400">Testar Agora no Painel</button>
+        </div>
+        <div class="bg-gradient-to-b from-blue-950/60 to-ts-card border-2 border-blue-500 rounded-xl p-5 space-y-3 relative">
+          <span class="absolute -top-2.5 right-4 text-[10px] font-black uppercase px-2 py-0.5 rounded bg-blue-500 text-white">Mais Popular</span>
+          <div class="text-sm font-bold text-blue-300">Assinatura PRO Completa</div>
+          <div class="text-3xl font-black text-white">R$ 29,90 <span class="text-xs font-normal text-slate-400">/ mês fixo</span></div>
+          <ul class="text-xs text-slate-200 space-y-1.5">
+            <li>✅ Rankings Diário &amp; Semanal + Molduras Animadas</li>
+            <li>✅ Baú de Prêmios, Strong On &amp; Big Gifter 3D</li>
+            <li>✅ Effect Battle (.WEBM Transparente + Pack VIP)</li>
+            <li>✅ Gatilhos de Vídeos/Edits Automáticos &amp; Suporte VIP</li>
+          </ul>
+          <a href="landing.html#planos" class="block text-center w-full py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-xs font-extrabold text-white shadow-lg">🚀 Ver Página de Venda / Assinar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHELL PRINCIPAL DO TIK SCAN PRO -->
+  <div id="mainAppShell" class="flex-1 flex overflow-hidden">
+
+    <!-- MENU LATERAL ESQUERDO -->
+    <aside id="sidebarDrawer" class="hidden lg:flex w-64 shrink-0 bg-ts-sidebar border-r border-ts-border flex-col h-full">
+      <div class="p-4 border-b border-ts-border space-y-3">
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-rose-500 via-fuchsia-600 to-cyan-400 flex items-center justify-center font-black text-white text-sm shadow">TS</div>
+            <div>
+              <div class="text-sm font-black tracking-tight text-white leading-none">TIK SCAN</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Overlay para TikTok Live</div>
+            </div>
+          </div>
+          <button id="btnCloseMobileMenu" type="button" class="lg:hidden text-slate-400 hover:text-white text-base px-1">✕</button>
+        </div>
+        <div class="bg-ts-card border border-ts-border rounded-lg px-2.5 py-2 flex items-center justify-between">
+          <div class="min-w-0">
+            <div id="sidebarUserHandle" class="text-xs font-bold text-white truncate">@live_demo</div>
+            <div id="sidebarConnStatus" class="text-[10px] font-bold text-amber-400 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> MODO TESTE</div>
+          </div>
+          <span id="sidebarPlanBadge" class="text-[10px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 font-bold">PRO</span>
+        </div>
+      </div>
+
+      <nav class="flex-1 overflow-y-auto p-2.5 space-y-1 text-xs font-semibold">
+        <button data-tab="conexao" class="side-tab w-full text-left px-3 py-2.5 rounded-lg flex items-center gap-2.5 bg-blue-600 text-white shadow"><span>🔌</span><span>Conexão</span></button>
+
+        <div class="pt-2 pb-1 px-2 text-[10px] font-bold uppercase tracking-wider text-slate-500">Rankings &amp; Live</div>
+        <button data-tab="moedas" class="side-tab w-full text-left px-3 py-2 rounded-lg flex items-center gap-2.5 text-slate-300 hover:bg-ts-card"><span>🪙</span><span>Moedas (Diário/Semanal)</span></button>
+        <button data-tab="likes" class="side-tab w-full text-left px-3 py-2 rounded-lg flex items-center gap-2.5 text-slate-300 hover:bg-ts-card"><span>❤️</span><span>Likes</span></button>
+        <button data-tab="shares" class="side-tab w-full text-left px-3 py-2 rounded-lg flex items-center gap-2.5 text-slate-300 hover:bg-ts-card"><span>🔁</span><span>Shares</span></button>
+        <button data-tab="gifter" class="side-tab w-full text-left px-3 py-2 rounded-lg flex items-center gap-2.5 text-slate-300 hover:bg-ts-card"><span>🎁</span><span>Big Gifter</span></button>
+
+        <div class="pt-2 pb-1 px-2 text-[10px] font-bold uppercase tracking-wider text-slate-500">Alertas &amp; Prêmios</div>
+        <button data-tab="notificacoes" class="side-tab w-full text-left px-3 py-2 rounded-lg flex items-center gap-2.5 text-slate-300 hover:bg-ts-card"><span>🔔</span><span>Notificações</span></button>
+        <button data-tab="bau" class="side-tab w-full text-left px-3 py-2 rounded-lg flex items-center gap-2.5 text-slate-300 hover:bg-ts-card"><span>💎</span><span>Baú de Prêmios</span></button>
+
+        <div class="pt-2 pb-1 px-2 text-[10px] font-bold uppercase tracking-wider text-slate-500">Batalha, Edits &amp; Voz</div>
+        <button data-tab="vfx" class="side-tab w-full text-left px-3 py-2 rounded-lg flex items-center justify-between text-cyan-300 hover:bg-ts-card border border-cyan-500/20">
+          <span class="flex items-center gap-2.5"><span>⚡</span><span>Effect Battle (.WEBM)</span></span>
+          <span class="text-[9px] px-1.5 py-0.2 rounded bg-cyan-500/20 font-bold">3D</span>
+        </button>
+        <button data-tab="acoes" class="side-tab w-full text-left px-3 py-2 rounded-lg flex items-center gap-2.5 text-slate-300 hover:bg-ts-card"><span>🎬</span><span>Ações &amp; Eventos (Edits)</span></button>
+        <button data-tab="tts" class="side-tab w-full text-left px-3 py-2 rounded-lg flex items-center gap-2.5 text-slate-300 hover:bg-ts-card"><span>🗣️</span><span>Voice Bot (TTS)</span></button>
+      </nav>
+
+      <div id="sidebarFooterActions" class="p-3 border-t border-ts-border space-y-2">
+        <button id="btnOpenAdmin" type="button" class="w-full py-2 rounded-lg bg-ts-card hover:bg-slate-800 border border-emerald-500/40 text-emerald-300 font-bold text-xs flex items-center justify-center gap-1.5">🛡️ Painel Admin (Gerar Links)</button>
+        <button id="btnOpenPlans" type="button" class="w-full py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950 font-extrabold text-xs shadow">💎 Planos em R$ (Divulgação)</button>
+      </div>
+    </aside>
+
+    <!-- ÁREA DIREITA PRINCIPAL -->
+    <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
+
+      <header class="h-13 shrink-0 bg-ts-panel border-b border-ts-border px-4 py-2.5 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5">
+          <button id="btnMobileMenu" type="button" class="lg:hidden px-2.5 py-1.5 rounded-lg bg-ts-card border border-ts-border text-xs font-bold">☰ Menu</button>
+          <span id="topSectionTitle" class="text-sm font-bold text-white">Conexão TikTok Live</span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <span id="influencerHeaderPill" class="hidden text-[11px] px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 font-bold"></span>
+          <button id="btnToggleMute" type="button" class="text-xs px-3 py-1.5 rounded-lg bg-ts-card border border-ts-border hover:border-blue-400 text-slate-200 transition">
+            <span id="muteIcon">🔊</span> <span id="muteLabel" class="hidden sm:inline">Som Ativo</span>
+          </button>
+          <button id="btnTopPlans" type="button" class="lg:hidden text-xs px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-bold">💎 Planos</button>
+        </div>
+      </header>
+
+      <!-- Barra de Simulação Rápida -->
+      <div id="liveSimToolbar" class="bg-[#0f141e] border-b border-ts-border px-4 py-2 flex flex-wrap items-center justify-between gap-2 shrink-0">
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <span class="text-[10px] font-bold uppercase text-amber-400 mr-1">⚡ Simulador:</span>
+          <button data-sim="rose" class="sim-btn text-[11px] px-2 py-1 rounded bg-ts-card border border-ts-border hover:border-rose-400 text-rose-300 font-semibold">🌹 +1 Rosa</button>
+          <button data-sim="heart" class="sim-btn text-[11px] px-2 py-1 rounded bg-ts-card border border-ts-border hover:border-pink-400 text-pink-300 font-semibold">🫶 Hand Hearts</button>
+          <button data-sim="strong" class="sim-btn text-[11px] px-2 py-1 rounded bg-ts-card border border-ts-border hover:border-amber-400 text-amber-300 font-semibold">💪 +500 Strong</button>
+          <button data-sim="chest" class="sim-btn text-[11px] px-2 py-1 rounded bg-ts-card border border-ts-border hover:border-yellow-400 text-yellow-300 font-semibold">💎 +Baú 600</button>
+          <button data-sim="follow" class="sim-btn text-[11px] px-2 py-1 rounded bg-ts-card border border-ts-border hover:border-emerald-400 text-emerald-300 font-semibold">➕ Seguidor</button>
+          <button data-sim="like" class="sim-btn text-[11px] px-2 py-1 rounded bg-ts-card border border-ts-border hover:border-cyan-400 text-cyan-300 font-semibold">❤️ +25 Likes</button>
+          <button data-sim="share" class="sim-btn text-[11px] px-2 py-1 rounded bg-ts-card border border-ts-border hover:border-blue-400 text-blue-300 font-semibold">🔁 +1 Share</button>
+        </div>
+        <button id="btnAutoLive" type="button" class="text-[11px] px-3 py-1 rounded-full bg-blue-500/20 border border-blue-500/40 text-blue-300 font-bold">▶ Auto-Live: OFF</button>
+      </div>
+
+      <!-- ÁREA DE CONTEÚDO -->
+      <main class="flex-1 overflow-y-auto">
+
+        <!-- 1. CONEXÃO -->
+        <section id="tab-conexao" class="tab-panel max-w-xl mx-auto p-6 lg:p-10">
+          <div class="bg-ts-panel border border-ts-border rounded-2xl p-6 sm:p-8 shadow-2xl space-y-5 text-center">
+            <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-rose-500 via-purple-600 to-cyan-400 flex items-center justify-center text-xl font-black text-white shadow-lg">TS</div>
+            <div>
+              <h2 class="text-xl font-black text-white">TIK SCAN</h2>
+              <p class="text-xs text-slate-400 mt-1">Conecte-se a uma live do TikTok para rastrear rankings e alertas</p>
+            </div>
+
+            <div class="bg-ts-bg border border-ts-border rounded-xl p-3 flex items-center justify-between text-left">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-300 font-bold">⚡</div>
+                <div>
+                  <div id="connCardUser" class="text-sm font-bold text-white">@live_demo</div>
+                  <div id="connCardStatus" class="text-[11px] font-bold text-amber-400">● MODO TESTE (SIMULAÇÃO)</div>
+                </div>
+              </div>
+              <button id="btnDisconnect" type="button" class="text-xs text-slate-400 hover:text-white px-2">✕</button>
+            </div>
+
+            <div class="text-left space-y-3">
+              <label class="block text-xs font-bold text-slate-300">Nome de usuário do TikTok</label>
+              <input id="inputTiktokUser" type="text" value="@live_demo" class="w-full bg-ts-bg border border-ts-border focus:border-blue-500 rounded-xl px-4 py-2.5 text-sm text-white font-semibold outline-none" />
+
+              <button id="btnConnectUser" type="button" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-extrabold transition shadow-lg">🔗 Conectar @usuário</button>
+
+              <div class="grid grid-cols-2 gap-2">
+                <span id="connStatusPill" class="py-2 px-3 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs font-bold text-center">● WS Local: Offline</span>
+                <button id="btnConnectWs" type="button" class="py-2 px-3 rounded-xl bg-ts-card border border-ts-border hover:border-blue-400 text-xs font-bold text-white">🔌 Conectar Bridge WS</button>
+              </div>
+
+              <button id="btnActivateTestMode" type="button" class="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs uppercase tracking-wide shadow-lg transition">
+                ⚡ Ativar Modo Teste (Simular Live Completa)
+              </button>
+
+              <details class="bg-ts-bg border border-ts-border rounded-xl p-3">
+                <summary class="text-xs font-bold text-slate-300 cursor-pointer">⚙️ Bridge WebSocket OBS / Node.js</summary>
+                <div class="mt-2 space-y-2">
+                  <input id="inputWsUrl" type="text" value="ws://localhost:8081" class="w-full bg-ts-panel border border-ts-border rounded-lg px-3 py-1.5 text-xs font-mono text-white" />
+                  <p class="text-[10px] text-slate-500">Compatível com servidores locais baseados em <code>tiktok-live-connector</code>.</p>
+                </div>
+              </details>
+            </div>
+
+            <button id="btnClearAllLive" type="button" class="w-full py-2.5 rounded-xl bg-red-600/20 hover:bg-red-600/35 border border-red-500/40 text-red-300 font-bold text-xs transition">🗑️ Limpar Todos os Rankings &amp; Contadores</button>
+          </div>
+        </section>
+
+        <!-- 2. MOEDAS -->
+        <section id="tab-moedas" class="tab-panel hidden max-w-6xl mx-auto p-4 lg:p-6 space-y-5">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex gap-2">
+              <button data-moedas-period="diario" class="period-btn px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white">📅 Ranking Diário</button>
+              <button data-moedas-period="semanal" class="period-btn px-4 py-2 rounded-xl text-xs font-bold bg-ts-card border border-ts-border text-slate-300">🏆 Ranking Semanal</button>
+            </div>
+            <button data-clean="moedas" class="btn-open-clean px-3 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold">🖥️ Abrir Overlay Limpo (OBS)</button>
+          </div>
+
+          <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-3">
+            <div class="flex justify-between items-center">
+              <h3 id="moedasPreviewTitle" class="text-sm font-bold text-white">Preview Ranking Diário (Pódio / Lista)</h3>
+              <span class="text-[11px] font-mono text-slate-400">OBS: Browser Source (450×200)</span>
+            </div>
+            <div id="previewMoedasContainer" class="min-h-[210px] rounded-xl border border-ts-border p-5 flex items-center justify-center checkerboard-bg"></div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 space-y-3">
+              <h4 class="text-xs font-bold uppercase text-slate-400">Exibição &amp; Quantidade</h4>
+              <div class="flex gap-2">
+                <button data-rank-count="moedas" data-val="3" class="rank-count-btn flex-1 py-1.5 rounded-lg text-xs font-bold border border-blue-500 bg-blue-600/25">3</button>
+                <button data-rank-count="moedas" data-val="5" class="rank-count-btn flex-1 py-1.5 rounded-lg text-xs font-bold border border-ts-border bg-ts-card">5</button>
+                <button data-rank-count="moedas" data-val="10" class="rank-count-btn flex-1 py-1.5 rounded-lg text-xs font-bold border border-ts-border bg-ts-card">10</button>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <button id="btnMoedasPodium" class="py-2 rounded-lg text-xs font-bold border border-blue-500 bg-blue-600/25">🏆 Pódio</button>
+                <button id="btnMoedasLista" class="py-2 rounded-lg text-xs font-bold border border-ts-border bg-ts-card">📋 Lista</button>
+              </div>
+              <label class="flex items-center justify-between text-xs text-slate-300"><span>Fundo transparente preview</span><input id="chkMoedasTransparent" type="checkbox" checked class="accent-blue-500" /></label>
+              <label class="flex items-center justify-between text-xs text-slate-300"><span>Molduras Games (Neon)</span><input id="chkMoedasGames" type="checkbox" class="accent-pink-500" /></label>
+            </div>
+
+            <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 space-y-3">
+              <div class="flex justify-between items-center"><h4 class="text-xs font-bold uppercase text-slate-400">Molduras (1º / 2º / 3º)</h4><button id="btnRestoreMoedasFrames" type="button" class="text-[11px] text-cyan-400">↺ Padrão</button></div>
+              <div class="grid grid-cols-3 gap-2 text-center">
+                <div class="bg-ts-bg border border-ts-border rounded-lg p-2 space-y-1"><div class="text-[10px] text-yellow-400 font-bold">1º</div><div class="w-9 h-9 mx-auto rounded-full frame-gold"></div><label class="text-[10px] text-slate-400 cursor-pointer">📤 PNG<input type="file" accept="image/*" data-frame-upload="1" class="hidden frame-upload-input" /></label></div>
+                <div class="bg-ts-bg border border-ts-border rounded-lg p-2 space-y-1"><div class="text-[10px] text-slate-300 font-bold">2º</div><div class="w-9 h-9 mx-auto rounded-full frame-silver"></div><label class="text-[10px] text-slate-400 cursor-pointer">📤 PNG<input type="file" accept="image/*" data-frame-upload="2" class="hidden frame-upload-input" /></label></div>
+                <div class="bg-ts-bg border border-ts-border rounded-lg p-2 space-y-1"><div class="text-[10px] text-amber-500 font-bold">3º</div><div class="w-9 h-9 mx-auto rounded-full frame-bronze"></div><label class="text-[10px] text-slate-400 cursor-pointer">📤 PNG<input type="file" accept="image/*" data-frame-upload="3" class="hidden frame-upload-input" /></label></div>
+              </div>
+              <div><div class="flex justify-between text-xs mb-1"><span>Escala</span><span id="moedasScaleVal" class="font-mono">100%</span></div><input id="rangeMoedasScale" type="range" min="60" max="150" value="100" class="w-full" /></div>
+            </div>
+
+            <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 space-y-3">
+              <h4 class="text-xs font-bold uppercase text-slate-400">Animações &amp; Link OBS</h4>
+              <div class="grid grid-cols-3 gap-1.5">
+                <button data-anim="none" class="anim-btn py-1.5 rounded-lg text-[11px] font-bold border border-fuchsia-500 bg-fuchsia-600/30">Nenhuma</button>
+                <button data-anim="girar" class="anim-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card">Girar</button>
+                <button data-anim="pulsar" class="anim-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card">Pulsar</button>
+                <button data-anim="quicar" class="anim-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card">Quicar</button>
+                <button data-anim="balancar" class="anim-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card">Balançar</button>
+                <button data-anim="brilhar" class="anim-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card">Brilhar</button>
+              </div>
+              <div class="flex gap-2 items-center">
+                <input id="colorMoedas" type="color" value="#facc15" />
+                <select id="selectMoedasFont" class="flex-1 bg-ts-bg border border-ts-border rounded-lg px-2 py-1.5 text-xs"><option value="system">System</option><option value="impact">Arcade Impact</option><option value="mono">Mono</option></select>
+              </div>
+              <div class="flex gap-1.5"><input id="obsUrlMoedas" readonly class="flex-1 bg-ts-bg border border-ts-border rounded-lg px-2 py-1 text-[10px] font-mono text-cyan-300" /><button data-copy="obsUrlMoedas" class="copy-btn px-2.5 py-1 rounded-lg bg-ts-card border border-ts-border text-[10px] font-bold">Copiar</button></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. LIKES -->
+        <section id="tab-likes" class="tab-panel hidden max-w-5xl mx-auto p-4 lg:p-6 space-y-4">
+          <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-3">
+            <div class="flex justify-between items-center">
+              <div><h2 class="text-base font-bold text-white">Ranking de Tap-Tap (Likes)</h2><p class="text-xs text-slate-400" id="likesTotalSubtitle">Total: 0 likes</p></div>
+              <button data-clean="likes" class="btn-open-clean px-3 py-1.5 rounded-lg bg-cyan-600 text-white text-xs font-bold">🖥️ Overlay Limpo (OBS)</button>
+            </div>
+            <div id="previewLikesContainer" class="min-h-[250px] rounded-xl border border-ts-border p-5 flex items-center justify-center checkerboard-bg"></div>
+          </div>
+          <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <div class="flex gap-2">
+                <button data-rank-count="likes" data-val="3" class="likes-count-btn flex-1 py-1.5 rounded-lg text-xs font-bold border border-ts-border bg-ts-card">3</button>
+                <button data-rank-count="likes" data-val="5" class="likes-count-btn flex-1 py-1.5 rounded-lg text-xs font-bold border border-blue-500 bg-blue-600/25">5</button>
+                <button data-rank-count="likes" data-val="10" class="likes-count-btn flex-1 py-1.5 rounded-lg text-xs font-bold border border-ts-border bg-ts-card">10</button>
+              </div>
+              <div><div class="flex justify-between text-xs mb-1"><span>Espaçamento</span><span id="likesGapVal">8px</span></div><input id="rangeLikesGap" type="range" min="2" max="24" value="8" class="w-full" /></div>
+            </div>
+            <div class="space-y-2">
+              <label class="block text-xs text-slate-400">Link OBS (450×200)</label>
+              <div class="flex gap-2"><input id="obsUrlLikes" readonly class="flex-1 bg-ts-bg border border-ts-border rounded-lg px-2.5 py-1.5 text-xs font-mono text-cyan-300" /><button data-copy="obsUrlLikes" class="copy-btn px-3 py-1.5 rounded-lg bg-ts-card border border-ts-border text-xs font-bold">Copiar</button></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. SHARES -->
+        <section id="tab-shares" class="tab-panel hidden max-w-5xl mx-auto p-4 lg:p-6 space-y-4">
+          <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-3">
+            <div class="flex justify-between items-center">
+              <div><h2 class="text-base font-bold text-white">Ranking de Compartilhamentos</h2><p class="text-xs text-slate-400">Quem mais divulga sua live</p></div>
+              <div class="flex gap-2">
+                <button id="btnResetShares" type="button" class="px-3 py-1.5 rounded-lg bg-ts-card border border-ts-border text-xs font-bold">⚔️ Nova Batalha</button>
+                <button data-clean="shares" class="btn-open-clean px-3 py-1.5 rounded-lg bg-cyan-600 text-white text-xs font-bold">🖥️ Overlay Limpo</button>
+              </div>
+            </div>
+            <div id="previewSharesContainer" class="min-h-[230px] rounded-xl border border-ts-border p-5 flex items-center justify-center checkerboard-bg"></div>
+          </div>
+          <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 flex flex-wrap gap-3 items-center justify-between">
+            <div class="flex gap-2">
+              <button data-rank-count="shares" data-val="3" class="shares-count-btn px-3 py-1.5 rounded-lg text-xs font-bold border border-blue-500 bg-blue-600/25">Top 3</button>
+              <button data-rank-count="shares" data-val="5" class="shares-count-btn px-3 py-1.5 rounded-lg text-xs font-bold border border-ts-border bg-ts-card">Top 5</button>
+            </div>
+            <div class="flex gap-2 flex-1 max-w-md"><input id="obsUrlShares" readonly class="flex-1 bg-ts-bg border border-ts-border rounded-lg px-2.5 py-1.5 text-xs font-mono text-cyan-300" /><button data-copy="obsUrlShares" class="copy-btn px-3 py-1.5 rounded-lg bg-ts-card border border-ts-border text-xs font-bold">Copiar</button></div>
+          </div>
+        </section>
+
+        <!-- 5. BIG GIFTER -->
+        <section id="tab-gifter" class="tab-panel hidden max-w-5xl mx-auto p-4 lg:p-6 space-y-4">
+          <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-3">
+            <div class="flex justify-between items-center">
+              <div><h2 class="text-base font-bold text-white">Big Gifter — Maior Presente Individual</h2><p class="text-xs text-slate-400">Alterna em rotação 3D entre foto com moldura e o presente</p></div>
+              <button data-clean="gifter" class="btn-open-clean px-3 py-1.5 rounded-lg bg-cyan-600 text-white text-xs font-bold">🖥️ Overlay Limpo (OBS)</button>
+            </div>
+            <div id="previewGifterContainer" class="min-h-[240px] rounded-xl border border-ts-border p-6 flex items-center justify-center checkerboard-bg"></div>
+          </div>
+          <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-400">Moldura</label>
+              <div class="grid grid-cols-5 gap-1.5">
+                <button data-gframe="none" class="gframe-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card">Sem</button>
+                <button data-gframe="gold" class="gframe-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card text-yellow-300">Ouro</button>
+                <button data-gframe="silver" class="gframe-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card text-slate-200">Prata</button>
+                <button data-gframe="bronze" class="gframe-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card text-amber-400">Bronze</button>
+                <button data-gframe="crystal" class="gframe-btn py-1.5 rounded-lg text-[11px] font-bold border border-cyan-400 bg-cyan-500/20 text-cyan-300">Cristal</button>
+              </div>
+              <div class="flex gap-3 pt-1">
+                <div class="flex items-center gap-2"><input id="colorGifterTitle" type="color" value="#facc15" /><span class="text-[11px]">Título</span></div>
+                <div class="flex items-center gap-2"><input id="colorGifterCoins" type="color" value="#ffd700" /><span class="text-[11px]">Moedas</span></div>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <div><div class="flex justify-between text-xs mb-1"><span>Escala</span><span id="gifterScaleVal">100%</span></div><input id="rangeGifterScale" type="range" min="70" max="160" value="100" class="w-full" /></div>
+              <div class="flex gap-2"><input id="obsUrlGifter" readonly class="flex-1 bg-ts-bg border border-ts-border rounded-lg px-2.5 py-1.5 text-xs font-mono text-cyan-300" /><button data-copy="obsUrlGifter" class="copy-btn px-3 py-1.5 rounded-lg bg-ts-card border border-ts-border text-xs font-bold">Copiar</button></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. NOTIFICAÇÕES -->
+        <section id="tab-notificacoes" class="tab-panel hidden max-w-5xl mx-auto p-4 lg:p-6 space-y-4">
+          <div class="flex flex-wrap gap-2">
+            <button data-notif-type="follow" class="notif-sub-btn px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white">➕ Novo Seguidor</button>
+            <button data-notif-type="slim" class="notif-sub-btn px-4 py-2 rounded-xl text-xs font-bold bg-ts-card border border-ts-border text-slate-300">🪙 Seguidor Slim</button>
+            <button data-notif-type="heartme" class="notif-sub-btn px-4 py-2 rounded-xl text-xs font-bold bg-ts-card border border-ts-border text-slate-300">💖 HeartMe</button>
+            <button data-notif-type="strong" class="notif-sub-btn px-4 py-2 rounded-xl text-xs font-bold bg-ts-card border border-ts-border text-slate-300">💪 Strong On</button>
+          </div>
+
+          <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-4">
+            <div class="flex flex-wrap justify-between items-center gap-2">
+              <div><h2 class="text-base font-bold text-white">Notificação de Seguidor &amp; Eventos</h2><p class="text-xs text-slate-400">OBS Browser Source (550×180) — Transparente</p></div>
+              <div class="flex gap-2">
+                <button id="btnTestNotif" type="button" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold">▶ Testar no Preview</button>
+                <button data-clean="notif" class="btn-open-clean px-3 py-1.5 rounded-lg bg-cyan-600 text-white text-xs font-bold">🖥️ Overlay Limpo</button>
+              </div>
+            </div>
+            <div id="previewNotifContainer" class="min-h-[190px] rounded-xl border border-ts-border p-6 flex items-center justify-center checkerboard-bg"></div>
+          </div>
+
+          <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div><label class="block text-xs text-slate-400 mb-1">Mensagem</label><input id="inputNotifMsg" type="text" value="Obrigado por seguir! 🙏" class="w-full bg-ts-bg border border-ts-border rounded-lg px-3 py-1.5 text-xs text-white" /></div>
+            <div><label class="block text-xs text-slate-400 mb-1">Cor Destaque</label><div class="flex items-center gap-2 bg-ts-bg border border-ts-border rounded-lg p-1"><input id="colorNotif" type="color" value="#22c55e" /><span id="notifColorHex" class="text-xs font-mono">#22C55E</span></div></div>
+            <div><label class="block text-xs text-slate-400 mb-1">Mín. Moedas (Strong On)</label><input id="inputStrongMin" type="number" value="500" class="w-full bg-ts-bg border border-ts-border rounded-lg px-3 py-1.5 text-xs text-white" /></div>
+            <div class="md:col-span-3 flex gap-2"><input id="obsUrlNotif" readonly class="flex-1 bg-ts-bg border border-ts-border rounded-lg px-3 py-1.5 text-xs font-mono text-cyan-300" /><button data-copy="obsUrlNotif" class="copy-btn px-3 py-1.5 rounded-lg bg-ts-card border border-ts-border text-xs font-bold">Copiar</button></div>
+          </div>
+        </section>
+
+        <!-- 7. BAÚ DE PRÊMIOS -->
+        <section id="tab-bau" class="tab-panel hidden max-w-4xl mx-auto p-4 lg:p-6 space-y-4">
+          <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-4">
+            <div class="flex flex-wrap justify-between items-center gap-2">
+              <div><h2 class="text-base font-bold text-white">Baú de Prêmios (Treasure Box)</h2><p class="text-xs text-slate-400">OBS Browser Source (1080×1920) — Animação automática acima do mínimo</p></div>
+              <div class="flex gap-2">
+                <button id="btnTestChest" type="button" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold">▶ Testar Baú</button>
+                <button data-clean="bau" class="btn-open-clean px-3 py-1.5 rounded-lg bg-cyan-600 text-white text-xs font-bold">🖥️ Overlay Limpo</button>
+              </div>
+            </div>
+            <div id="previewBauContainer" class="h-[360px] max-w-[240px] mx-auto rounded-2xl border-2 border-ts-border p-4 flex items-center justify-center checkerboard-bg overflow-hidden relative"></div>
+          </div>
+          <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 space-y-3">
+            <div class="flex justify-between text-xs font-bold"><span>🔥 Mínimo de moedas para ativar</span><span id="chestMinVal" class="font-mono text-amber-400">500</span></div>
+            <input id="rangeChestMin" type="range" min="100" max="5000" step="100" value="500" class="w-full" />
+            <div class="flex gap-2"><input id="obsUrlBau" readonly class="flex-1 bg-ts-bg border border-ts-border rounded-lg px-3 py-1.5 text-xs font-mono text-cyan-300" /><button data-copy="obsUrlBau" class="copy-btn px-3 py-1.5 rounded-lg bg-ts-card border border-ts-border text-xs font-bold">Copiar</button></div>
+          </div>
+        </section>
+
+        <!-- 8. AÇÕES & EVENTOS -->
+        <section id="tab-acoes" class="tab-panel hidden max-w-5xl mx-auto p-4 lg:p-6 space-y-4">
+          <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-4">
+            <div class="flex justify-between items-center">
+              <div><h2 class="text-base font-bold text-white">Ações &amp; Eventos (Triggers de Edits/VFX)</h2><p class="text-xs text-slate-400">Dispare efeitos 3D ou sons automaticamente quando receber presentes específicos</p></div>
+              <button id="btnAddRule" type="button" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white">+ Nova Regra</button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 bg-ts-bg border border-ts-border rounded-xl p-3">
+              <div><label class="block text-[10px] text-slate-400 mb-1">Gatilho (Presente)</label><select id="selRuleTrigger" class="w-full bg-ts-panel border border-ts-border rounded-lg px-2.5 py-1.5 text-xs text-white"><option value="Rosa">🌹 Rosa (1+)</option><option value="Hand Hearts">🫶 Hand Hearts (100+)</option><option value="Strong">💪 Strong (500+)</option><option value="Galáxia">🌌 Galáxia (1000+)</option></select></div>
+              <div><label class="block text-[10px] text-slate-400 mb-1">Ação (Efeito 3D)</label><select id="selRuleAction" class="w-full bg-ts-panel border border-ts-border rounded-lg px-2.5 py-1.5 text-xs text-white"><option value="taptap">🔥 Tap Tap Dark 3D</option><option value="luvabash">🥊 Luva Clash Live</option><option value="beastmorph">🦅 Feras Elementais</option><option value="multiplier">⚡ Multiplicador X2</option><option value="crown">👑 Coroa Rei da Live</option></select></div>
+              <div class="flex items-end"><button id="btnTestTriggerNow" type="button" class="w-full py-1.5 rounded-lg bg-emerald-600 text-xs font-bold text-white">▶ Testar Trigger no Palco 3D</button></div>
+            </div>
+            <div id="rulesList" class="space-y-2"></div>
+          </div>
+        </section>
+
+        <!-- 9. VOICE BOT TTS -->
+        <section id="tab-tts" class="tab-panel hidden max-w-4xl mx-auto p-4 lg:p-6 space-y-4">
+          <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-4">
+            <div class="flex justify-between items-center">
+              <div><h2 class="text-base font-bold text-white">🗣️ Voice Bot (TTS)</h2><p class="text-xs text-slate-400">Lê mensagens do chat em voz alta (PT-BR) sem precisar de link no OBS</p></div>
+              <label class="flex items-center gap-2 text-xs font-bold text-emerald-300 cursor-pointer"><input id="chkTtsEnabled" type="checkbox" checked class="accent-emerald-500 w-4 h-4" /> ATIVADO</label>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div><label class="block text-xs text-slate-300 mb-1">Voz (Google / Sistema PT-BR)</label><select id="selTtsVoice" class="w-full bg-ts-bg border border-ts-border rounded-lg px-3 py-2 text-xs text-white"></select></div>
+              <div><label class="block text-xs text-slate-300 mb-1">Prefixo (vazio = lê tudo)</label><input id="inputTtsPrefix" type="text" value="!tts" class="w-full bg-ts-bg border border-ts-border rounded-lg px-3 py-2 text-xs text-white font-mono" /></div>
+              <div><div class="flex justify-between text-xs mb-1"><span>Volume</span><span id="ttsVolVal">100%</span></div><input id="rangeTtsVol" type="range" min="10" max="100" value="100" class="w-full" /></div>
+              <div><div class="flex justify-between text-xs mb-1"><span>Velocidade</span><span id="ttsRateVal">1.2x</span></div><input id="rangeTtsRate" type="range" min="0.6" max="2.0" step="0.1" value="1.2" class="w-full" /></div>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-400">Filtro de Acesso (Quem pode usar o Voice Bot)</label>
+              <div class="flex flex-wrap gap-3 text-xs">
+                <label class="flex items-center gap-1.5 bg-ts-bg border border-ts-border px-3 py-1.5 rounded-lg"><input type="checkbox" checked class="accent-blue-500" /> Moderadores</label>
+                <label class="flex items-center gap-1.5 bg-ts-bg border border-ts-border px-3 py-1.5 rounded-lg"><input type="checkbox" class="accent-blue-500" /> Seguidores</label>
+                <label class="flex items-center gap-1.5 bg-ts-bg border border-ts-border px-3 py-1.5 rounded-lg"><input type="checkbox" class="accent-blue-500" /> Nível do Fã</label>
+                <label class="flex items-center gap-1.5 bg-ts-bg border border-ts-border px-3 py-1.5 rounded-lg"><input type="checkbox" checked class="accent-blue-500" /> Super Fã</label>
+              </div>
+            </div>
+
+            <div class="bg-ts-bg border border-ts-border rounded-xl p-3 space-y-2">
+              <label class="block text-xs font-bold text-cyan-300">Simulador de Chat TTS (Teste ao vivo agora)</label>
+              <div class="flex gap-2">
+                <input id="inputTtsTestMsg" type="text" value="!tts Salve galera! BORA BATER A META DA LIVE!" class="flex-1 bg-ts-panel border border-ts-border rounded-lg px-3 py-2 text-xs text-white" />
+                <button id="btnTestTts" type="button" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white">▶ Testar Voz</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 10. EFFECT BATTLE (.WEBM) -->
+        <section id="tab-vfx" class="tab-panel hidden lg:h-full flex flex-col lg:flex-row">
+          <aside class="w-full lg:w-[35%] lg:min-w-[340px] lg:max-w-[500px] border-b lg:border-b-0 lg:border-r border-ts-border bg-ts-panel lg:overflow-y-auto p-4 space-y-4">
+            <div>
+              <div class="flex justify-between items-center mb-2"><h2 class="text-xs font-bold uppercase text-slate-400">1. Animações de Batalha &amp; PAC</h2><span class="text-[10px] text-cyan-400 font-bold">Alpha .WEBM</span></div>
+              <div id="presetGrid" class="grid grid-cols-1 gap-1.5">
+                <button data-preset="glove" class="preset-btn text-left p-2 rounded-xl border border-cyan-400 bg-ts-card flex items-center gap-2.5"><div class="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-500 to-cyan-500 flex items-center justify-center text-sm shrink-0">🥊</div><div class="min-w-0 flex-1"><div class="text-xs font-bold text-white truncate">Luva de Batalha 3D</div><div class="text-[10px] text-slate-400 truncate">Soco frontal 3D com onda de choque</div></div></button>
+                <button data-preset="multiplier" class="preset-btn text-left p-2 rounded-xl border border-ts-border bg-ts-card/60 flex items-center gap-2.5"><div class="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center font-black text-slate-950 text-xs shrink-0">X2</div><div class="min-w-0 flex-1"><div class="text-xs font-bold text-white truncate">Multiplicador X2 / X3</div><div class="text-[10px] text-slate-400 truncate">Texto 3D metálico, raios ciano &amp; shake</div></div></button>
+                <button data-preset="sniper" class="preset-btn text-left p-2 rounded-xl border border-ts-border bg-ts-card/60 flex items-center gap-2.5"><div class="w-8 h-8 rounded-lg bg-gradient-to-br from-rose-500 to-red-700 flex items-center justify-center text-sm shrink-0">🎯</div><div class="min-w-0 flex-1"><div class="text-xs font-bold text-white truncate">Sniper de Batalha</div><div class="text-[10px] text-slate-400 truncate">Mira laser 3D &amp; entrada explosiva</div></div></button>
+                <button data-preset="crown" class="preset-btn text-left p-2 rounded-xl border border-ts-border bg-ts-card/60 flex items-center gap-2.5"><div class="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-300 to-amber-600 flex items-center justify-center text-sm shrink-0">👑</div><div class="min-w-0 flex-1"><div class="text-xs font-bold text-white truncate">Coroa Rei da Live</div><div class="text-[10px] text-slate-400 truncate">Coroa dourada 3D, gemas &amp; estrelas</div></div></button>
+                <button data-preset="taptap" class="preset-btn text-left p-2 rounded-xl border border-ts-border bg-ts-card/60 flex items-center gap-2.5"><div class="w-8 h-8 rounded-lg bg-gradient-to-br from-red-600 to-zinc-900 border border-red-500/50 flex items-center justify-center font-black text-red-400 text-[10px] shrink-0">TAP</div><div class="min-w-0 flex-1"><div class="text-xs font-bold text-white truncate">Tap Tap Dark 3D <span class="text-[9px] px-1 bg-red-500/20 text-red-300 rounded">PAC</span></div><div class="text-[10px] text-slate-400 truncate">Base inferior, nuvens dark &amp; 808</div></div></button>
+                <button data-preset="luvabash" class="preset-btn text-left p-2 rounded-xl border border-ts-border bg-ts-card/60 flex items-center gap-2.5"><div class="w-8 h-8 rounded-lg bg-gradient-to-br from-red-600 to-blue-600 flex items-center justify-center text-sm shrink-0">⚡</div><div class="min-w-0 flex-1"><div class="text-xs font-bold text-white truncate">Luva Clash Live <span class="text-[9px] px-1 bg-blue-500/20 text-blue-300 rounded">PAC</span></div><div class="text-[10px] text-slate-400 truncate">2 luvas na base, fogo azul &amp; tambores</div></div></button>
+                <button data-preset="beastmorph" class="preset-btn text-left p-2 rounded-xl border border-ts-border bg-ts-card/60 flex items-center gap-2.5"><div class="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 via-cyan-400 to-blue-700 flex items-center justify-center text-sm shrink-0">🦅</div><div class="min-w-0 flex-1"><div class="text-xs font-bold text-white truncate">Feras Elementais <span class="text-[9px] px-1 bg-cyan-500/20 text-cyan-300 rounded">PAC</span></div><div class="text-[10px] text-slate-400 truncate">Fogo ➔ Gelo ➔ Águia Elétrica</div></div></button>
+                <button data-preset="gemini" class="preset-btn text-left p-2 rounded-xl border border-ts-border bg-ts-card/60 flex items-center gap-2.5"><div class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-cyan-400 flex items-center justify-center text-sm shrink-0">✨</div><div class="min-w-0 flex-1"><div class="text-xs font-bold text-white truncate">Modo Texto Livre (IA Gemini)</div><div class="text-[10px] text-slate-400 truncate">Gere cenas 3D por prompt</div></div></button>
+              </div>
+            </div>
+
+            <section id="geminiPanel" class="hidden p-3 rounded-xl bg-purple-950/30 border border-purple-500/40 space-y-2">
+              <div class="flex justify-between items-center"><span class="text-xs font-bold text-purple-300">✨ IA Gemini</span><span id="geminiStatusBadge" class="text-[10px] px-2 py-0.5 rounded bg-purple-500/20 text-purple-200">Pronto</span></div>
+              <div class="flex gap-1.5"><input id="geminiApiKey" type="password" placeholder="API Key..." class="flex-1 bg-ts-bg border border-ts-border rounded-lg px-2 py-1 text-xs text-white" /><button id="btnToggleApiKey" type="button" class="px-2 rounded-lg bg-ts-bg border border-ts-border text-xs">👁️</button></div>
+              <textarea id="geminiPrompt" rows="2" placeholder="Descreva o efeito 3D..." class="w-full bg-ts-bg border border-ts-border rounded-lg p-2 text-xs text-white resize-none"></textarea>
+              <button id="btnGenerateAI" type="button" class="w-full py-1.5 rounded-lg bg-gradient-to-r from-violet-600 to-fuchsia-600 text-xs font-bold text-white">⚡ Gerar Cena 3D</button>
+              <p id="geminiErrorMsg" class="hidden text-[11px] text-rose-400"></p>
+            </section>
+
+            <section class="p-3 rounded-xl bg-ts-card/70 border border-ts-border space-y-2">
+              <div class="flex justify-between"><h3 class="text-xs font-bold uppercase text-slate-400">2. Personalizar</h3><span class="text-[10px] text-slate-500">Use "/" para 2 linhas</span></div>
+              <input id="inputMainText" type="text" maxlength="24" value="NOCAUTE" class="w-full bg-ts-bg border border-ts-border rounded-lg px-3 py-1.5 text-sm font-bold text-white uppercase" />
+              <div class="grid grid-cols-2 gap-2">
+                <div class="flex items-center gap-2 bg-ts-bg border border-ts-border rounded-lg p-1"><input id="inputPrimaryColor" type="color" value="#ff1f8e" /><span id="primaryHexLabel" class="text-[11px] font-mono">#FF1F8E</span></div>
+                <div class="flex items-center gap-2 bg-ts-bg border border-ts-border rounded-lg p-1"><input id="inputSecondaryColor" type="color" value="#00f0ff" /><span id="secondaryHexLabel" class="text-[11px] font-mono">#00F0FF</span></div>
+              </div>
+              <div class="flex items-center gap-2"><span class="text-xs text-slate-300">Velocidade:</span><input id="inputSpeed" type="range" min="0.5" max="2.5" step="0.1" value="1.0" class="flex-1" /><span id="speedValueLabel" class="text-xs font-mono text-cyan-400 font-bold">1.0x</span></div>
+            </section>
+
+            <section class="p-3 rounded-xl bg-ts-card/70 border border-ts-border space-y-2">
+              <div class="flex justify-between items-center"><h3 class="text-xs font-bold uppercase text-slate-400">3. Meu Pack (PAC)</h3><span id="packCountBadge" class="text-[11px] text-slate-400 font-mono">0</span></div>
+              <button id="btnSavePack" type="button" class="w-full py-2 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-extrabold text-xs">💾 Salvar no Meu Pack</button>
+              <div class="grid grid-cols-2 gap-2"><button id="btnExportJson" type="button" class="py-1.5 rounded-lg bg-ts-bg border border-ts-border text-[11px] font-semibold">📤 Exportar (.JSON)</button><button id="btnImportJson" type="button" class="py-1.5 rounded-lg bg-ts-bg border border-ts-border text-[11px] font-semibold">📥 Importar (.JSON)</button><input id="fileImportJson" type="file" accept=".json,application/json" class="hidden" /></div>
+              <div id="savedPackList" class="space-y-1 max-h-32 overflow-y-auto"></div>
+            </section>
+          </aside>
+
+          <div class="w-full lg:w-[65%] flex-1 flex flex-col bg-[#06080d] overflow-hidden">
+            <div class="p-3 border-b border-ts-border bg-ts-panel/60 flex flex-wrap items-center justify-between gap-2 shrink-0">
+              <div class="flex items-center gap-2">
+                <button id="btnReplay" type="button" class="px-3 py-1.5 rounded-lg bg-ts-card border border-ts-border text-xs font-bold">↺ Reiniciar</button>
+                <button id="btnPlayPause" type="button" class="px-3 py-1.5 rounded-lg bg-ts-card border border-ts-border text-xs font-bold"><span id="playPauseIcon">⏸</span> <span id="playPauseLabel">Pausar</span></button>
+                <div class="hidden sm:flex items-center gap-2 bg-ts-bg px-2.5 py-1 rounded-lg border border-ts-border">
+                  <span class="text-[11px] font-mono text-cyan-400" id="timeDisplay">0.00s</span>
+                  <div class="w-20 h-1.5 bg-slate-800 rounded-full overflow-hidden"><div id="timelineProgress" class="h-full bg-gradient-to-r from-pink-500 to-cyan-400 w-0"></div></div>
+                  <span class="text-[11px] font-mono text-slate-400">6.00s</span>
+                </div>
+              </div>
+              <button id="btnRecordWebm" type="button" class="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 via-cyan-500 to-emerald-500 text-white font-extrabold text-xs shadow-lg flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-white"></span>
+                <span id="recBtnText">Baixar (.webm) Transparente 6s</span>
+              </button>
+            </div>
+            <div class="flex-1 p-4 flex items-center justify-center overflow-hidden relative">
+              <div class="relative h-[58vh] lg:h-full max-h-[68vh] aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl border-2 border-ts-border checkerboard-bg flex items-center justify-center">
+                <canvas id="vfxCanvas" width="1080" height="1920" class="w-full h-full block"></canvas>
+                <div id="recordingOverlayBadge" class="hidden pointer-events-none absolute top-3 left-1/2 -translate-x-1/2 bg-black/80 border border-rose-500 px-3 py-1 rounded-full flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-rose-500 rec-dot"></span>
+                  <span class="text-xs font-mono font-bold text-white" id="recordingTimerText">REC 0.0s / 6.0s</span>
+                </div>
+              </div>
+            </div>
+            <div class="px-4 py-1.5 border-t border-ts-border text-[11px] text-slate-400 flex justify-between">
+              <span>Media Source OBS • 1080×1920 Alpha</span>
+              <span id="codecStatusLabel" class="font-mono text-slate-500"></span>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Toast Global -->
+  <div id="toastBox" class="pointer-events-none opacity-0 translate-y-2 transition-all duration-300 fixed bottom-5 right-5 z-50 bg-ts-card border border-cyan-400/60 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-2">
+    <span id="toastIcon">✅</span><span id="toastText">Pronto!</span>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'three';
+
+    // =========================================================================
+    // 0. SISTEMA ADMIN & LINK EXCLUSIVO DE INFLUENCIADOR
+    // =========================================================================
+    const ADMIN_PASS_KEY = 'tikscan_admin_pass_v1';
+    const ADMIN_CLIENTS_KEY = 'tikscan_admin_clients_v1';
+
+    function getAdminPass() { return localStorage.getItem(ADMIN_PASS_KEY) || 'admin123'; }
+
+    function signClientToken(user, exp, plan) {
+      const payload = `${String(user).toLowerCase().trim()}|${exp}|${plan}|TIKSCAN_PRO_BR_2026`;
+      let h1 = 0x811c9dc5, h2 = 0x9e3779b9;
+      for (let i = 0; i < payload.length; i++) {
+        const c = payload.charCodeAt(i);
+        h1 ^= c; h1 = Math.imul(h1, 0x01000193);
+        h2 ^= c + i; h2 = Math.imul(h2, 0x85ebca6b);
+      }
+      return ((h1 >>> 0).toString(36) + (h2 >>> 0).toString(36)).slice(0, 10);
+    }
+
+    function loadAdminClients() {
+      try { return JSON.parse(localStorage.getItem(ADMIN_CLIENTS_KEY) || '[]'); } catch { return []; }
+    }
+    function saveAdminClients(list) {
+      localStorage.setItem(ADMIN_CLIENTS_KEY, JSON.stringify(list));
+      renderAdminClients();
+    }
+
+    function buildClientInviteUrl(c) {
+      const cleanBase = window.location.href.split('?')[0].split('#')[0];
+      const params = new URLSearchParams({ u: c.user, exp: c.exp, plan: c.plan, k: c.sig });
+      if (c.ws) params.set('ws', c.ws);
+      return `${cleanBase}?${params.toString()}`;
+    }
+
+    function renderAdminClients() {
+      const list = loadAdminClients(), container = document.getElementById('admClientList');
+      document.getElementById('admCountBadge').textContent = `${list.length} cadastrados`;
+      if (!list.length) {
+        container.innerHTML = '<div class="text-xs text-slate-500 text-center py-4 border border-dashed border-ts-border rounded-xl">Nenhum influenciador cadastrado ainda.</div>';
+        return;
+      }
+      const today = new Date().toISOString().slice(0, 10);
+      container.innerHTML = list.map(c => {
+        const expired = c.exp !== 'vitalicio' && c.exp < today;
+        const url = buildClientInviteUrl(c);
+        const waText = encodeURIComponent(`Olá! Seu acesso exclusivo ao TIK SCAN PRO (${c.plan}) está liberado para o perfil ${c.user}.\n\nAcesse seu painel por este link:\n${url}`);
+        return `
+          <div class="bg-ts-bg border border-ts-border rounded-xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div class="min-w-0">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-extrabold text-white">${c.user}</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 font-bold">${c.plan}</span>
+                <span class="text-[10px] font-bold ${expired?'text-rose-400':'text-emerald-400'}">${c.exp==='vitalicio'?'Vitalício':`Válido até ${c.exp}`}</span>
+              </div>
+              <div class="text-[10px] font-mono text-slate-500 truncate mt-0.5">${url}</div>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button data-adm-copy="${c.id}" class="px-2.5 py-1.5 rounded-lg bg-ts-card border border-ts-border hover:border-cyan-400 text-[11px] font-bold text-cyan-300">📋 Copiar Link</button>
+              <a href="https://wa.me/?text=${waText}" target="_blank" class="px-2.5 py-1.5 rounded-lg bg-emerald-600/25 border border-emerald-500/40 text-[11px] font-bold text-emerald-300">💬 WhatsApp</a>
+              <button data-adm-del="${c.id}" class="px-2 py-1.5 rounded-lg text-xs text-slate-500 hover:text-rose-400">✕</button>
+            </div>
+          </div>`;
+      }).join('');
+
+      container.querySelectorAll('[data-adm-copy]').forEach(b => b.addEventListener('click', () => {
+        const item = loadAdminClients().find(x => x.id === b.dataset.admCopy);
+        if (item) { navigator.clipboard?.writeText(buildClientInviteUrl(item)); showToast(`Link de ${item.user} copiado!`, '📋'); }
+      }));
+      container.querySelectorAll('[data-adm-del]').forEach(b => b.addEventListener('click', () => {
+        saveAdminClients(loadAdminClients().filter(x => x.id !== b.dataset.admDel));
+        showToast('Cadastro removido.', '🗑️');
+      }));
+    }
+
+    // =========================================================================
+    // 1. ESTADO PERSISTENTE DO TIK SCAN PRO
+    // =========================================================================
+    const SCAN_STORAGE = 'tikscan_pro_state_v3';
+    const PACK_STORAGE_KEY = 'tikarcade_vfx_pack_v2';
+    const API_KEY_STORAGE = 'tikarcade_gemini_api_key';
+    const syncChannel = new BroadcastChannel('tikscan_pro_sync');
+
+    const defaultUsers = [
+      { name: 'Maria_live', color: '#ec4899', coins: 25800, weeklyCoins: 84200, likes: 4200, shares: 9 },
+      { name: 'joao_tk', color: '#3b82f6', coins: 14200, weeklyCoins: 51400, likes: 2800, shares: 6 },
+      { name: 'ana_stars', color: '#f59e0b', coins: 8500, weeklyCoins: 29100, likes: 1500, shares: 4 },
+      { name: 'pedro_go', color: '#10b981', coins: 4200, weeklyCoins: 14800, likes: 900, shares: 2 },
+      { name: 'lucas_br', color: '#8b5cf6', coins: 1900, weeklyCoins: 7500, likes: 600, shares: 1 }
+    ];
+
+    const liveData = {
+      tiktokUser: '@live_demo',
+      testMode: true,
+      activeTab: 'conexao',
+      cleanOverlayMode: null,
+      clientSession: null,
+      users: JSON.parse(JSON.stringify(defaultUsers)),
+      bigGifter: { name: 'Raynnara Lira', giftName: 'Budding Heart', giftEmoji: '🧸', coins: 299, color: '#a855f7' },
+      totalLikes: 10000,
+      moedasCfg: { period: 'diario', count: 3, mode: 'podium', transparent: true, gamesFrames: false, anim: 'none', scale: 100, font: 'system', coinColor: '#facc15', customFrames: { 1: null, 2: null, 3: null } },
+      likesCfg: { count: 5, gap: 8, transparent: true },
+      sharesCfg: { count: 3 },
+      gifterCfg: { titleColor: '#facc15', coinColor: '#ffd700', scale: 100, frame: 'crystal', flipped: false },
+      notifCfg: { type: 'follow', msg: 'Obrigado por seguir! 🙏', color: '#22c55e', strongMin: 500, lastTrigger: { user: 'Seguidor_Live', coins: 1000, ts: Date.now() } },
+      chestCfg: { minCoins: 500, lastUser: 'pedro_go', coins: 500 },
+      rules: [
+        { id: 'r1', trigger: 'Hand Hearts', action: 'taptap', active: true },
+        { id: 'r2', trigger: 'Galáxia', action: 'beastmorph', active: true }
+      ]
+    };
+
+    try { const r = localStorage.getItem(SCAN_STORAGE); if (r) Object.assign(liveData, JSON.parse(r)); } catch {}
+    function persistScan(bc = true) {
+      localStorage.setItem(SCAN_STORAGE, JSON.stringify(liveData));
+      if (bc) syncChannel.postMessage({ type: 'SYNC_STATE', payload: liveData });
+    }
+
+    const toastBox = document.getElementById('toastBox'), toastIcon = document.getElementById('toastIcon'), toastText = document.getElementById('toastText');
+    let toastTimer = null;
+    function showToast(msg, icon = '✅') {
+      toastIcon.textContent = icon; toastText.textContent = msg;
+      toastBox.classList.remove('opacity-0', 'translate-y-2');
+      clearTimeout(toastTimer); toastTimer = setTimeout(() => toastBox.classList.add('opacity-0', 'translate-y-2'), 3200);
+    }
+
+    // =========================================================================
+    // 2. AUDIO ENGINE & VOICE BOT TTS
+    // =========================================================================
+    const vfxState = { preset: 'glove', text: 'NOCAUTE', primaryColor: '#ff1f8e', secondaryColor: '#00f0ff', speed: 1.0, playing: true, recording: false, time: 0, lastFrameTs: performance.now(), muted: false, geminiCode: null, shakeIntensity: 0, firedCues: new Set() };
+
+    class ArcadeAudioEngine {
+      constructor() { this.ctx = null; this.masterRec = null; this.speakerGain = null; this.destination = null; this.noiseBuffer = null; }
+      ensureInit() {
+        if (this.ctx) { if (this.ctx.state === 'suspended') this.ctx.resume(); return; }
+        const AC = window.AudioContext || window.webkitAudioContext; this.ctx = new AC();
+        this.destination = this.ctx.createMediaStreamDestination();
+        this.masterRec = this.ctx.createGain(); this.masterRec.gain.value = 0.85; this.masterRec.connect(this.destination);
+        this.speakerGain = this.ctx.createGain(); this.speakerGain.gain.value = vfxState.muted ? 0 : 0.78;
+        this.masterRec.connect(this.speakerGain); this.speakerGain.connect(this.ctx.destination);
+        const keep = this.ctx.createOscillator(), kg = this.ctx.createGain(); kg.gain.value = 0.00001; keep.connect(kg); kg.connect(this.destination); keep.start();
+        const sr = this.ctx.sampleRate; this.noiseBuffer = this.ctx.createBuffer(1, sr * 2, sr);
+        const d = this.noiseBuffer.getChannelData(0); for (let i=0;i<d.length;i++) d[i] = Math.random()*2-1;
+      }
+      setMuted(m) { if (this.speakerGain && this.ctx) this.speakerGain.gain.setTargetAtTime(m ? 0 : 0.78, this.ctx.currentTime, 0.02); }
+      playCoinPing() { this.ensureInit(); const now=this.ctx.currentTime; [987.77,1318.5].forEach((f,i)=>{ const o=this.ctx.createOscillator(),g=this.ctx.createGain(); o.type='sine'; o.frequency.setValueAtTime(f,now+i*0.06); g.gain.setValueAtTime(0.16,now+i*0.06); g.gain.exponentialRampToValueAtTime(0.001,now+i*0.06+0.25); o.connect(g); g.connect(this.speakerGain); o.start(now+i*0.06); o.stop(now+i*0.06+0.28); }); }
+      playSubImpact(p=1) { if(!this.ctx||this.ctx.state==='suspended')return; const now=this.ctx.currentTime,o=this.ctx.createOscillator(),g=this.ctx.createGain(); o.type='sine'; o.frequency.setValueAtTime(145*p,now); o.frequency.exponentialRampToValueAtTime(32,now+0.45); g.gain.setValueAtTime(0.001,now); g.gain.linearRampToValueAtTime(0.95,now+0.015); g.gain.exponentialRampToValueAtTime(0.001,now+0.58); o.connect(g); g.connect(this.masterRec); o.start(now); o.stop(now+0.62); }
+      playTrap808(f=48,d=0.4) { if(!this.ctx||this.ctx.state==='suspended')return; const now=this.ctx.currentTime,o=this.ctx.createOscillator(),g=this.ctx.createGain(); o.type='triangle'; o.frequency.setValueAtTime(f*2.2,now); o.frequency.exponentialRampToValueAtTime(f,now+0.07); g.gain.setValueAtTime(0.7,now); g.gain.exponentialRampToValueAtTime(0.001,now+d); o.connect(g); g.connect(this.masterRec); o.start(now); o.stop(now+d+0.04); }
+      playEpicDrumHit(acc=false) { if(!this.ctx||this.ctx.state==='suspended')return; this.playSubImpact(acc?1.25:0.9); const now=this.ctx.currentTime,s=this.ctx.createBufferSource(); s.buffer=this.noiseBuffer; const bp=this.ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=acc?1100:750; const g=this.ctx.createGain(); g.gain.setValueAtTime(acc?0.45:0.28,now); g.gain.exponentialRampToValueAtTime(0.001,now+0.24); s.connect(bp); bp.connect(g); g.connect(this.masterRec); s.start(now); s.stop(now+0.26); }
+      playElectricZap() { if(!this.ctx||this.ctx.state==='suspended')return; const now=this.ctx.currentTime,s=this.ctx.createBufferSource(); s.buffer=this.noiseBuffer; const f=this.ctx.createBiquadFilter(); f.type='bandpass'; f.frequency.setValueAtTime(2600,now); f.frequency.exponentialRampToValueAtTime(620,now+0.24); f.Q.value=3; const g=this.ctx.createGain(); g.gain.setValueAtTime(0.5,now); g.gain.exponentialRampToValueAtTime(0.001,now+0.26); s.connect(f); f.connect(g); g.connect(this.masterRec); s.start(now); s.stop(now+0.28); }
+      playThunderCrack() { if(!this.ctx||this.ctx.state==='suspended')return; this.playElectricZap(); this.playSubImpact(1.35); const now=this.ctx.currentTime,s=this.ctx.createBufferSource(); s.buffer=this.noiseBuffer; const lp=this.ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.setValueAtTime(900,now); lp.frequency.exponentialRampToValueAtTime(140,now+1.1); const g=this.ctx.createGain(); g.gain.setValueAtTime(0.65,now); g.gain.exponentialRampToValueAtTime(0.001,now+1.2); s.connect(lp); lp.connect(g); g.connect(this.masterRec); s.start(now); s.stop(now+1.24); }
+      playLaserLock() { if(!this.ctx||this.ctx.state==='suspended')return; const now=this.ctx.currentTime,o=this.ctx.createOscillator(),g=this.ctx.createGain(); o.type='sine'; o.frequency.setValueAtTime(1600,now); o.frequency.exponentialRampToValueAtTime(420,now+0.12); o.frequency.exponentialRampToValueAtTime(2200,now+0.26); g.gain.setValueAtTime(0.35,now); g.gain.exponentialRampToValueAtTime(0.001,now+0.3); o.connect(g); g.connect(this.masterRec); o.start(now); o.stop(now+0.32); }
+      playWhoosh() { if(!this.ctx||this.ctx.state==='suspended')return; const now=this.ctx.currentTime,s=this.ctx.createBufferSource(); s.buffer=this.noiseBuffer; const f=this.ctx.createBiquadFilter(); f.type='bandpass'; f.frequency.setValueAtTime(220,now); f.frequency.exponentialRampToValueAtTime(2600,now+0.34); const g=this.ctx.createGain(); g.gain.setValueAtTime(0.01,now); g.gain.linearRampToValueAtTime(0.42,now+0.25); g.gain.exponentialRampToValueAtTime(0.001,now+0.42); s.connect(f); f.connect(g); g.connect(this.masterRec); s.start(now); s.stop(now+0.44); }
+      playIceShatter() { if(!this.ctx||this.ctx.state==='suspended')return; const now=this.ctx.currentTime; [2100,2850,3400,4200].forEach((fr,i)=>{ const o=this.ctx.createOscillator(),g=this.ctx.createGain(); o.type='triangle'; o.frequency.setValueAtTime(fr,now+i*0.025); o.frequency.exponentialRampToValueAtTime(fr*0.65,now+i*0.025+0.28); g.gain.setValueAtTime(0.18,now+i*0.025); g.gain.exponentialRampToValueAtTime(0.001,now+i*0.025+0.3); o.connect(g); g.connect(this.masterRec); o.start(now+i*0.025); o.stop(now+i*0.025+0.32); }); this.playSubImpact(1); }
+      playEpicChoirChord(freqs=[146.83,220,293.66],dur=1.8) { if(!this.ctx||this.ctx.state==='suspended')return; const now=this.ctx.currentTime; freqs.forEach(fr=>{ const o=this.ctx.createOscillator(),f=this.ctx.createBiquadFilter(),g=this.ctx.createGain(); o.type='sawtooth'; o.frequency.setValueAtTime(fr,now); f.type='lowpass'; f.frequency.setValueAtTime(950,now); f.frequency.linearRampToValueAtTime(2200,now+dur*0.4); g.gain.setValueAtTime(0.001,now); g.gain.linearRampToValueAtTime(0.11,now+0.25); g.gain.exponentialRampToValueAtTime(0.001,now+dur); o.connect(f); f.connect(g); g.connect(this.masterRec); o.start(now); o.stop(now+dur+0.05); }); }
+      playMagicShimmer() { if(!this.ctx||this.ctx.state==='suspended')return; const now=this.ctx.currentTime; [523.25,659.25,783.99,1046.5,1318.5].forEach((fr,i)=>{ const t0=now+i*0.065,o=this.ctx.createOscillator(),g=this.ctx.createGain(); o.type=i%2===0?'sine':'triangle'; o.frequency.setValueAtTime(fr,t0); g.gain.setValueAtTime(0.001,t0); g.gain.linearRampToValueAtTime(0.2,t0+0.02); g.gain.exponentialRampToValueAtTime(0.001,t0+0.72); o.connect(g); g.connect(this.masterRec); o.start(t0); o.stop(t0+0.75); }); }
+      playSfx(tp) { if(tp==='impact')this.playSubImpact(1); else if(tp==='zap')this.playElectricZap(); else if(tp==='laser')this.playLaserLock(); else if(tp==='whoosh')this.playWhoosh(); else if(tp==='sparkle')this.playMagicShimmer(); else if(tp==='thunder')this.playThunderCrack(); }
+    }
+    const audioEngine = new ArcadeAudioEngine();
+
+    function populateVoices() {
+      const sel = document.getElementById('selTtsVoice'); if (!window.speechSynthesis) return;
+      const sorted = [...speechSynthesis.getVoices()].sort((a,b)=>(b.lang.startsWith('pt')?1:0)-(a.lang.startsWith('pt')?1:0));
+      sel.innerHTML = sorted.length ? sorted.map(v=>`<option value="${v.name}">${v.name} (${v.lang})</option>`).join('') : '<option value="">Voz Padrão PT-BR</option>';
+    }
+    if (window.speechSynthesis) { populateVoices(); speechSynthesis.onvoiceschanged = populateVoices; }
+    function speakTextTTS(rawMsg) {
+      if (!document.getElementById('chkTtsEnabled').checked || !window.speechSynthesis) return;
+      const prefix = document.getElementById('inputTtsPrefix').value.trim(); let clean = rawMsg.trim();
+      if (prefix && clean.startsWith(prefix)) clean = clean.slice(prefix.length).trim(); if (!clean) return;
+      speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(clean); u.lang = 'pt-BR';
+      u.volume = Number(document.getElementById('rangeTtsVol').value)/100; u.rate = Number(document.getElementById('rangeTtsRate').value);
+      const ch = speechSynthesis.getVoices().find(v=>v.name===document.getElementById('selTtsVoice').value); if (ch) u.voice = ch;
+      speechSynthesis.speak(u);
+    }
+
+    // =========================================================================
+    // 3. RENDERIZADORES DE OVERLAYS
+    // =========================================================================
+    function getAnimClass(a) { return a==='girar'?'av-girar':a==='pulsar'?'av-pulsar':a==='quicar'?'av-quicar':a==='balancar'?'av-balancar':a==='brilhar'?'av-brilhar':''; }
+    function getFontFamily(k) { return k==='impact'?'Impact,"Arial Black",sans-serif':k==='mono'?'ui-monospace,monospace':'Inter,system-ui,sans-serif'; }
+
+    function renderAvatarBadge(user, rank, cfg = {}) {
+      const ini = (user.name || 'TT').replace(/[^A-Za-z0-9]/g,'').slice(0,2).toUpperCase() || 'TT';
+      const customPng = cfg.customFrames?.[rank];
+      let fCls = cfg.gamesFrames ? 'frame-games' : rank===1?'frame-gold':rank===2?'frame-silver':rank===3?'frame-bronze':'';
+      const aCls = rank<=3 ? getAnimClass(cfg.anim||'none') : '';
+      const sCls = rank===1 && cfg.mode==='podium' ? 'w-20 h-20 text-xl' : 'w-12 h-12 text-xs';
+      return `<div class="relative inline-flex items-center justify-center ${sCls} rounded-full ${fCls} ${aCls} shrink-0" style="background-color:${user.color||'#3b82f6'}"><span class="font-black text-white">${ini}</span>${customPng?`<img src="${customPng}" class="absolute inset-0 w-full h-full object-contain scale-125 pointer-events-none" />`:''}${rank<=3?`<span class="absolute -bottom-1.5 px-1.5 rounded-full text-[9px] font-black bg-black/85 border border-white/25 text-yellow-300">${rank}º</span>`:''}</div>`;
+    }
+
+    function buildMoedasMarkup() {
+      const cfg = liveData.moedasCfg, isW = cfg.period === 'semanal';
+      const sorted = [...liveData.users].sort((a,b) => (isW?b.weeklyCoins:b.coins) - (isW?a.weeklyCoins:a.coins)).slice(0, cfg.count);
+      const st = `transform: scale(${cfg.scale/100}); font-family:${getFontFamily(cfg.font)};`;
+      if (cfg.mode==='podium' && !isW && sorted.length>=1) {
+        const top3 = [sorted[1], sorted[0], sorted[2]].filter(Boolean);
+        return `<div class="flex items-end justify-center gap-6 sm:gap-10 py-2" style="${st}">${top3.map(u=>{ const r=sorted.indexOf(u)+1; return `<div class="flex flex-col items-center gap-1.5 ${r===1?'-translate-y-3':''}">${renderAvatarBadge(u,r,cfg)}<div class="text-xs font-extrabold text-white drop-shadow max-w-[110px] truncate">${u.name}</div><div class="text-xs font-black" style="color:${cfg.coinColor}">🪙 ${u.coins.toLocaleString('pt-BR')}</div></div>`; }).join('')}</div>`;
+      }
+      return `<div class="w-full max-w-sm space-y-1.5" style="${st}">${sorted.map((u,i)=>`<div class="flex items-center justify-between gap-3 bg-black/70 border border-white/10 rounded-xl px-3 py-2"><div class="flex items-center gap-3 min-w-0"><span class="text-xs font-black w-5 text-slate-300">${i+1}º</span>${renderAvatarBadge(u,i+1,{...cfg,mode:'list'})}<span class="text-xs font-bold text-white truncate">${u.name}</span></div><span class="text-xs font-black shrink-0" style="color:${cfg.coinColor}">🪙 ${(isW?u.weeklyCoins:u.coins).toLocaleString('pt-BR')}</span></div>`).join('')}</div>`;
+    }
+    function buildLikesMarkup() { const cfg=liveData.likesCfg,sorted=[...liveData.users].sort((a,b)=>b.likes-a.likes).slice(0,cfg.count); return `<div class="w-full max-w-sm flex flex-col" style="gap:${cfg.gap}px">${sorted.map((u,i)=>`<div class="flex items-center justify-between gap-3 bg-black/70 border border-white/10 rounded-xl px-3.5 py-2"><div class="flex items-center gap-3 min-w-0"><span class="text-xs font-black w-5 ${i===0?'text-yellow-400':i===1?'text-slate-300':i===2?'text-amber-500':'text-slate-500'}">${i+1}º</span>${renderAvatarBadge(u,i+1,{anim:i<3?'pulsar':'none'})}<span class="text-xs font-bold text-white truncate">${u.name}</span></div><span class="text-xs font-black text-amber-400 shrink-0">❤️ ${u.likes.toLocaleString('pt-BR')}</span></div>`).join('')}</div>`; }
+    function buildSharesMarkup() { const sorted=[...liveData.users].sort((a,b)=>b.shares-a.shares).slice(0,liveData.sharesCfg.count); return `<div class="w-full max-w-sm space-y-2">${sorted.map((u,i)=>`<div class="flex items-center justify-between gap-3 bg-black/70 border border-white/10 rounded-xl px-3.5 py-2"><div class="flex items-center gap-3 min-w-0"><span class="text-xs font-black w-5 text-cyan-300">${i+1}º</span>${renderAvatarBadge(u,i+1,{anim:i===0?'brilhar':'none'})}<span class="text-xs font-bold text-white truncate">${u.name}</span></div><span class="text-xs font-black text-cyan-300 shrink-0">🔁 ${u.shares}</span></div>`).join('')}</div>`; }
+    function buildGifterMarkup() { const g=liveData.bigGifter,cfg=liveData.gifterCfg,fCls=cfg.frame==='none'?'':`frame-${cfg.frame}`,ini=(g.name||'BG').replace(/[^A-Za-z0-9]/g,'').slice(0,2).toUpperCase()||'BG'; return `<div class="flex flex-col items-center gap-2 text-center" style="transform:scale(${cfg.scale/100})"><div class="text-sm font-black tracking-widest uppercase" style="color:${cfg.titleColor}">BIG GIFTER</div><div class="w-24 h-24 flip-scene"><div class="flip-card ${cfg.flipped?'is-flipped':''}"><div class="flip-face rounded-full ${fCls}" style="background-color:${g.color||'#a855f7'}"><span class="text-2xl font-black text-white">${ini}</span></div><div class="flip-face back rounded-full bg-black/75 ${fCls}"><span class="text-5xl">${g.giftEmoji||'🧸'}</span></div></div></div><div><div class="text-sm font-extrabold text-white">${g.name}</div><div class="text-[11px] text-slate-300">${g.giftName}</div><div class="text-xs font-black" style="color:${cfg.coinColor}">🪙 ${g.coins}</div></div></div>`; }
+    function buildNotifMarkup() { const n=liveData.notifCfg,u=n.lastTrigger.user||'Seguidor'; if(n.type==='slim')return`<div class="alert-pop flex flex-col items-center gap-1.5 text-center"><div class="w-16 h-16 rounded-full frame-gold bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center text-xl font-black text-slate-950">${u.slice(0,2).toUpperCase()}</div><div class="text-sm font-extrabold text-white drop-shadow">${u}</div><div class="text-[11px] font-black uppercase tracking-wider text-amber-300">NOVO SEGUIDOR</div></div>`; if(n.type==='heartme')return`<div class="alert-pop flex items-center gap-3 px-4 py-3 rounded-2xl bg-black/80 border-2 border-pink-500 shadow-[0_0_24px_rgba(236,72,153,0.45)]"><div class="w-11 h-11 rounded-full bg-pink-600 flex items-center justify-center font-black text-white text-sm">HM</div><div><div class="text-sm font-extrabold text-pink-300">Enviou HeartMe! 💕</div><div class="text-xs text-slate-200">@${u}</div></div><span class="text-2xl ml-2">💖</span></div>`; if(n.type==='strong')return`<div class="alert-pop flex flex-col items-center gap-2 px-6 py-4 rounded-2xl bg-black/85 border-2 border-amber-400 shadow-[0_0_28px_rgba(250,204,21,0.45)]"><div class="text-lg font-black text-amber-300 tracking-wide">STRONG ON! 💪</div><div class="flex items-center gap-2.5"><div class="w-9 h-9 rounded-full bg-amber-500 text-slate-950 font-black flex items-center justify-center text-xs">ST</div><div><div class="text-xs font-bold text-white">@${u}</div><div class="text-[11px] font-black text-amber-300">🪙 ${n.lastTrigger.coins||n.strongMin} moedas</div></div></div></div>`; return`<div class="alert-pop flex items-center gap-3 px-4 py-3 rounded-2xl bg-black/80 border-2 shadow-xl" style="border-color:${n.color}; box-shadow:0 0 24px ${n.color}55"><div class="w-11 h-11 rounded-full flex items-center justify-center font-black text-white text-sm" style="background:${n.color}">TS</div><div><div class="text-sm font-extrabold" style="color:${n.color}">${n.msg}</div><div class="text-xs text-white font-semibold">@${u} • Novo Seguidor</div></div></div>`; }
+    function buildBauMarkup() { const c=liveData.chestCfg; return `<div class="alert-pop flex flex-col items-center justify-end h-full pb-6 text-center relative"><div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-amber-500/45 via-yellow-400/15 to-transparent blur-xl pointer-events-none"></div><div class="px-3 py-1.5 rounded-full bg-black/85 border border-amber-400 text-[11px] font-bold text-white mb-2 shadow-lg">💎 Baú do Tesouro • @${c.lastUser} <span class="text-amber-300 font-black">🪙 ${c.coins}</span></div><div class="chest-float text-7xl drop-shadow-[0_0_25px_rgba(250,204,21,0.9)] select-none">🧰</div><div class="text-xs font-black text-yellow-300 tracking-widest mt-1 drop-shadow">✨ TESOURO ATIVADO ✨</div></div>`; }
+
+    function refreshAllPreviews() {
+      const pm=document.getElementById('previewMoedasContainer'); if(pm){pm.classList.toggle('checkerboard-bg',liveData.moedasCfg.transparent);pm.innerHTML=buildMoedasMarkup();}
+      const pl=document.getElementById('previewLikesContainer'); if(pl){pl.innerHTML=buildLikesMarkup();document.getElementById('likesTotalSubtitle').textContent=`Total da live: ${liveData.totalLikes.toLocaleString('pt-BR')} likes`;}
+      const ps=document.getElementById('previewSharesContainer'); if(ps)ps.innerHTML=buildSharesMarkup();
+      const pg=document.getElementById('previewGifterContainer'); if(pg)pg.innerHTML=buildGifterMarkup();
+      const pn=document.getElementById('previewNotifContainer'); if(pn)pn.innerHTML=buildNotifMarkup();
+      const pb=document.getElementById('previewBauContainer'); if(pb)pb.innerHTML=buildBauMarkup();
+      if(liveData.cleanOverlayMode){const m=document.getElementById('obsCleanMount');if(liveData.cleanOverlayMode==='moedas')m.innerHTML=buildMoedasMarkup();else if(liveData.cleanOverlayMode==='likes')m.innerHTML=buildLikesMarkup();else if(liveData.cleanOverlayMode==='shares')m.innerHTML=buildSharesMarkup();else if(liveData.cleanOverlayMode==='gifter')m.innerHTML=buildGifterMarkup();else if(liveData.cleanOverlayMode==='notif')m.innerHTML=buildNotifMarkup();else if(liveData.cleanOverlayMode==='bau')m.innerHTML=buildBauMarkup();}
+    }
+    setInterval(() => { liveData.gifterCfg.flipped = !liveData.gifterCfg.flipped; refreshAllPreviews(); }, 2600);
+
+    // =========================================================================
+    // 4. SIMULADOR DE EVENTOS LIVE + TRIGGERS
+    // =========================================================================
+    const names = ['Maria_live', 'joao_tk', 'ana_stars', 'pedro_go', 'Raynnara Lira', 'LENITA💜👑'];
+    const colors = ['#ec4899', '#3b82f6', '#f59e0b', '#10b981', '#8b5cf6'];
+    function pickUser(n) { let u = liveData.users.find(x => x.name === n); if (!u) { u = { name: n, color: colors[Math.floor(Math.random()*colors.length)], coins: 0, weeklyCoins: 0, likes: 0, shares: 0 }; liveData.users.push(u); } return u; }
+    function handleEvent(evt) {
+      const name = evt.user || names[Math.floor(Math.random()*names.length)], u = pickUser(name);
+      if (evt.type === 'gift') {
+        const c = Number(evt.coins) || 1; u.coins += c; u.weeklyCoins += c;
+        if (c >= liveData.bigGifter.coins) liveData.bigGifter = { name: u.name, giftName: evt.giftName||'Presente', giftEmoji: evt.giftEmoji||'🎁', coins: c, color: u.color };
+        if (c >= liveData.notifCfg.strongMin) { liveData.notifCfg.lastTrigger = { user: u.name, coins: c, ts: Date.now() }; showToast(`STRONG ON: @${u.name} (${c} moedas)`, '💪'); }
+        if (c >= liveData.chestCfg.minCoins) { liveData.chestCfg.lastUser = u.name; liveData.chestCfg.coins = c; showToast(`BAÚ ATIVADO por @${u.name}!`, '💎'); }
+        const matched = liveData.rules.find(r => r.active && evt.giftName && evt.giftName.includes(r.trigger));
+        if (matched) { selectPreset(matched.action, true); showToast(`Trigger disparado: ${matched.trigger} ➔ ${matched.action}`, '🎬'); }
+        audioEngine.playCoinPing();
+      } else if (evt.type === 'follow') { liveData.notifCfg.lastTrigger = { user: name, coins: 0, ts: Date.now() }; audioEngine.playMagicShimmer(); }
+      else if (evt.type === 'like') { const c = Number(evt.count) || 25; u.likes += c; liveData.totalLikes += c; }
+      else if (evt.type === 'share') { u.shares += 1; }
+      persistScan(true); refreshAllPreviews();
+    }
+
+    document.querySelectorAll('.sim-btn').forEach(b => b.addEventListener('click', () => {
+      const k = b.dataset.sim;
+      if (k==='rose') handleEvent({ type:'gift', coins:1, giftName:'Rosa', giftEmoji:'🌹' });
+      else if (k==='heart') handleEvent({ type:'gift', coins:100, giftName:'Hand Hearts', giftEmoji:'🫶' });
+      else if (k==='strong') handleEvent({ type:'gift', coins:500, giftName:'Strong', giftEmoji:'💪' });
+      else if (k==='chest') handleEvent({ type:'gift', coins:600, giftName:'Baú Tesouro', giftEmoji:'💎' });
+      else if (k==='follow') handleEvent({ type:'follow' });
+      else if (k==='like') handleEvent({ type:'like', count:25 });
+      else if (k==='share') handleEvent({ type:'share' });
+    }));
+
+    let autoIv = null;
+    document.getElementById('btnAutoLive').addEventListener('click', (e) => {
+      if (autoIv) { clearInterval(autoIv); autoIv = null; e.target.textContent = '▶ Auto-Live: OFF'; }
+      else {
+        e.target.textContent = '⏸ Auto-Live: ON';
+        autoIv = setInterval(() => {
+          const r = Math.random();
+          if (r < 0.4) handleEvent({ type:'like', count:30 });
+          else if (r < 0.75) handleEvent({ type:'gift', coins:[1,50,150,500][Math.floor(Math.random()*4)], giftName:'Presente Live', giftEmoji:['🌹','🫶','🧸','💎'][Math.floor(Math.random()*4)] });
+          else if (r < 0.9) handleEvent({ type:'follow' });
+          else handleEvent({ type:'share' });
+        }, 1400);
+      }
+    });
+
+    // =========================================================================
+    // 5. NAVEGAÇÃO, MODAIS ADMIN/PLANOS & CONTROLES
+    // =========================================================================
+    const titles = { conexao:'Conexão TikTok Live', moedas:'Rankings de Moedas', likes:'Ranking de Likes', shares:'Ranking de Shares', gifter:'Big Gifter', notificacoes:'Notificações & Alertas', bau:'Baú de Prêmios', vfx:'Effect Battle (.WEBM Transparente)', acoes:'Ações & Eventos (Triggers)', tts:'Voice Bot (TTS)' };
+    function closeMobileDrawer() { if (window.innerWidth < 1024) { const sb = document.getElementById('sidebarDrawer'); sb.classList.add('hidden'); sb.classList.remove('fixed', 'inset-y-0', 'left-0', 'z-40'); } }
+    function switchTab(id) {
+      liveData.activeTab = id;
+      document.querySelectorAll('.side-tab').forEach(b => { const cur = b.dataset.tab === id; b.classList.toggle('bg-blue-600', cur); b.classList.toggle('text-white', cur); b.classList.toggle('shadow', cur); b.classList.toggle('text-slate-300', !cur); });
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('hidden', p.id !== `tab-${id}`));
+      document.getElementById('topSectionTitle').textContent = titles[id] || 'TIK SCAN';
+      document.getElementById('liveSimToolbar').classList.toggle('hidden', id === 'vfx');
+      refreshAllPreviews();
+    }
+    document.querySelectorAll('.side-tab').forEach(b => b.addEventListener('click', () => { switchTab(b.dataset.tab); closeMobileDrawer(); }));
+    document.getElementById('btnMobileMenu').addEventListener('click', () => { const sb = document.getElementById('sidebarDrawer'); if (sb.classList.contains('hidden')) { sb.classList.remove('hidden'); sb.classList.add('fixed', 'inset-y-0', 'left-0', 'z-40'); } else closeMobileDrawer(); });
+    document.getElementById('btnCloseMobileMenu').addEventListener('click', closeMobileDrawer);
+
+    // Eventos Admin Modal
+    document.getElementById('btnOpenAdmin').addEventListener('click', () => { document.getElementById('adminModal').classList.remove('hidden'); closeMobileDrawer(); });
+    document.getElementById('btnCloseAdmin').addEventListener('click', () => document.getElementById('adminModal').classList.add('hidden'));
+    document.getElementById('btnAdminLogin').addEventListener('click', () => {
+      if (document.getElementById('inputAdminPass').value === getAdminPass()) {
+        document.getElementById('adminLoginErr').classList.add('hidden');
+        document.getElementById('adminLoginBox').classList.add('hidden');
+        document.getElementById('adminContentBox').classList.remove('hidden');
+        renderAdminClients();
+      } else {
+        document.getElementById('adminLoginErr').classList.remove('hidden');
+      }
+    });
+    document.getElementById('btnAdminCreateClient').addEventListener('click', () => {
+      let u = document.getElementById('admClientUser').value.trim();
+      if (!u) return showToast('Digite o @ do influenciador!', '⚠️');
+      if (!u.startsWith('@')) u = '@' + u;
+      const plan = document.getElementById('admClientPlan').value;
+      const days = document.getElementById('admClientDays').value;
+      const ws = document.getElementById('admClientWs').value.trim();
+      let exp = 'vitalicio';
+      if (days !== 'vitalicio') {
+        const dt = new Date(); dt.setDate(dt.getDate() + Number(days));
+        exp = dt.toISOString().slice(0, 10);
+      }
+      const sig = signClientToken(u, exp, plan);
+      const list = loadAdminClients();
+      list.unshift({ id: Date.now().toString(36), user: u, plan, exp, ws, sig });
+      saveAdminClients(list);
+      document.getElementById('admClientUser').value = '';
+      showToast(`Link gerado para ${u}!`, '✨');
+    });
+    document.getElementById('btnAdminChangePass').addEventListener('click', () => {
+      const np = document.getElementById('admNewPassInput').value.trim();
+      if (np.length < 4) return showToast('Use pelo menos 4 caracteres.', '⚠️');
+      localStorage.setItem(ADMIN_PASS_KEY, np);
+      document.getElementById('admNewPassInput').value = '';
+      showToast('Senha Admin alterada com sucesso!', '🔑');
+    });
+
+    document.getElementById('btnOpenPlans').addEventListener('click', () => document.getElementById('plansModal').classList.remove('hidden'));
+    document.getElementById('btnTopPlans').addEventListener('click', () => document.getElementById('plansModal').classList.remove('hidden'));
+    document.getElementById('btnClosePlans').addEventListener('click', () => document.getElementById('plansModal').classList.add('hidden'));
+
+    function enterCleanMode(tp) { liveData.cleanOverlayMode = tp; document.body.classList.add('obs-clean-mode'); document.getElementById('mainAppShell').classList.add('hidden'); document.getElementById('obsCleanScreen').classList.remove('hidden'); refreshAllPreviews(); }
+    function exitCleanMode() { liveData.cleanOverlayMode = null; document.body.classList.remove('obs-clean-mode'); document.getElementById('obsCleanScreen').classList.add('hidden'); document.getElementById('mainAppShell').classList.remove('hidden'); refreshAllPreviews(); }
+    document.querySelectorAll('.btn-open-clean').forEach(b => b.addEventListener('click', () => enterCleanMode(b.dataset.clean)));
+    document.getElementById('btnExitCleanMode').addEventListener('click', exitCleanMode);
+    syncChannel.onmessage = e => { if (e.data?.type === 'SYNC_STATE') { const cm = liveData.cleanOverlayMode; Object.assign(liveData, e.data.payload); liveData.cleanOverlayMode = cm; refreshAllPreviews(); } };
+
+    const base = window.location.href.split('?')[0].split('#')[0];
+    ['Moedas','Likes','Shares','Gifter','Notif','Bau'].forEach(k => { const el = document.getElementById(`obsUrl${k}`); if (el) el.value = `${base}?overlay=${k.toLowerCase()}`; });
+    document.querySelectorAll('.copy-btn').forEach(b => b.addEventListener('click', () => { navigator.clipboard?.writeText(document.getElementById(b.dataset.copy).value); showToast('Link OBS copiado!', '📋'); }));
+
+    function updateUserLabels(u, modeTxt) {
+      document.getElementById('sidebarUserHandle').textContent = u;
+      document.getElementById('connCardUser').textContent = u;
+      document.getElementById('inputTiktokUser').value = u;
+      document.getElementById('sidebarConnStatus').textContent = `● ${modeTxt}`;
+      document.getElementById('connCardStatus').textContent = `● ${modeTxt}`;
+    }
+
+    function connectWsUrl(url) {
+      if (!url) return;
+      try {
+        const ws = new WebSocket(url);
+        ws.onopen = () => { document.getElementById('connStatusPill').textContent = '● WS Bridge: Online'; updateUserLabels(liveData.tiktokUser, 'LIVE CONECTADA'); showToast('Conectado ao Bridge TikTok Live!', '🔌'); };
+        ws.onmessage = m => { try { handleEvent(JSON.parse(m.data)); } catch {} };
+        ws.onerror = () => showToast('Sem Bridge ativo neste momento; Modo Teste pronto.', 'ℹ️');
+      } catch {}
+    }
+
+    document.getElementById('btnConnectUser').addEventListener('click', () => {
+      if (liveData.clientSession) return showToast(`Sessão vinculada a ${liveData.tiktokUser}`, '🔒');
+      liveData.tiktokUser = document.getElementById('inputTiktokUser').value.trim()||'@live_demo';
+      updateUserLabels(liveData.tiktokUser, 'CONECTADO'); persistScan(true); showToast(`Conectado a ${liveData.tiktokUser}`, '🔗');
+    });
+    document.getElementById('btnActivateTestMode').addEventListener('click', () => { liveData.testMode = true; updateUserLabels(liveData.tiktokUser, 'MODO TESTE ATIVO'); showToast('Modo Teste ativado!', '⚡'); });
+    document.getElementById('btnDisconnect').addEventListener('click', () => { updateUserLabels(liveData.tiktokUser, 'OFFLINE'); showToast('Desconectado.', '🔌'); });
+    document.getElementById('btnConnectWs').addEventListener('click', () => connectWsUrl(document.getElementById('inputWsUrl').value.trim()));
+    document.getElementById('btnClearAllLive').addEventListener('click', () => { liveData.users = []; liveData.totalLikes = 0; persistScan(true); refreshAllPreviews(); showToast('Rankings zerados!', '🗑️'); });
+
+    document.querySelectorAll('.period-btn').forEach(b => b.addEventListener('click', () => { liveData.moedasCfg.period=b.dataset.moedasPeriod; document.querySelectorAll('.period-btn').forEach(x=>{x.classList.toggle('bg-blue-600',x===b);x.classList.toggle('text-white',x===b);x.classList.toggle('bg-ts-card',x!==b);}); document.getElementById('moedasPreviewTitle').textContent=liveData.moedasCfg.period==='semanal'?'Preview Ranking Semanal (Top 10 da semana)':'Preview Ranking Diário (Pódio / Lista)'; persistScan(true); refreshAllPreviews(); }));
+    document.querySelectorAll('.rank-count-btn').forEach(b => b.addEventListener('click', () => { liveData.moedasCfg.count=Number(b.dataset.val); document.querySelectorAll('.rank-count-btn').forEach(x=>{x.classList.toggle('border-blue-500',x===b);x.classList.toggle('bg-blue-600/25',x===b);}); persistScan(true); refreshAllPreviews(); }));
+    document.getElementById('btnMoedasPodium').addEventListener('click', () => { liveData.moedasCfg.mode='podium'; persistScan(true); refreshAllPreviews(); });
+    document.getElementById('btnMoedasLista').addEventListener('click', () => { liveData.moedasCfg.mode='list'; persistScan(true); refreshAllPreviews(); });
+    document.getElementById('chkMoedasTransparent').addEventListener('change', e => { liveData.moedasCfg.transparent=e.target.checked; persistScan(true); refreshAllPreviews(); });
+    document.getElementById('chkMoedasGames').addEventListener('change', e => { liveData.moedasCfg.gamesFrames=e.target.checked; persistScan(true); refreshAllPreviews(); });
+    document.getElementById('rangeMoedasScale').addEventListener('input', e => { liveData.moedasCfg.scale=Number(e.target.value); document.getElementById('moedasScaleVal').textContent=`${e.target.value}%`; persistScan(true); refreshAllPreviews(); });
+    document.getElementById('selectMoedasFont').addEventListener('change', e => { liveData.moedasCfg.font=e.target.value; persistScan(true); refreshAllPreviews(); });
+    document.getElementById('colorMoedas').addEventListener('input', e => { liveData.moedasCfg.coinColor=e.target.value; persistScan(true); refreshAllPreviews(); });
+    document.querySelectorAll('.anim-btn').forEach(b => b.addEventListener('click', () => { liveData.moedasCfg.anim=b.dataset.anim; document.querySelectorAll('.anim-btn').forEach(x=>{x.classList.toggle('border-fuchsia-500',x===b);x.classList.toggle('bg-fuchsia-600/30',x===b);}); persistScan(true); refreshAllPreviews(); }));
+    document.querySelectorAll('.frame-upload-input').forEach(i => i.addEventListener('change', e => { const f=e.target.files?.[0]; if(!f)return; const r=new FileReader(); r.onload=()=>{liveData.moedasCfg.customFrames[i.dataset.frameUpload]=r.result;persistScan(true);refreshAllPreviews();}; r.readAsDataURL(f); }));
+    document.getElementById('btnRestoreMoedasFrames').addEventListener('click', () => { liveData.moedasCfg.customFrames={1:null,2:null,3:null}; persistScan(true); refreshAllPreviews(); });
+
+    document.querySelectorAll('.likes-count-btn').forEach(b => b.addEventListener('click', () => { liveData.likesCfg.count=Number(b.dataset.val); document.querySelectorAll('.likes-count-btn').forEach(x=>{x.classList.toggle('border-blue-500',x===b);x.classList.toggle('bg-blue-600/25',x===b);}); persistScan(true); refreshAllPreviews(); }));
+    document.getElementById('rangeLikesGap').addEventListener('input', e => { liveData.likesCfg.gap=Number(e.target.value); document.getElementById('likesGapVal').textContent=`${e.target.value}px`; persistScan(true); refreshAllPreviews(); });
+    document.querySelectorAll('.shares-count-btn').forEach(b => b.addEventListener('click', () => { liveData.sharesCfg.count=Number(b.dataset.val); document.querySelectorAll('.shares-count-btn').forEach(x=>{x.classList.toggle('border-blue-500',x===b);x.classList.toggle('bg-blue-600/25',x===b);}); persistScan(true); refreshAllPreviews(); }));
+    document.getElementById('btnResetShares').addEventListener('click', () => { liveData.users.forEach(u=>u.shares=0); persistScan(true); refreshAllPreviews(); });
+
+    document.getElementById('colorGifterTitle').addEventListener('input', e => { liveData.gifterCfg.titleColor=e.target.value; persistScan(true); refreshAllPreviews(); });
+    document.getElementById('colorGifterCoins').addEventListener('input', e => { liveData.gifterCfg.coinColor=e.target.value; persistScan(true); refreshAllPreviews(); });
+    document.getElementById('rangeGifterScale').addEventListener('input', e => { liveData.gifterCfg.scale=Number(e.target.value); document.getElementById('gifterScaleVal').textContent=`${e.target.value}%`; persistScan(true); refreshAllPreviews(); });
+    document.querySelectorAll('.gframe-btn').forEach(b => b.addEventListener('click', () => { liveData.gifterCfg.frame=b.dataset.gframe; document.querySelectorAll('.gframe-btn').forEach(x=>{x.classList.toggle('border-cyan-400',x===b);x.classList.toggle('bg-cyan-500/20',x===b);}); persistScan(true); refreshAllPreviews(); }));
+
+    document.querySelectorAll('.notif-sub-btn').forEach(b => b.addEventListener('click', () => { liveData.notifCfg.type=b.dataset.notifType; document.querySelectorAll('.notif-sub-btn').forEach(x=>{x.classList.toggle('bg-blue-600',x===b);x.classList.toggle('text-white',x===b);x.classList.toggle('bg-ts-card',x!==b);}); persistScan(true); refreshAllPreviews(); }));
+    document.getElementById('inputNotifMsg').addEventListener('input', e => { liveData.notifCfg.msg=e.target.value; persistScan(true); refreshAllPreviews(); });
+    document.getElementById('colorNotif').addEventListener('input', e => { liveData.notifCfg.color=e.target.value; document.getElementById('notifColorHex').textContent=e.target.value.toUpperCase(); persistScan(true); refreshAllPreviews(); });
+    document.getElementById('inputStrongMin').addEventListener('input', e => { liveData.notifCfg.strongMin=Number(e.target.value)||500; persistScan(true); });
+    document.getElementById('btnTestNotif').addEventListener('click', () => { audioEngine.playMagicShimmer(); refreshAllPreviews(); showToast('Alerta testado!', '🔔'); });
+
+    document.getElementById('rangeChestMin').addEventListener('input', e => { liveData.chestCfg.minCoins=Number(e.target.value); document.getElementById('chestMinVal').textContent=e.target.value; persistScan(true); });
+    document.getElementById('btnTestChest').addEventListener('click', () => { audioEngine.playMagicShimmer(); audioEngine.playCoinPing(); refreshAllPreviews(); showToast('Animação do Baú disparada!', '💎'); });
+
+    function renderRules() {
+      const el = document.getElementById('rulesList');
+      el.innerHTML = liveData.rules.map(r => `<div class="flex items-center justify-between bg-ts-bg border border-ts-border rounded-xl px-3 py-2 text-xs"><div><span class="font-bold text-emerald-400">●</span> Presente <strong class="text-white">${r.trigger}</strong> ➔ Efeito 3D <strong class="text-cyan-300 uppercase">${r.action}</strong></div><button data-del-rule="${r.id}" class="text-slate-500 hover:text-rose-400 px-1">✕</button></div>`).join('');
+      el.querySelectorAll('[data-del-rule]').forEach(b => b.addEventListener('click', () => { liveData.rules = liveData.rules.filter(x => x.id !== b.dataset.delRule); persistScan(false); renderRules(); }));
+    }
+    renderRules();
+    document.getElementById('btnAddRule').addEventListener('click', () => { liveData.rules.push({ id: Date.now().toString(36), trigger: document.getElementById('selRuleTrigger').value, action: document.getElementById('selRuleAction').value, active: true }); persistScan(false); renderRules(); showToast('Regra adicionada!', '🎬'); });
+    document.getElementById('btnTestTriggerNow').addEventListener('click', () => { const act = document.getElementById('selRuleAction').value; switchTab('vfx'); selectPreset(act, true); audioEngine.ensureInit(); });
+
+    document.getElementById('rangeTtsVol').addEventListener('input', e => document.getElementById('ttsVolVal').textContent = `${e.target.value}%`);
+    document.getElementById('rangeTtsRate').addEventListener('input', e => document.getElementById('ttsRateVal').textContent = `${e.target.value}x`);
+    document.getElementById('btnTestTts').addEventListener('click', () => speakTextTTS(document.getElementById('inputTtsTestMsg').value));
+
+    // =========================================================================
+    // 6. MOTOR 3D THREE.JS (EFFECT BATTLE .WEBM + PAC)
+    // =========================================================================
+    const DURATION = 6.0;
+    const PRESET_DEFAULTS = {
+      glove:      { text: 'NOCAUTE', primary: '#ff1f8e', secondary: '#00f0ff', speed: 1.0 },
+      multiplier: { text: 'X2', primary: '#ff1f8e', secondary: '#00f0ff', speed: 1.0 },
+      sniper:     { text: 'SNIPER', primary: '#ff1f8e', secondary: '#ff2a3c', speed: 1.0 },
+      crown:      { text: 'REI DA LIVE', primary: '#9d4edd', secondary: '#ffd000', speed: 1.0 },
+      taptap:     { text: 'TAP / TAP', primary: '#1e2028', secondary: '#ff2214', speed: 1.0 },
+      luvabash:   { text: 'LUVA', primary: '#0066ff', secondary: '#ffd000', speed: 1.0 },
+      beastmorph: { text: 'FERA / ÁGUIA', primary: '#ff6a00', secondary: '#00d8ff', speed: 1.0 },
+      gemini:     { text: 'META', primary: '#a855f7', secondary: '#00f0ff', speed: 1.0 }
+    };
+    const BUILTIN_VIDEO_PAC = [
+      { id: 'pac_taptap', preset: 'taptap', text: 'TAP / TAP', primaryColor: '#1e2028', secondaryColor: '#ff2214', speed: 1.0, label: 'Tap Tap Dark 3D (808 + Trovão)' },
+      { id: 'pac_luvabash', preset: 'luvabash', text: 'LUVA', primaryColor: '#0066ff', secondaryColor: '#ffd000', speed: 1.0, label: 'Luva Clash Live (Bateria + Raios)' },
+      { id: 'pac_beastmorph', preset: 'beastmorph', text: 'FERA / ÁGUIA', primaryColor: '#ff6a00', secondaryColor: '#00d8ff', speed: 1.0, label: 'Feras Elementais (Fogo/Gelo/Águia)' }
+    ];
+
+    const vfxCanvas = document.getElementById('vfxCanvas');
+    const renderer = new THREE.WebGLRenderer({ canvas: vfxCanvas, alpha: true, antialias: true, premultipliedAlpha: false, preserveDrawingBuffer: true });
+    renderer.setSize(1080, 1920, false); renderer.setPixelRatio(1); renderer.setClearColor(0x000000, 0); renderer.outputColorSpace = THREE.SRGBColorSpace;
+    const scene = new THREE.Scene(); scene.background = null;
+    const camera = new THREE.PerspectiveCamera(45, 1080 / 1920, 0.1, 100);
+    const baseCamPos = new THREE.Vector3(0, 0, 11.5); camera.position.copy(baseCamPos);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+    const kl = new THREE.DirectionalLight(0xffffff, 2.3); kl.position.set(4,7,8); scene.add(kl);
+    const rimP = new THREE.PointLight(0xff1f8e, 6, 25); rimP.position.set(-4.5,-3,5); scene.add(rimP);
+    const rimS = new THREE.PointLight(0x00f0ff, 6, 25); rimS.position.set(4.5,4,5); scene.add(rimS);
+    const effectRoot = new THREE.Group(); scene.add(effectRoot);
+
+    const ALPHA_GLOW_BLEND = { blending: THREE.CustomBlending, blendEquation: THREE.AddEquation, blendSrc: THREE.SrcAlphaFactor, blendDst: THREE.OneFactor, blendEquationAlpha: THREE.AddEquation, blendSrcAlpha: THREE.OneFactor, blendDstAlpha: THREE.OneMinusSrcAlphaFactor };
+    const ALPHA_SMOKE_BLEND = { blending: THREE.CustomBlending, blendEquation: THREE.AddEquation, blendSrc: THREE.SrcAlphaFactor, blendDst: THREE.OneMinusSrcAlphaFactor, blendEquationAlpha: THREE.AddEquation, blendSrcAlpha: THREE.OneFactor, blendDstAlpha: THREE.OneMinusSrcAlphaFactor };
+
+    function createSoftTex(sz=256, core=0.35){ const c=document.createElement('canvas');c.width=sz;c.height=sz;const x=c.getContext('2d'),g=x.createRadialGradient(sz/2,sz/2,0,sz/2,sz/2,sz/2);g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(core,'rgba(255,255,255,0.65)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.fillRect(0,0,sz,sz);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t; }
+    function createCloudTex(sz=256){ const c=document.createElement('canvas');c.width=sz;c.height=sz;const x=c.getContext('2d');for(let i=0;i<40;i++){const a=Math.random()*Math.PI*2,d=Math.random()*sz*0.24,px=sz/2+Math.cos(a)*d,py=sz/2+Math.sin(a)*d,r=sz*(0.14+Math.random()*0.22),sh=Math.floor(175+Math.random()*80),g=x.createRadialGradient(px,py,0,px,py,r);g.addColorStop(0,`rgba(${sh},${sh},${sh},0.22)`);g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.beginPath();x.arc(px,py,r,0,Math.PI*2);x.fill();}const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t; }
+    const smokeTex=createSoftTex(256,0.25), sparkTex=createSoftTex(128,0.45), stormCloudTex=createCloudTex(256);
+
+    function createArcadeTextTexture(rawText, opts={}){
+      const lines=(rawText||'X2').toUpperCase().split('/').map(s=>s.trim()).filter(Boolean).slice(0,2);
+      const c=document.createElement('canvas');c.width=2048;c.height=1024;const ctx=c.getContext('2d'),primary=opts.primary||vfxState.primaryColor,secondary=opts.secondary||vfxState.secondaryColor,theme=opts.theme||'gold';
+      const longest=lines.reduce((a,b)=>a.length>b.length?a:b,'');let fs=lines.length>1?(longest.length<=4?420:290):(longest.length<=3?540:longest.length<=6?380:240);
+      ctx.font=`900 ${fs}px "Impact","Arial Black",sans-serif`;while(ctx.measureText(longest).width>1760&&fs>80){fs-=14;ctx.font=`900 ${fs}px "Impact","Arial Black",sans-serif`;}
+      ctx.textAlign='center';ctx.textBaseline='middle';ctx.lineJoin='round';const cx=1024,sp=fs*0.94,sy=512-((lines.length-1)*sp)/2;
+      lines.forEach((line,idx)=>{const cy=sy+idx*sp;ctx.save();ctx.shadowColor=secondary;ctx.shadowBlur=70;ctx.lineWidth=theme==='hollow'?30:44;ctx.strokeStyle=theme==='hollow'?secondary:primary;ctx.strokeText(line,cx,cy);ctx.restore();if(theme==='hollow'){ctx.lineWidth=20;ctx.strokeStyle=secondary;ctx.strokeText(line,cx,cy);ctx.lineWidth=7;ctx.strokeStyle='#fff';ctx.strokeText(line,cx,cy);return;}for(let d=22;d>=2;d-=2){ctx.lineWidth=40;ctx.strokeStyle='#09030e';ctx.strokeText(line,cx,cy+d*1.2);}ctx.lineWidth=42;ctx.strokeStyle='#080310';ctx.strokeText(line,cx,cy);const rim=ctx.createLinearGradient(0,cy-fs*0.5,0,cy+fs*0.5);rim.addColorStop(0,theme==='darkfire'?'#ff8800':'#fff');rim.addColorStop(0.5,theme==='darkfire'?secondary:'#ffe47a');rim.addColorStop(1,theme==='darkfire'?'#660000':'#ff7b00');ctx.lineWidth=18;ctx.strokeStyle=rim;ctx.strokeText(line,cx,cy);const fill=ctx.createLinearGradient(0,cy-fs*0.5,0,cy+fs*0.5);if(theme==='darkfire'){fill.addColorStop(0,'#780808');fill.addColorStop(0.5,'#0d0407');fill.addColorStop(1,'#c81c0c');}else if(theme==='sniper'){fill.addColorStop(0,'#fff0f3');fill.addColorStop(0.5,'#d90429');fill.addColorStop(1,'#590d22');}else if(theme==='neon'){fill.addColorStop(0,'#fff');fill.addColorStop(0.4,secondary);fill.addColorStop(0.8,primary);fill.addColorStop(1,'#fff');}else{fill.addColorStop(0,'#fffbe0');fill.addColorStop(0.25,'#ffd700');fill.addColorStop(0.6,'#ff5500');fill.addColorStop(1,'#fff4b8');}ctx.fillStyle=fill;ctx.fillText(line,cx,cy);});
+      const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;tex.anisotropy=8;return tex;
+    }
+
+    function createArcadeTextMesh(text, opts={}){const g=new THREE.Group(),tex=createArcadeTextTexture(text,opts),w=opts.width||5.8,geo=new THREE.PlaneGeometry(w,w*0.5),backMat=new THREE.MeshBasicMaterial({map:tex,color:opts.backTint||0x220836,transparent:true,depthWrite:false});for(let i=1;i<=(opts.depthLayers||5);i++){const m=new THREE.Mesh(geo,backMat);m.position.z=-i*(opts.depthStep||0.045);g.add(m);}g.add(new THREE.Mesh(geo,new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false})));return g;}
+    function createBottomSmokeSystem(colorHex, count=30, opts={}){const g=new THREE.Group(),puffs=[],col=new THREE.Color(colorHex),tex=opts.storm?stormCloudTex:smokeTex;for(let i=0;i<count;i++){const mat=new THREE.SpriteMaterial({map:tex,color:col.clone(),transparent:true,opacity:0.6,depthWrite:false,...ALPHA_SMOKE_BLEND}),sp=new THREE.Sprite(mat),bx=(Math.random()-0.5)*6.8,by=(opts.yBase??-4.1)+(Math.random()-0.5)*(opts.spreadY??1.5),bs=(opts.scale||2.2)+Math.random()*2.4;sp.position.set(bx,by,(opts.zOffset||-0.4)+(Math.random()-0.5)*1.2);sp.scale.set(bs,bs*0.78,1);puffs.push({sp,mat,bx,by,bs,sy:0.25+Math.random()*0.5,ph:Math.random()*Math.PI*2,rs:(Math.random()-0.5)*0.5});g.add(sp);}g.userData.update=(t,env=1,hex=null)=>{if(hex){const nc=new THREE.Color(hex);puffs.forEach(p=>p.mat.color.copy(nc));}puffs.forEach(p=>{p.sp.position.x=p.bx+Math.sin(t*0.38+p.ph)*0.7;p.sp.position.y=p.by+Math.sin(t*p.sy+p.ph)*0.38+0.28;const pu=1+Math.sin(t*1.5+p.ph)*0.15;p.sp.scale.set(p.bs*pu,p.bs*0.78*pu,1);p.mat.rotation+=p.rs*0.016;p.mat.opacity=((opts.storm?0.62:0.34)+0.18*Math.sin(t*2+p.ph))*env;});};return g;}
+    function createRibbonLightningSystem(colorHex, boltCount=5, opts={}){const g=new THREE.Group(),bolts=[],seg=16,th=opts.thickness||0.08;for(let b=0;b<boltCount;b++){const vc=(seg+1)*2,pc=new Float32Array(vc*3),pg=new Float32Array(vc*3),idx=[];for(let s=0;s<seg;s++){const i=s*2;idx.push(i,i+1,i+2,i+1,i+3,i+2);}const gc=new THREE.BufferGeometry();gc.setAttribute('position',new THREE.BufferAttribute(pc,3));gc.setIndex(idx);const gg=new THREE.BufferGeometry();gg.setAttribute('position',new THREE.BufferAttribute(pg,3));gg.setIndex(idx);const mg=new THREE.MeshBasicMaterial({color:new THREE.Color(colorHex),transparent:true,side:THREE.DoubleSide,depthWrite:false,...ALPHA_GLOW_BLEND}),mc=new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,side:THREE.DoubleSide,depthWrite:false,...ALPHA_GLOW_BLEND});g.add(new THREE.Mesh(gg,mg),new THREE.Mesh(gc,mc));bolts.push({gc,gg,pc,pg,mc,mg,seed:Math.random()*100,tick:-1});}g.userData.update=(t,env=1,hex=null)=>{const col=hex?new THREE.Color(hex):null;bolts.forEach((b,idx)=>{if(col)b.mg.color.copy(col);const tk=Math.floor(t*24+idx*5);if(tk!==b.tick){b.tick=tk;const sx=opts.startX??(Math.random()-0.5)*4.2,sy=opts.startY??4.8,ex=opts.endX??sx+(Math.random()-0.5)*2.6,ey=opts.endY??-4.8,jag=opts.jag||0.7,pts=[];for(let s=0;s<=seg;s++){const p=s/seg,ef=(s===0||s===seg)?0:Math.sin(p*Math.PI);pts.push({x:sx+(ex-sx)*p+(Math.random()-0.5)*jag*ef,y:sy+(ey-sy)*p+(Math.random()-0.5)*jag*0.4*ef,z:0.4});}for(let s=0;s<=seg;s++){const p=pts[s],nx1=pts[Math.min(seg,s+1)],pr1=pts[Math.max(0,s-1)],dx=nx1.x-pr1.x,dy=nx1.y-pr1.y,len=Math.hypot(dx,dy)||1,nx=-dy/len,ny=dx/len,tp=Math.sin((s/seg)*Math.PI)*0.7+0.3,wc=th*0.38*tp,wg=th*1.45*tp,vi=s*6;b.pc[vi]=p.x+nx*wc;b.pc[vi+1]=p.y+ny*wc;b.pc[vi+2]=p.z;b.pc[vi+3]=p.x-nx*wc;b.pc[vi+4]=p.y-ny*wc;b.pc[vi+5]=p.z;b.pg[vi]=p.x+nx*wg;b.pg[vi+1]=p.y+ny*wg;b.pg[vi+2]=p.z-0.02;b.pg[vi+3]=p.x-nx*wg;b.pg[vi+4]=p.y-ny*wg;b.pg[vi+5]=p.z-0.02;}b.gc.attributes.position.needsUpdate=true;b.gg.attributes.position.needsUpdate=true;}const fl=Math.sin(t*42+b.seed)>-0.35?1:0.12;b.mc.opacity=0.95*fl*env;b.mg.opacity=0.85*fl*env;});};return g;}
+    function createSparkBurst(colorHex, count=90){const pos=new Float32Array(count*3),vel=[];for(let i=0;i<count;i++){const th=Math.random()*Math.PI*2,ph=(Math.random()-0.5)*Math.PI,sp=2.5+Math.random()*6.5;vel.push({vx:Math.cos(th)*Math.cos(ph)*sp,vy:Math.sin(th)*Math.cos(ph)*sp*1.35,vz:Math.sin(ph)*sp*0.7});}const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(pos,3));const mat=new THREE.PointsMaterial({map:sparkTex,color:new THREE.Color(colorHex),size:0.32,transparent:true,depthWrite:false,...ALPHA_GLOW_BLEND}),pts=new THREE.Points(geo,mat);pts.userData.update=(lt,hex=null)=>{if(hex)mat.color.set(hex);if(lt<0){mat.opacity=0;return;}const a=geo.attributes.position.array,drag=Math.max(0,1-lt*0.42);for(let i=0;i<count;i++){a[i*3]=vel[i].vx*lt*drag;a[i*3+1]=vel[i].vy*lt*drag-1.4*lt*lt;a[i*3+2]=vel[i].vz*lt*drag;}geo.attributes.position.needsUpdate=true;mat.opacity=Math.max(0,1-lt/1.8);};return pts;}
+    function buildBoxingGloveMesh(mainHex, cuffHex, boltHex=null){const g=new THREE.Group(),bm=new THREE.MeshStandardMaterial({color:new THREE.Color(mainHex),metalness:0.65,roughness:0.2,emissive:new THREE.Color(mainHex),emissiveIntensity:0.25}),cm=new THREE.MeshStandardMaterial({color:new THREE.Color(cuffHex),metalness:0.78,roughness:0.2,emissive:new THREE.Color(cuffHex),emissiveIntensity:0.25});const b=new THREE.Mesh(new THREE.SphereGeometry(1,28,28),bm);b.scale.set(1.08,0.94,1.24);g.add(b);const k=new THREE.Mesh(new THREE.CapsuleGeometry(0.44,0.8,12,18),bm);k.rotation.z=Math.PI/2;k.position.set(0,-0.32,0.68);g.add(k);const th=new THREE.Mesh(new THREE.CapsuleGeometry(0.3,0.6,10,16),bm);th.position.set(-0.84,-0.18,0.35);th.rotation.set(0.55,0,-0.45);g.add(th);const cf=new THREE.Mesh(new THREE.CylinderGeometry(0.66,0.76,1,24),cm);cf.rotation.x=Math.PI/2;cf.position.set(0,-0.14,-1.2);g.add(cf);if(boltHex){const s=new THREE.Shape();s.moveTo(0.08,0.48);s.lineTo(-0.28,0.02);s.lineTo(0.02,0.02);s.lineTo(-0.14,-0.48);s.lineTo(0.3,-0.02);s.lineTo(0,-0.02);s.closePath();const m=new THREE.Mesh(new THREE.ExtrudeGeometry(s,{depth:0.08,bevelEnabled:false}),new THREE.MeshBasicMaterial({color:new THREE.Color(boltHex)}));m.position.set(0,0.28,1.15);m.rotation.x=-0.35;g.add(m);}g.userData={bodyMat:bm,cuffMat:cm};return g;}
+    function easeOutElastic(x){return x<=0?0:x>=1?1:Math.pow(2,-9*x)*Math.sin((x*10-0.75)*((2*Math.PI)/3))+1;}
+    function globalEnvelope(t){return t<0.08?t/0.08:(t>5.35?Math.max(0,(6-t)/0.65):1);}
+    function cue(id,t,th,fn){if(t>=th&&!vfxState.firedCues.has(id)){vfxState.firedCues.add(id);fn();}}
+    function clearEffectRoot(){effectRoot.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{if(m.map&&m.map!==smokeTex&&m.map!==sparkTex&&m.map!==stormCloudTex)m.map.dispose();m.dispose();});}});while(effectRoot.children.length)effectRoot.remove(effectRoot.children[0]);}
+
+    let activeUpdater=null;
+    function buildMultiplierPreset(){const tg=createArcadeTextMesh(vfxState.text||'X2',{width:5.7,theme:'gold'});tg.position.set(0,0.55,0.2);const sm=createBottomSmokeSystem(vfxState.primaryColor,32),li=createRibbonLightningSystem(vfxState.secondaryColor,6,{thickness:0.05}),sp=createSparkBurst(vfxState.secondaryColor,90);sp.position.set(0,0.55,0.1);const rm=new THREE.MeshBasicMaterial({color:new THREE.Color(vfxState.secondaryColor),transparent:true,side:THREE.DoubleSide,depthWrite:false,...ALPHA_GLOW_BLEND}),sr=new THREE.Mesh(new THREE.RingGeometry(0.4,0.72,64),rm);sr.position.set(0,0.55,-0.1);effectRoot.add(sm,li,sr,sp,tg);activeUpdater=(t)=>{const env=globalEnvelope(t);cue('m1',t,0.02,()=>audioEngine.playWhoosh());cue('m2',t,0.22,()=>{audioEngine.playSubImpact(1.1);audioEngine.playElectricZap();vfxState.shakeIntensity=0.42;});tg.scale.setScalar(Math.max(0.001,easeOutElastic(Math.min(1,Math.max(0,(t-0.1)/0.85)))*env*(1+Math.sin(t*5.2)*0.035)));tg.rotation.y=Math.sin(t*2.1)*0.16;const rt=Math.max(0,t-0.22);sr.scale.setScalar(0.2+rt*6.2);rm.opacity=Math.max(0,1-rt/0.85)*env;rm.color.set(vfxState.secondaryColor);sm.userData.update(t,env,vfxState.primaryColor);li.userData.update(t,env,vfxState.secondaryColor);sp.userData.update(t-0.22,vfxState.secondaryColor);};}
+    function buildSniperPreset(){const rg=new THREE.Group();rg.position.set(0,1.35,0);const lm=new THREE.MeshBasicMaterial({color:new THREE.Color(vfxState.secondaryColor),transparent:true,side:THREE.DoubleSide,depthWrite:false,...ALPHA_GLOW_BLEND}),r1=new THREE.Mesh(new THREE.RingGeometry(1.75,1.9,64),lm),r2=new THREE.Mesh(new THREE.RingGeometry(1.05,1.15,64,1,0,Math.PI*1.45),lm);rg.add(r1,r2);for(let i=0;i<4;i++){const b=new THREE.Mesh(new THREE.PlaneGeometry(0.1,0.78),lm),a=i*Math.PI/2;b.position.set(Math.cos(a)*1.45,Math.sin(a)*1.45,0);b.rotation.z=a+Math.PI/2;rg.add(b);}const pm=lm.clone(),pr=new THREE.Mesh(new THREE.RingGeometry(0.8,0.96,64),pm);rg.add(pr);const tg=createArcadeTextMesh(vfxState.text||'SNIPER',{width:5.5,theme:'sniper'});tg.position.set(0,-1.35,0.3);const sm=createBottomSmokeSystem(vfxState.primaryColor,30),sp=createSparkBurst(vfxState.secondaryColor,85);sp.position.set(0,1.35,0.1);effectRoot.add(sm,rg,sp,tg);activeUpdater=(t)=>{const env=globalEnvelope(t);cue('sn1',t,0.05,()=>audioEngine.playLaserLock());cue('sn2',t,0.55,()=>{audioEngine.playSubImpact(1.2);audioEngine.playElectricZap();vfxState.shakeIntensity=0.48;});rg.scale.setScalar(Math.max(0.001,Math.min(1,t*2.8)*env));r1.rotation.z=t*1.1;r2.rotation.z=-t*2.4;lm.color.set(vfxState.secondaryColor);lm.opacity=0.92*env;const pc=(t*1.45)%1;pr.scale.setScalar(0.5+pc*2.3);pm.color.set(vfxState.secondaryColor);pm.opacity=(1-pc)*0.75*env;tg.scale.setScalar(Math.max(0.001,easeOutElastic(Math.min(1,Math.max(0,(t-0.45)/0.7)))*env));sm.userData.update(t,env,vfxState.primaryColor);sp.userData.update(t-0.55,vfxState.secondaryColor);};}
+    function buildGlovePreset(){const gg=buildBoxingGloveMesh(vfxState.primaryColor,vfxState.secondaryColor,vfxState.secondaryColor),wm=new THREE.MeshBasicMaterial({color:new THREE.Color(vfxState.secondaryColor),transparent:true,depthWrite:false,...ALPHA_GLOW_BLEND}),st=new THREE.Mesh(new THREE.TorusGeometry(1.1,0.08,18,64),wm);st.position.set(0,0,2.2);const tg=createArcadeTextMesh(vfxState.text||'NOCAUTE',{width:5,theme:'neon'});tg.position.set(0,-2.55,0.2);const sp=createSparkBurst(vfxState.secondaryColor,110);sp.position.set(0,0,2.1);const sm=createBottomSmokeSystem(vfxState.primaryColor,26);effectRoot.add(sm,st,sp,gg,tg);activeUpdater=(t)=>{const env=globalEnvelope(t);gg.userData.bodyMat.color.set(vfxState.primaryColor);gg.userData.cuffMat.color.set(vfxState.secondaryColor);cue('gl1',t,0.02,()=>audioEngine.playWhoosh());cue('gl2',t,0.38,()=>{audioEngine.playSubImpact(1.35);audioEngine.playElectricZap();vfxState.shakeIntensity=0.65;});if(t<0.38){const p=t/0.38,e=p*p*p;gg.position.set(0,0.35,-18+e*21.6);gg.rotation.set(0.25,-0.35,(1-p)*Math.PI*2.5);gg.scale.setScalar(0.55+e*0.75);wm.opacity=0;}else{const post=t-0.38;gg.position.set(Math.sin(t*2.2)*0.14,0.35+Math.cos(t*2.8)*0.15,3.6-easeOutElastic(Math.min(1,post/0.6))*1.35);gg.rotation.set(0.18,-0.25+Math.sin(t*1.9)*0.25,0);gg.scale.setScalar(Math.max(0.001,1.3*env));st.scale.setScalar(0.3+post*4.5);wm.color.set(vfxState.secondaryColor);wm.opacity=Math.max(0,1-post/0.95)*env;}tg.scale.setScalar(Math.max(0.001,easeOutElastic(Math.min(1,Math.max(0,(t-0.38)/0.65)))*env));sp.userData.update(t-0.38,vfxState.secondaryColor);sm.userData.update(t,env,vfxState.primaryColor);};}
+    function buildCrownPreset(){const cg=new THREE.Group();cg.position.set(0,0.95,0);const gm=new THREE.MeshStandardMaterial({color:0xffc800,metalness:0.92,roughness:0.18,emissive:0xff8800,emissiveIntensity:0.25}),g1=new THREE.MeshStandardMaterial({color:new THREE.Color(vfxState.primaryColor),emissive:new THREE.Color(vfxState.primaryColor),emissiveIntensity:0.75}),g2=new THREE.MeshStandardMaterial({color:new THREE.Color(vfxState.secondaryColor),emissive:new THREE.Color(vfxState.secondaryColor),emissiveIntensity:0.75});cg.add(new THREE.Mesh(new THREE.CylinderGeometry(1.38,1.16,0.62,36),gm));for(let i=0;i<7;i++){const a=(i/7)*Math.PI*2,sp=new THREE.Mesh(new THREE.ConeGeometry(0.28,1.05,6),gm);sp.position.set(Math.cos(a)*1.28,0.78,Math.sin(a)*1.28);sp.rotation.y=-a;sp.rotation.z=-0.14;cg.add(sp);const je=new THREE.Mesh(new THREE.OctahedronGeometry(0.17,0),i%2===0?g1:g2);je.position.set(Math.cos(a)*1.32,0,Math.sin(a)*1.32);cg.add(je);}const om=new THREE.MeshBasicMaterial({color:new THREE.Color(vfxState.secondaryColor),transparent:true,depthWrite:false,...ALPHA_GLOW_BLEND}),or=new THREE.Mesh(new THREE.TorusGeometry(2.15,0.035,12,64),om);or.rotation.set(Math.PI/2.6,0.35,0);cg.add(or);const tg=createArcadeTextMesh(vfxState.text||'REI DA LIVE',{width:5.5,theme:'gold'});tg.position.set(0,-1.95,0.25);const sm=createBottomSmokeSystem(vfxState.primaryColor,26);effectRoot.add(sm,cg,tg);activeUpdater=(t)=>{const env=globalEnvelope(t);g1.color.set(vfxState.primaryColor);g1.emissive.set(vfxState.primaryColor);g2.color.set(vfxState.secondaryColor);g2.emissive.set(vfxState.secondaryColor);om.color.set(vfxState.secondaryColor);cue('cr1',t,0.1,()=>audioEngine.playMagicShimmer());cue('cr2',t,2.8,()=>audioEngine.playMagicShimmer());cg.scale.setScalar(Math.max(0.001,easeOutElastic(Math.min(1,t/0.85))*env));cg.rotation.y=t*1.35;cg.position.y=0.95+Math.sin(t*2.2)*0.18;or.rotation.z=t*1.8;om.opacity=0.82*env;tg.scale.setScalar(Math.max(0.001,easeOutElastic(Math.min(1,Math.max(0,(t-0.2)/0.8)))*env));sm.userData.update(t,env,vfxState.primaryColor);};}
+    function buildTapTapPreset(){const tg=createArcadeTextMesh(vfxState.text||'TAP / TAP',{width:5.5,theme:'darkfire',depthLayers:12,depthStep:0.042,backTint:0x1a0304});tg.position.set(0,-2.35,0.25);const dc=createBottomSmokeSystem(vfxState.primaryColor||'#1e2028',34,{storm:true,yBase:-2.9,spreadY:2.3,scale:2.8,zOffset:-0.5}),eg=createBottomSmokeSystem(vfxState.secondaryColor||'#ff2214',20,{storm:false,yBase:-4.25,spreadY:1,scale:2.4,zOffset:0.1}),ta=createRibbonLightningSystem(vfxState.secondaryColor,4,{thickness:0.075,jag:0.55,startY:-1.1,endY:-3.6}),ss=createRibbonLightningSystem(vfxState.secondaryColor,2,{thickness:0.22,jag:0.95,startY:5,endY:-4.6});effectRoot.add(dc,eg,tg,ta,ss);activeUpdater=(t)=>{const env=globalEnvelope(t);cue('tt0',t,0.02,()=>audioEngine.playWhoosh());cue('tt1',t,1.45,()=>{audioEngine.playThunderCrack();vfxState.shakeIntensity=0.65;});cue('tt2',t,4.15,()=>{audioEngine.playThunderCrack();vfxState.shakeIntensity=0.68;});for(let b=0;b<12;b++)cue(`tt8_${b}`,t,0.45+b*0.45,()=>audioEngine.playTrap808(b%2===0?48:42,0.35));const enter=easeOutElastic(Math.min(1,t/0.95));tg.scale.setScalar(Math.max(0.001,enter*env));tg.rotation.y=(1-enter)*-0.9+Math.sin(t*1.4)*0.24;dc.userData.update(t,env,vfxState.primaryColor);eg.userData.update(t,env*0.9,vfxState.secondaryColor);ta.userData.update(t,env,vfxState.secondaryColor);ss.userData.update(t,(Math.abs(t-1.55)<0.28||Math.abs(t-4.25)<0.28?1:0)*env,vfxState.secondaryColor);};}
+    function buildLuvaClashPreset(){const lg=buildBoxingGloveMesh('#d90429','#1b1b22',vfxState.secondaryColor),rg=buildBoxingGloveMesh('#d90429','#1b1b22',vfxState.secondaryColor),bf=createBottomSmokeSystem(vfxState.primaryColor||'#0066ff',34,{storm:true,yBase:-3.75,spreadY:1.6,scale:2.5,zOffset:-0.6}),lt=createArcadeTextMesh(vfxState.text||'LUVA',{width:4.8,theme:'hollow',depthLayers:2});lt.position.set(0,0.35,0.1);const cb=createRibbonLightningSystem(vfxState.secondaryColor||'#ffd000',5,{thickness:0.065,jag:0.55,startX:0,startY:-1.6,endY:-4.2}),up=createRibbonLightningSystem(vfxState.primaryColor||'#0088ff',2,{thickness:0.085,jag:0.8,startY:4.8,endY:1.4}),sp=createSparkBurst(vfxState.secondaryColor||'#ffd000',75);sp.position.set(0,-2.55,0.5);effectRoot.add(bf,lt,up,lg,rg,cb,sp);activeUpdater=(t)=>{const env=globalEnvelope(t);for(let i=0;i<12;i++)cue(`lc_${i}`,t,i*0.5,()=>{const c=i%2===1;audioEngine.playEpicDrumHit(c);if(c){audioEngine.playElectricZap();vfxState.shakeIntensity=0.34;}});const bw=Math.pow(Math.abs(Math.sin(t*Math.PI*2)),6),spd=1.48-bw*0.28;lg.position.set(-spd,-3.15+bw*0.12,0.3);lg.rotation.set(0.25,0.95,-0.35+bw*0.12);lg.scale.setScalar(1.22*env);rg.position.set(spd,-3.15+bw*0.12,0.3);rg.rotation.set(0.25,-0.95,0.35-bw*0.12);rg.scale.setScalar(1.22*env);const tf=t<2.2?Math.min(1,t*3.5):Math.max(0,1-(t-2.2)/0.6);lt.scale.setScalar(Math.max(0.001,tf*(1+Math.sin(t*4)*0.03)*env));bf.userData.update(t,env,vfxState.primaryColor);cb.userData.update(t,env*(0.45+bw*0.55),vfxState.secondaryColor);up.userData.update(t,env*(Math.sin(t*3.5)>0.2?0.9:0.15),vfxState.primaryColor);sp.userData.update(t%1,vfxState.secondaryColor);};}
+    function buildBeastMorphPreset(){const fc=vfxState.primaryColor||'#ff6a00',ec=vfxState.secondaryColor||'#00d8ff',fg=new THREE.Group(),fm=new THREE.MeshStandardMaterial({color:0xffaa00,metalness:0.75,roughness:0.2,emissive:new THREE.Color(fc),emissiveIntensity:0.85});for(let i=-1;i<=1;i++){const cl=new THREE.Mesh(new THREE.ConeGeometry(0.24,2.2,6),fm);cl.position.set(i*0.65,-0.2,0);cl.rotation.z=-i*0.18+0.25;fg.add(cl);}const ig=new THREE.Group(),im=new THREE.MeshStandardMaterial({color:0xdcf8ff,metalness:0.35,roughness:0.08,emissive:0x00b4ff,emissiveIntensity:0.65});for(let i=0;i<7;i++){const a=(i/7)*Math.PI*2,cr=new THREE.Mesh(new THREE.OctahedronGeometry(0.55,0),im);cr.scale.set(0.65,2.1+(i%2)*0.7,0.65);cr.position.set(Math.cos(a)*1.1,-1.6+(i%2)*0.3,Math.sin(a)*0.7);cr.rotation.z=-Math.cos(a)*0.35;ig.add(cr);}const eg=new THREE.Group(),em=new THREE.MeshStandardMaterial({color:0x0077ff,metalness:0.6,roughness:0.22,emissive:new THREE.Color(ec),emissiveIntensity:0.75}),gm=new THREE.MeshStandardMaterial({color:0xffc800,metalness:0.9,roughness:0.18}),torso=new THREE.Mesh(new THREE.OctahedronGeometry(0.75,1),em);torso.scale.set(0.9,1.35,0.8);const crest=new THREE.Mesh(new THREE.ConeGeometry(0.32,0.9,5),gm);crest.position.set(0,1.05,0.25);crest.rotation.x=0.25;eg.add(torso,crest);const lw=new THREE.Group(),rw=new THREE.Group();for(let f=0;f<5;f++){const fl=new THREE.Mesh(new THREE.ConeGeometry(0.24,1.8-f*0.16,4),em);fl.rotation.z=Math.PI/2-f*0.14;fl.position.set(-1.1-f*0.22,0.45-f*0.22,0);lw.add(fl);const fr=new THREE.Mesh(new THREE.ConeGeometry(0.24,1.8-f*0.16,4),em);fr.rotation.z=-Math.PI/2+f*0.14;fr.position.set(1.1+f*0.22,0.45-f*0.22,0);rw.add(fr);}eg.add(lw,rw);eg.position.set(0,-0.35,0.3);const sm=createBottomSmokeSystem(fc,32,{storm:true,yBase:-3.4,spreadY:1.9,scale:2.5}),mb=createRibbonLightningSystem(ec,2,{thickness:0.26,jag:0.85,startX:0,startY:5.2,endX:0,endY:-3.2}),sp=createSparkBurst(ec,100),tg=createArcadeTextMesh(vfxState.text||'FERA / ÁGUIA',{width:5,theme:'neon'});tg.position.set(0,-3.15,0.6);effectRoot.add(sm,fg,ig,eg,mb,sp,tg);activeUpdater=(t)=>{const env=globalEnvelope(t);cue('bm1',t,0.05,()=>{audioEngine.playEpicChoirChord([146.83,220,293.66],1.8);audioEngine.playWhoosh();});cue('bm2',t,2,()=>{audioEngine.playIceShatter();vfxState.shakeIntensity=0.5;});cue('bm3',t,4,()=>{audioEngine.playEpicChoirChord([174.61,261.63,349.23,440],1.9);audioEngine.playWhoosh();});cue('bm4',t,4.5,()=>{audioEngine.playThunderCrack();vfxState.shakeIntensity=0.72;});const wf=t<2?Math.min(1,t*2.5):Math.max(0,1-(t-2)/0.25);fg.visible=wf>0.01;fg.scale.setScalar(Math.max(0.001,wf*1.15*env));fg.rotation.y=t*1.8;const wi=(t>=1.95&&t<4.15)?Math.min(1,(t-1.95)*4)*(t>3.9?Math.max(0,1-(t-3.9)/0.25):1):0;ig.visible=wi>0.01;ig.scale.setScalar(Math.max(0.001,easeOutElastic(wi)*env));ig.rotation.y=(t-2)*1.2;const we=t>=3.9?Math.min(1,(t-3.9)*3.5):0;eg.visible=we>0.01;eg.scale.setScalar(Math.max(0.001,easeOutElastic(we)*1.1*env));const fl=Math.sin((t-4)*9.5)*0.28;lw.rotation.z=fl;rw.rotation.z=-fl;sm.userData.update(t,env,t<2?fc:(t<4?'#80e5ff':'#3377ff'));mb.userData.update(t,(Math.abs(t-4.6)<0.35?1:0)*env,ec);sp.userData.update(t>=4.45?t-4.45:(t>=2?t-2:-1),t<4?'#99f0ff':ec);tg.scale.setScalar(Math.max(0.001,easeOutElastic(Math.min(1,t/0.7))*env));};}
+    function buildGeminiPreset(){if(vfxState.geminiCode){try{const ctxApi={group:effectRoot,camera,get primaryColor(){return new THREE.Color(vfxState.primaryColor);},get secondaryColor(){return new THREE.Color(vfxState.secondaryColor);},get primaryHex(){return vfxState.primaryColor;},get secondaryHex(){return vfxState.secondaryColor;},get text(){return vfxState.text;},glowBlend:ALPHA_GLOW_BLEND,smokeBlend:ALPHA_SMOKE_BLEND,createArcadeTextMesh,createBottomSmokeSystem,createRibbonLightningSystem,createSparkBurst,easeOutElastic,globalEnvelope,triggerShake:v=>{vfxState.shakeIntensity=Math.max(vfxState.shakeIntensity,v||0.35);},playSfx:tp=>audioEngine.playSfx(tp),cue};const res=new Function('THREE','ctx',`"use strict";\n${vfxState.geminiCode}`)(THREE,ctxApi);if(res&&typeof res.update==='function'){if(res.init)res.init(ctxApi);activeUpdater=(t,dt)=>res.update(t,dt,ctxApi);return;}}catch(err){document.getElementById('geminiErrorMsg').classList.remove('hidden');document.getElementById('geminiErrorMsg').textContent=err.message;}}const cm=new THREE.MeshStandardMaterial({color:new THREE.Color(vfxState.secondaryColor),metalness:0.75,roughness:0.12,emissive:new THREE.Color(vfxState.primaryColor),emissiveIntensity:0.45}),cr=new THREE.Mesh(new THREE.OctahedronGeometry(1.35,0),cm);cr.position.set(0,1,0);const tg=createArcadeTextMesh(vfxState.text||'META',{width:5.2,theme:'neon'});tg.position.set(0,-1.5,0.2);const sm=createBottomSmokeSystem(vfxState.primaryColor,26);effectRoot.add(sm,cr,tg);activeUpdater=(t)=>{const env=globalEnvelope(t);cr.rotation.y=t*1.9;cr.scale.setScalar(Math.max(0.001,easeOutElastic(Math.min(1,t/0.75))*env));tg.scale.setScalar(Math.max(0.001,easeOutElastic(Math.min(1,Math.max(0,(t-0.15)/0.75)))*env));sm.userData.update(t,env,vfxState.primaryColor);};}
+
+    function syncVfxInputs(){document.getElementById('inputMainText').value=vfxState.text;document.getElementById('inputPrimaryColor').value=vfxState.primaryColor;document.getElementById('primaryHexLabel').textContent=vfxState.primaryColor.toUpperCase();document.getElementById('inputSecondaryColor').value=vfxState.secondaryColor;document.getElementById('secondaryHexLabel').textContent=vfxState.secondaryColor.toUpperCase();document.getElementById('inputSpeed').value=vfxState.speed;document.getElementById('speedValueLabel').textContent=`${Number(vfxState.speed).toFixed(1)}x`;}
+    function rebuildCurrentPreset(reset=true){clearEffectRoot();if(reset){vfxState.time=0;vfxState.firedCues.clear();vfxState.shakeIntensity=0;}if(vfxState.preset==='multiplier')buildMultiplierPreset();else if(vfxState.preset==='sniper')buildSniperPreset();else if(vfxState.preset==='glove')buildGlovePreset();else if(vfxState.preset==='crown')buildCrownPreset();else if(vfxState.preset==='taptap')buildTapTapPreset();else if(vfxState.preset==='luvabash')buildLuvaClashPreset();else if(vfxState.preset==='beastmorph')buildBeastMorphPreset();else if(vfxState.preset==='gemini')buildGeminiPreset();if(activeUpdater)activeUpdater(vfxState.time,0.016);}
+    function selectPreset(id, applyDefaults=true){vfxState.preset=id;document.querySelectorAll('.preset-btn').forEach(b=>{const cur=b.dataset.preset===id;b.classList.toggle('border-cyan-400',cur);b.classList.toggle('bg-ts-card',cur);b.classList.toggle('border-ts-border',!cur);});document.getElementById('geminiPanel').classList.toggle('hidden',id!=='gemini');if(applyDefaults&&PRESET_DEFAULTS[id]){const d=PRESET_DEFAULTS[id];vfxState.text=d.text;vfxState.primaryColor=d.primary;vfxState.secondaryColor=d.secondary;vfxState.speed=d.speed;syncVfxInputs();}rebuildCurrentPreset(true);}
+    function animateVfx(now){requestAnimationFrame(animateVfx);const rawDt=Math.min(0.05,(now-vfxState.lastFrameTs)/1000);vfxState.lastFrameTs=now;if(liveData.activeTab!=='vfx'&&!vfxState.recording)return;if(vfxState.playing||vfxState.recording){vfxState.time+=vfxState.recording?rawDt:rawDt*vfxState.speed;if(!vfxState.recording&&vfxState.time>=DURATION){vfxState.time=0;vfxState.firedCues.clear();}}rimP.color.set(vfxState.primaryColor);rimS.color.set(vfxState.secondaryColor);const et=vfxState.recording?Math.min(DURATION,vfxState.time*vfxState.speed):vfxState.time;if(activeUpdater)try{activeUpdater(et%(DURATION+0.0001),rawDt);}catch{}if(vfxState.shakeIntensity>0.002){camera.position.set(baseCamPos.x+(Math.random()-0.5)*vfxState.shakeIntensity,baseCamPos.y+(Math.random()-0.5)*vfxState.shakeIntensity,baseCamPos.z);vfxState.shakeIntensity*=Math.pow(0.025,rawDt);}else{camera.position.copy(baseCamPos);vfxState.shakeIntensity=0;}renderer.render(scene,camera);const sh=Math.min(DURATION,vfxState.time);document.getElementById('timeDisplay').textContent=`${sh.toFixed(2)}s`;document.getElementById('timelineProgress').style.width=`${(sh/DURATION)*100}%`;}
+
+    const detectedMime = ['video/webm;codecs=vp9,opus','video/webm;codecs=vp9','video/webm;codecs=vp8,opus','video/webm'].find(m=>window.MediaRecorder&&MediaRecorder.isTypeSupported(m))||'';
+    document.getElementById('codecStatusLabel').textContent = detectedMime ? `Codec: ${detectedMime}` : 'Codec: WebM indisponível';
+    document.getElementById('btnRecordWebm').addEventListener('click', ()=>{
+      if(vfxState.recording||!detectedMime){if(!detectedMime)showToast('Navegador sem suporte a WebM. Use Chrome/Edge.','⚠️');return;}
+      audioEngine.ensureInit();vfxState.recording=true;vfxState.playing=true;vfxState.time=0;vfxState.firedCues.clear();vfxState.lastFrameTs=performance.now();
+      const btn=document.getElementById('btnRecordWebm'),txt=document.getElementById('recBtnText'),badge=document.getElementById('recordingOverlayBadge');btn.disabled=true;badge.classList.remove('hidden');
+      const vs=vfxCanvas.captureStream(60),at=audioEngine.destination?audioEngine.destination.stream.getAudioTracks():[],rec=new MediaRecorder(new MediaStream([...vs.getVideoTracks(),...at]),{mimeType:detectedMime,videoBitsPerSecond:12_000_000,audioBitsPerSecond:192_000}),chunks=[];
+      rec.ondataavailable=e=>{if(e.data?.size)chunks.push(e.data);};
+      rec.onstop=()=>{const url=URL.createObjectURL(new Blob(chunks,{type:detectedMime})),a=document.createElement('a');a.href=url;a.download=`tikscan-${vfxState.preset}-${(vfxState.text||'fx').toLowerCase().replace(/[^a-z0-9]+/g,'-')}.webm`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);vfxState.recording=false;btn.disabled=false;txt.textContent='Baixar (.webm) Transparente 6s';badge.classList.add('hidden');showToast('.WEBM Transparente baixado!','🎬');};
+      rec.start(100);const t0=performance.now(),iv=setInterval(()=>{const el=Math.min(6,(performance.now()-t0)/1000);txt.textContent=`Gravando... (${el.toFixed(1)}s / 6.0s)`;document.getElementById('recordingTimerText').textContent=`REC ${el.toFixed(1)}s / 6.0s`;},80);
+      setTimeout(()=>{clearInterval(iv);if(rec.state!=='inactive')rec.stop();},6050);
+    });
+
+    function loadPack(){try{const raw=localStorage.getItem(PACK_STORAGE_KEY);if(!raw){localStorage.setItem(PACK_STORAGE_KEY,JSON.stringify(BUILTIN_VIDEO_PAC));return[...BUILTIN_VIDEO_PAC];}const parsed=JSON.parse(raw),ids=new Set(parsed.map(i=>i.id));let ch=false;BUILTIN_VIDEO_PAC.forEach(b=>{if(!ids.has(b.id)){parsed.push(b);ch=true;}});if(ch)localStorage.setItem(PACK_STORAGE_KEY,JSON.stringify(parsed));return parsed;}catch{return[...BUILTIN_VIDEO_PAC];}}
+    function savePack(items){localStorage.setItem(PACK_STORAGE_KEY,JSON.stringify(items));renderPackList();}
+    function renderPackList(){const pack=loadPack(),list=document.getElementById('savedPackList');document.getElementById('packCountBadge').textContent=`${pack.length}`;list.innerHTML='';pack.forEach(item=>{const row=document.createElement('div');row.className='flex items-center justify-between gap-2 bg-ts-bg border border-ts-border rounded-lg px-2 py-1.5';const btn=document.createElement('button');btn.type='button';btn.className='flex-1 text-left flex items-center gap-2 min-w-0';const lbl=item.label||item.text||item.preset;btn.innerHTML=`<span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:linear-gradient(135deg,${item.primaryColor},${item.secondaryColor})"></span><span class="text-[11px] font-bold text-white truncate">${String(lbl).replace(/[<>&"]/g,'')}</span>`;btn.onclick=()=>{audioEngine.ensureInit();vfxState.preset=item.preset;vfxState.text=item.text;vfxState.primaryColor=item.primaryColor;vfxState.secondaryColor=item.secondaryColor;vfxState.speed=item.speed||1;vfxState.geminiCode=item.geminiCode||null;selectPreset(item.preset,false);syncVfxInputs();rebuildCurrentPreset(true);showToast(`Carregado: ${lbl}`,'⚡');};const del=document.createElement('button');del.type='button';del.className='text-xs text-slate-500 hover:text-rose-400';del.textContent='✕';del.onclick=()=>savePack(loadPack().filter(p=>p.id!==item.id));row.append(btn,del);list.appendChild(row);});}
+
+    document.querySelectorAll('.preset-btn').forEach(b=>b.addEventListener('click',()=>{audioEngine.ensureInit();selectPreset(b.dataset.preset,true);}));
+    let tDeb=null;document.getElementById('inputMainText').addEventListener('input',e=>{vfxState.text=e.target.value;clearTimeout(tDeb);tDeb=setTimeout(()=>rebuildCurrentPreset(false),90);});
+    document.getElementById('inputPrimaryColor').addEventListener('input',e=>{vfxState.primaryColor=e.target.value;document.getElementById('primaryHexLabel').textContent=vfxState.primaryColor.toUpperCase();});
+    document.getElementById('inputPrimaryColor').addEventListener('change',()=>rebuildCurrentPreset(false));
+    document.getElementById('inputSecondaryColor').addEventListener('input',e=>{vfxState.secondaryColor=e.target.value;document.getElementById('secondaryHexLabel').textContent=vfxState.secondaryColor.toUpperCase();});
+    document.getElementById('inputSecondaryColor').addEventListener('change',()=>rebuildCurrentPreset(false));
+    document.getElementById('inputSpeed').addEventListener('input',e=>{vfxState.speed=parseFloat(e.target.value);document.getElementById('speedValueLabel').textContent=`${vfxState.speed.toFixed(1)}x`;});
+    document.getElementById('btnSavePack').addEventListener('click',()=>{const p=loadPack();p.unshift({id:Date.now().toString(36),preset:vfxState.preset,text:vfxState.text,primaryColor:vfxState.primaryColor,secondaryColor:vfxState.secondaryColor,speed:vfxState.speed,geminiCode:vfxState.preset==='gemini'?vfxState.geminiCode:null});savePack(p);showToast('Salvo no PAC!','💾');});
+    document.getElementById('btnExportJson').addEventListener('click',()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({app:'TikScan VFX',items:loadPack()},null,2)],{type:'application/json'}));a.download='tikscan-pac-backup.json';document.body.appendChild(a);a.click();a.remove();});
+    document.getElementById('btnImportJson').addEventListener('click',()=>document.getElementById('fileImportJson').click());
+    document.getElementById('fileImportJson').addEventListener('change',e=>{const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result),items=Array.isArray(d)?d:d.items;savePack([...items,...loadPack()].slice(0,100));showToast('Importado!','📥');}catch{showToast('JSON inválido','⚠️');}finally{e.target.value='';}};r.readAsText(f);});
+    document.getElementById('btnReplay').addEventListener('click',()=>{audioEngine.ensureInit();vfxState.time=0;vfxState.firedCues.clear();vfxState.playing=true;});
+    document.getElementById('btnPlayPause').addEventListener('click',()=>{audioEngine.ensureInit();vfxState.playing=!vfxState.playing;document.getElementById('playPauseIcon').textContent=vfxState.playing?'⏸':'▶';document.getElementById('playPauseLabel').textContent=vfxState.playing?'Pausar':'Reproduzir';});
+    document.getElementById('btnToggleMute').addEventListener('click',()=>{audioEngine.ensureInit();vfxState.muted=!vfxState.muted;audioEngine.setMuted(vfxState.muted);document.getElementById('muteIcon').textContent=vfxState.muted?'🔇':'🔊';document.getElementById('muteLabel').textContent=vfxState.muted?'Mudo':'Som Ativo';});
+
+    const sk=localStorage.getItem(API_KEY_STORAGE);if(sk)document.getElementById('geminiApiKey').value=sk;
+    document.getElementById('btnToggleApiKey').addEventListener('click',()=>{const i=document.getElementById('geminiApiKey');i.type=i.type==='password'?'text':'password';});
+    document.getElementById('btnGenerateAI').addEventListener('click',async()=>{
+      const k=document.getElementById('geminiApiKey').value.trim(),pr=document.getElementById('geminiPrompt').value.trim(),err=document.getElementById('geminiErrorMsg');
+      err.classList.add('hidden');if(!k||!pr){err.textContent='Informe API Key e Prompt.';err.classList.remove('hidden');return;}localStorage.setItem(API_KEY_STORAGE,k);
+      const sys=`Crie um efeito Three.js vertical 9:16 de 6s transparente. Retorne APENAS JS puro terminando com: return { init(ctx){}, update(t,dt,ctx){} }; ctx possui: group, primaryColor, secondaryColor, primaryHex, secondaryHex, text, glowBlend, createArcadeTextMesh, createBottomSmokeSystem, createRibbonLightningSystem, createSparkBurst, easeOutElastic, globalEnvelope, triggerShake, cue, playSfx. Pedido: "${pr}"`;
+      for(const m of ['gemini-3.8-flash','gemini-2.5-flash']){
+        try{const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${encodeURIComponent(k)}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:sys}]}]})}),d=await res.json();if(!res.ok){if(res.status===404)continue;throw new Error(d?.error?.message||'Erro API');}vfxState.geminiCode=(d?.candidates?.[0]?.content?.parts?.[0]?.text||'').replace(/^```(?:javascript|js)?\s*/i,'').replace(/```\s*$/i,'').trim();document.getElementById('geminiStatusBadge').textContent='Cena Ativa ✨';rebuildCurrentPreset(true);showToast('Cena IA gerada!','✨');return;}catch(e){err.textContent=e.message;err.classList.remove('hidden');}
+      }
+    });
+
+    // =========================================================================
+    // 7. BOOT & VALIDAÇÃO DE LINK DO INFLUENCIADOR (?u=...&exp=...&k=...)
+    // =========================================================================
+    renderPackList();
+    selectPreset('glove', true);
+    requestAnimationFrame(animateVfx);
+
+    const qp = new URLSearchParams(window.location.search);
+    const invUser = qp.get('u'), invExp = qp.get('exp'), invPlan = qp.get('plan'), invKey = qp.get('k'), invWs = qp.get('ws');
+    const ov = qp.get('overlay');
+
+    if (invUser && invExp && invPlan && invKey) {
+      const expected = signClientToken(invUser, invExp, invPlan);
+      const today = new Date().toISOString().slice(0, 10);
+      if (invKey !== expected) {
+        document.getElementById('accessBlockedReason').textContent = 'Assinatura de link inválida ou alterada.';
+        document.getElementById('accessBlockedScreen').classList.remove('hidden');
+        document.getElementById('mainAppShell').classList.add('hidden');
+      } else if (invExp !== 'vitalicio' && invExp < today) {
+        document.getElementById('accessBlockedReason').textContent = `O acesso para ${invUser} expirou em ${invExp}.`;
+        document.getElementById('accessBlockedScreen').classList.remove('hidden');
+        document.getElementById('mainAppShell').classList.add('hidden');
+      } else {
+        liveData.clientSession = { user: invUser, exp: invExp, plan: invPlan };
+        liveData.tiktokUser = invUser;
+        document.getElementById('sidebarPlanBadge').textContent = invPlan.split(' ')[0].toUpperCase();
+        document.getElementById('sidebarFooterActions').classList.add('hidden');
+        document.getElementById('btnTopPlans').classList.add('hidden');
+        const pill = document.getElementById('influencerHeaderPill');
+        pill.textContent = `⭐ ${invPlan} (${invExp === 'vitalicio' ? 'Vitalício' : 'até ' + invExp})`;
+        pill.classList.remove('hidden');
+        updateUserLabels(invUser, 'ACESSO ATIVO');
+        if (invWs) { document.getElementById('inputWsUrl').value = invWs; connectWsUrl(invWs); }
+        showToast(`Bem-vindo(a), ${invUser}! Acesso liberado.`, '⭐');
+      }
+    } else {
+      liveData.clientSession = null;
+      updateUserLabels(liveData.tiktokUser, 'MODO TESTE');
+    }
+
+    if (ov && ['moedas','likes','shares','gifter','notif','bau'].includes(ov)) enterCleanMode(ov);
+    else switchTab(liveData.activeTab || 'conexao');
+  </script>
+</body>
+</html>
