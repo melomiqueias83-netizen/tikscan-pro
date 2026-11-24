@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TIK SCAN PRO + Pack 3D Alpha — Transforme sua Live do TikTok</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            neon: {
+              bg: '#05070d',
+              surface: '#0c101b',
+              card: '#121829',
+              border: '#1f2942',
+              pink: '#ff1f8e',
+              cyan: '#00f0ff',
+              gold: '#facc15',
+              purple: '#9333ea'
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      background-color: #05070d;
+      color: #f8fafc;
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+    }
+
+    .cyber-grid {
+      background-image:
+        linear-gradient(to right, rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 31, 142, 0.05) 1px, transparent 1px);
+      background-size: 46px 46px;
+    }
+
+    .checker-mini {
+      background-color: #101521;
+      background-image:
+        linear-gradient(45deg, #192133 25%, transparent 25%),
+        linear-gradient(-45deg, #192133 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #192133 75%),
+        linear-gradient(-45deg, transparent 75%, #192133 75%);
+      background-size: 18px 18px;
+      background-position: 0 0, 0 9px, 9px -9px, -9px 0px;
+    }
+
+    .glow-btn-pink {
+      box-shadow: 0 0 25px rgba(255, 31, 142, 0.45), 0 0 60px rgba(0, 240, 255, 0.2);
+    }
+    .glow-btn-pink:hover {
+      box-shadow: 0 0 35px rgba(255, 31, 142, 0.75), 0 0 70px rgba(0, 240, 255, 0.35);
+    }
+
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    .float-slow { animation: floatSlow 3.4s ease-in-out infinite; }
+  </style>
+</head>
+<body class="antialiased selection:bg-neon-pink selection:text-white">
+
+  <!-- 1. BARRA DE URGÊNCIA -->
+  <div class="bg-gradient-to-r from-neon-pink via-purple-600 to-neon-cyan text-slate-950 font-extrabold text-[11px] sm:text-xs py-2 px-4 text-center flex flex-wrap items-center justify-center gap-2">
+    <span class="bg-black/85 text-white px-2 py-0.5 rounded uppercase tracking-wider text-[10px]">OFERTA DE LANÇAMENTO</span>
+    <span>Acesso Imediato ao Painel + Pack VIP de Efeitos 3D (.WEBM) com preço fixo em Reais!</span>
+    <span class="font-mono bg-white/90 text-black px-2 py-0.5 rounded" id="urgencyTimer">Expira em 14:59</span>
+  </div>
+
+  <!-- 2. NAVBAR -->
+  <header class="sticky top-0 z-40 bg-neon-bg/85 backdrop-blur-lg border-b border-neon-border">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-neon-pink via-purple-600 to-neon-cyan flex items-center justify-center font-black text-white shadow-lg shadow-neon-pink/30">⚡</div>
+        <div>
+          <span class="font-black text-base sm:text-lg tracking-tight text-white">TIK SCAN <span class="text-neon-cyan">PRO</span></span>
+          <span class="hidden sm:inline-block text-[10px] ml-1.5 px-2 py-0.5 rounded-full bg-neon-pink/15 border border-neon-pink/40 text-pink-300 font-bold">VFX PACK 3D</span>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-6 text-xs font-semibold text-slate-300">
+        <a href="#video-vsl" class="hover:text-neon-cyan transition">Ver Vídeo</a>
+        <a href="#pack-showcase" class="hover:text-neon-cyan transition">Pack 3D (.WEBM)</a>
+        <a href="#comparativo" class="hover:text-neon-cyan transition">Vs. TikFinity</a>
+        <a href="#planos" class="hover:text-neon-cyan transition">Planos</a>
+        <a href="#faq" class="hover:text-neon-cyan transition">Dúvidas</a>
+      </nav>
+
+      <div class="flex items-center gap-2.5">
+        <a id="navDemoLink" href="index.html" class="hidden sm:inline-flex text-xs font-bold px-3.5 py-2 rounded-lg border border-neon-border bg-neon-card hover:border-neon-cyan text-slate-200 transition">🎮 Abrir Estúdio</a>
+        <a href="#planos" class="text-xs font-black px-4 py-2.5 rounded-xl bg-gradient-to-r from-neon-pink to-purple-600 text-white shadow-lg shadow-neon-pink/25 hover:brightness-110 transition">LIBERAR ACESSO</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 3. HERO SECTION + VSL -->
+  <section class="relative cyber-grid pt-10 pb-16 lg:pt-16 lg:pb-24 overflow-hidden">
+    <div class="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[680px] h-[340px] bg-neon-pink/20 blur-[130px] rounded-full"></div>
+    <div class="pointer-events-none absolute top-40 right-0 w-[420px] h-[420px] bg-neon-cyan/15 blur-[130px] rounded-full"></div>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+      <div class="text-center max-w-3xl mx-auto space-y-5">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-neon-card border border-neon-cyan/40 text-xs font-bold text-cyan-300 shadow-lg">
+          <span class="w-2 h-2 rounded-full bg-neon-cyan animate-ping"></span>
+          <span>Para Criadores de Live no TikTok, OBS &amp; TikTok Live Studio</span>
+        </div>
+
+        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.08] text-white">
+          Transforme sua Live em um
+          <span class="bg-gradient-to-r from-neon-cyan via-white to-neon-pink bg-clip-text text-transparent">Espetáculo 3D</span>
+          e Multiplique seus Presentes
+        </h1>
+
+        <p class="text-sm sm:text-lg text-slate-300 leading-relaxed max-w-2xl mx-auto">
+          Tenha em mãos o <strong>Pack Completo de Animações .WEBM 100% Transparentes</strong> (Luva, Tap Tap Dark, X2/X3, Feras Elementais) + <strong>Rankings em Tempo Real, Baú de Prêmios e Voz que Lê o Chat</strong>. Tudo em Português e com preço fixo em Reais.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2">
+          <a href="#planos" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-neon-pink via-rose-500 to-amber-500 text-white font-black text-sm sm:text-base uppercase tracking-wide glow-btn-pink transition transform hover:-translate-y-0.5">
+            🚀 Quero Meu Pack + Painel Agora
+          </a>
+          <a href="#video-vsl" class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-neon-card border border-neon-border hover:border-neon-cyan text-white font-bold text-sm flex items-center justify-center gap-2 transition">
+            <span>▶</span>
+            <span>Assistir Vídeo Explicativo</span>
+          </a>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-3 text-xs text-slate-400 font-medium">
+          <span class="flex items-center gap-1.5"><span class="text-emerald-400">✔</span> Fundo 100% Transparente (Alpha)</span>
+          <span class="flex items-center gap-1.5"><span class="text-emerald-400">✔</span> Sem variação do Dólar</span>
+          <span class="flex items-center gap-1.5"><span class="text-emerald-400">✔</span> Roda no TikTok Studio e OBS</span>
+        </div>
+      </div>
+
+      <!-- PLAYER DO VÍDEO EXPLICATIVO -->
+      <div id="video-vsl" class="mt-12 max-w-4xl mx-auto">
+        <div class="relative rounded-3xl p-1.5 bg-gradient-to-r from-neon-pink via-purple-500 to-neon-cyan shadow-2xl shadow-neon-pink/20">
+          <div class="bg-[#070a12] rounded-[20px] overflow-hidden relative aspect-video flex flex-col justify-between">
+
+            <video id="customVslVideo" class="hidden w-full h-full object-cover" controls playsinline></video>
+            <canvas id="vslCanvas" width="1280" height="720" class="w-full h-full block"></canvas>
+
+            <div id="vslStartOverlay" class="absolute inset-0 bg-black/55 backdrop-blur-[2px] flex flex-col items-center justify-center gap-3 cursor-pointer transition hover:bg-black/40">
+              <div class="w-20 h-20 rounded-full bg-gradient-to-br from-neon-pink to-neon-cyan flex items-center justify-center text-white text-3xl shadow-2xl shadow-neon-pink/50 transform transition hover:scale-110 pl-1">
+                ▶
+              </div>
+              <div class="text-center px-4">
+                <div class="text-sm sm:text-base font-black text-white uppercase tracking-wide">Clique para assistir a demonstração com áudio</div>
+                <div class="text-xs text-cyan-300 mt-0.5">Veja como os efeitos 3D e rankings aumentam o engajamento da live</div>
+              </div>
+            </div>
+
+            <div id="vslControlsBar" class="hidden absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent px-4 py-3 flex items-center justify-between gap-3">
+              <div class="flex items-center gap-2.5">
+                <button id="btnVslPlayPause" type="button" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-white/15 hover:bg-white/25 text-white">⏸ Pausar</button>
+                <button id="btnVslSound" type="button" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-white/15 hover:bg-white/25 text-white">🔊 Som ON</button>
+              </div>
+              <div class="flex-1 h-1.5 bg-white/20 rounded-full overflow-hidden">
+                <div id="vslProgressFill" class="h-full bg-gradient-to-r from-neon-pink to-neon-cyan w-0"></div>
+              </div>
+              <span id="vslTimeLabel" class="text-[11px] font-mono text-slate-300">00:00 / 00:32</span>
+            </div>
+          </div>
+        </div>
+        <p class="text-center text-[11px] text-slate-500 mt-3">🔊 Aumente o volume para ouvir o impacto de trovão e grave 808 sincronizado às transições.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. SHOWROOM DO PACK 3D -->
+  <section id="pack-showcase" class="py-16 lg:py-24 bg-neon-surface border-y border-neon-border">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-12">
+      <div class="text-center max-w-2xl mx-auto space-y-3">
+        <span class="text-xs font-black uppercase tracking-widest text-neon-cyan">Pack Exclusivo + Painel Gerador</span>
+        <h2 class="text-2xl sm:text-4xl font-black text-white">O que você recebe imediatamente ao assinar</h2>
+        <p class="text-sm text-slate-400">Todos os arquivos vêm em <strong>.WEBM 1080×1920 com fundo transparente real</strong> e sincronia sonora. Além disso, você pode editar textos e cores no painel!</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-neon-card border border-neon-border hover:border-red-500/70 rounded-2xl overflow-hidden transition group">
+          <div class="h-44 checker-mini relative flex items-center justify-center overflow-hidden p-4">
+            <div class="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-red-600/40 via-zinc-900/60 to-transparent"></div>
+            <div class="float-slow text-center relative z-10">
+              <div class="text-4xl font-black tracking-tighter leading-none text-zinc-950 drop-shadow-[0_0_12px_rgba(255,34,20,0.95)]" style="-webkit-text-stroke: 2px #ff331f;">TAP<br/>TAP</div>
+            </div>
+            <span class="absolute top-3 left-3 text-[10px] font-black px-2 py-0.5 rounded bg-red-600 text-white">VERSÃO DARK</span>
+            <span class="absolute top-3 right-3 text-[10px] font-mono px-2 py-0.5 rounded bg-black/75 text-slate-300">.WEBM ALPHA</span>
+          </div>
+          <div class="p-5 space-y-2">
+            <h3 class="text-base font-extrabold text-white">Tap Tap Dark 3D + Nuvens &amp; 808</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Texto 3D metálico na metade inferior (não tampa seu rosto!), nuvens escuras com brasa e raios vermelhos ao som de grave 808.</p>
+          </div>
+        </div>
+
+        <div class="bg-neon-card border border-neon-border hover:border-neon-cyan/70 rounded-2xl overflow-hidden transition group">
+          <div class="h-44 checker-mini relative flex items-center justify-center overflow-hidden p-4">
+            <div class="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-blue-600/50 to-transparent"></div>
+            <div class="float-slow text-center relative z-10 space-y-1">
+              <div class="text-2xl font-black tracking-widest text-transparent" style="-webkit-text-stroke: 1.5px #00d4ff; text-shadow: 0 0 14px #0088ff;">LUVA</div>
+              <div class="text-5xl flex items-center justify-center gap-1">🥊<span class="text-yellow-400 text-3xl">⚡</span>🥊</div>
+            </div>
+            <span class="absolute top-3 left-3 text-[10px] font-black px-2 py-0.5 rounded bg-blue-600 text-white">BATALHA PK</span>
+            <span class="absolute top-3 right-3 text-[10px] font-mono px-2 py-0.5 rounded bg-black/75 text-slate-300">.WEBM ALPHA</span>
+          </div>
+          <div class="p-5 space-y-2">
+            <h3 class="text-base font-extrabold text-white">Luva Clash + X2 / X3 + Sniper</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Animações explosivas de luvas colidindo, multiplicadores X2/X3 dourados e mira Sniper para incendiar batalhas PK na live.</p>
+          </div>
+        </div>
+
+        <div class="bg-neon-card border border-neon-border hover:border-amber-400/70 rounded-2xl overflow-hidden transition group">
+          <div class="h-44 checker-mini relative flex items-center justify-center overflow-hidden p-4">
+            <div class="absolute inset-0 bg-gradient-to-tr from-orange-500/20 via-transparent to-cyan-400/25"></div>
+            <div class="float-slow flex items-center gap-3 text-4xl relative z-10">
+              <span class="drop-shadow-[0_0_12px_#ff6a00]">🔥</span>
+              <span class="text-slate-500 text-lg">➔</span>
+              <span class="drop-shadow-[0_0_12px_#00e5ff]">❄️</span>
+              <span class="text-slate-500 text-lg">➔</span>
+              <span class="drop-shadow-[0_0_15px_#0088ff]">🦅</span>
+            </div>
+            <span class="absolute top-3 left-3 text-[10px] font-black px-2 py-0.5 rounded bg-amber-500 text-black">MEGA PRESENTE</span>
+            <span class="absolute top-3 right-3 text-[10px] font-mono px-2 py-0.5 rounded bg-black/75 text-slate-300">.WEBM ALPHA</span>
+          </div>
+          <div class="p-5 space-y-2">
+            <h3 class="text-base font-extrabold text-white">Feras Elementais + Coroa Rei</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">Transformação épica Fogo ➔ Gelo ➔ Águia Elétrica com mega raio e acorde cinematográfico para comemorar grandes presentes.</p>
+          </div>
+        </div>
+
+        <div class="bg-neon-card border border-neon-border rounded-2xl p-5 space-y-3">
+          <div class="w-11 h-11 rounded-xl bg-amber-500/15 border border-amber-400/40 flex items-center justify-center text-2xl">🏆</div>
+          <h3 class="text-base font-extrabold text-white">Pódio &amp; Rankings em Tempo Real</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Rankings de <strong>Moedas (Diário e Semanal)</strong>, <strong>Likes (Tap-Tap)</strong> e <strong>Shares</strong> com molduras animadas Ouro, Prata, Bronze e Gamer Neon.</p>
+        </div>
+
+        <div class="bg-neon-card border border-neon-border rounded-2xl p-5 space-y-3">
+          <div class="w-11 h-11 rounded-xl bg-neon-pink/15 border border-neon-pink/40 flex items-center justify-center text-2xl">💎</div>
+          <h3 class="text-base font-extrabold text-white">Big Gifter 3D + Baú + Alertas</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Card 3D que gira entre a foto do doador e o presente, Baú de Prêmios animado, Strong On, HeartMe e alerta de Novo Seguidor.</p>
+        </div>
+
+        <div class="bg-neon-card border border-neon-border rounded-2xl p-5 space-y-3">
+          <div class="w-11 h-11 rounded-xl bg-neon-cyan/15 border border-neon-cyan/40 flex items-center justify-center text-2xl">🗣️</div>
+          <h3 class="text-base font-extrabold text-white">Voice Bot (TTS) + Criador com IA</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Voz do Google lendo mensagens do chat com filtro (moderadores/super fãs) + modo texto livre com IA para criar novos efeitos 3D ilimitados.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. COMPARATIVO -->
+  <section id="comparativo" class="py-16 lg:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 space-y-8">
+      <div class="text-center space-y-2">
+        <span class="text-xs font-black uppercase tracking-widest text-neon-pink">Economia &amp; Qualidade</span>
+        <h2 class="text-2xl sm:text-4xl font-black text-white">Por que streamers estão trocando o TikFinity por aqui?</h2>
+      </div>
+
+      <div class="overflow-hidden rounded-2xl border border-neon-border bg-neon-surface shadow-2xl">
+        <table class="w-full text-left border-collapse text-xs sm:text-sm">
+          <thead>
+            <tr class="border-b border-neon-border bg-neon-card">
+              <th class="p-4 font-bold text-slate-300">Recurso</th>
+              <th class="p-4 font-bold text-slate-400 text-center">TikFinity (Gringo)</th>
+              <th class="p-4 font-black text-neon-cyan text-center bg-neon-cyan/5">TIK SCAN + Pack 3D</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-neon-border">
+            <tr>
+              <td class="p-4 font-semibold text-white">Moeda de Pagamento</td>
+              <td class="p-4 text-center text-rose-400">Dólar (US$) — sobe todo mês</td>
+              <td class="p-4 text-center text-emerald-400 font-bold bg-neon-cyan/5">Real (R$) — Preço Fixo</td>
+            </tr>
+            <tr>
+              <td class="p-4 font-semibold text-white">Idioma &amp; Suporte</td>
+              <td class="p-4 text-center text-slate-400">Inglês</td>
+              <td class="p-4 text-center text-emerald-400 font-bold bg-neon-cyan/5">100% Português + Suporte BR</td>
+            </tr>
+            <tr>
+              <td class="p-4 font-semibold text-white">Gerador de Vídeos .WEBM 3D Transparentes</td>
+              <td class="p-4 text-center text-rose-400">✖ Não possui</td>
+              <td class="p-4 text-center text-emerald-400 font-bold bg-neon-cyan/5">✔ Incluso + Pack Pronto</td>
+            </tr>
+            <tr>
+              <td class="p-4 font-semibold text-white">Rankings Diário / Semanal + Molduras PNG</td>
+              <td class="p-4 text-center text-amber-400">Limitado</td>
+              <td class="p-4 text-center text-emerald-400 font-bold bg-neon-cyan/5">✔ Completo &amp; Customizável</td>
+            </tr>
+            <tr>
+              <td class="p-4 font-semibold text-white">Voice Bot (TTS) para Chat</td>
+              <td class="p-4 text-center text-slate-300">Sim (vozes limitadas no grátis)</td>
+              <td class="p-4 text-center text-emerald-400 font-bold bg-neon-cyan/5">✔ PT-BR com Filtros VIP</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. PROVA SOCIAL -->
+  <section class="py-12 bg-neon-surface/60 border-y border-neon-border">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
+      <h2 class="text-center text-xl sm:text-3xl font-black text-white">Quem usa na Live recomenda 👇</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="bg-neon-card border border-neon-border rounded-2xl p-5 space-y-3">
+          <div class="text-neon-gold text-sm">★★★★★</div>
+          <p class="text-xs text-slate-300 leading-relaxed">"Coloquei o efeito TAP TAP Dark e as Luvas 3D no meu TikTok Live Studio. Quando começou a batalha PK o chat enlouqueceu mandando presente pra ver a animação!"</p>
+          <div class="text-xs font-bold text-white">@lucas_livesbr <span class="text-slate-500 font-normal">• 48K seguidores</span></div>
+        </div>
+        <div class="bg-neon-card border border-neon-border rounded-2xl p-5 space-y-3">
+          <div class="text-neon-gold text-sm">★★★★★</div>
+          <p class="text-xs text-slate-300 leading-relaxed">"Eu pagava caro no dólar do TikFinity. Troquei pro TikScan com o pack e além de pagar em reais bem mais barato, o pódio semanal fidelizou meus top doadores."</p>
+          <div class="text-xs font-bold text-white">@mariagamer_tk <span class="text-slate-500 font-normal">• Streamer Diária</span></div>
+        </div>
+        <div class="bg-neon-card border border-neon-border rounded-2xl p-5 space-y-3">
+          <div class="text-neon-gold text-sm">★★★★★</div>
+          <p class="text-xs text-slate-300 leading-relaxed">"Baixei os .WEBM transparentes em segundos direto no site, joguei como fonte de mídia no OBS e já saiu com o som grave sincronizado. Sem dor de cabeça!"</p>
+          <div class="text-xs font-bold text-white">@junior_battlepk <span class="text-slate-500 font-normal">• Host de Batalhas</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. PLANOS -->
+  <section id="planos" class="py-16 lg:py-24 relative">
+    <div class="pointer-events-none absolute inset-x-0 top-20 h-80 bg-neon-purple/15 blur-[130px]"></div>
+
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 relative z-10 space-y-10">
+      <div class="text-center space-y-2">
+        <span class="text-xs font-black uppercase tracking-widest text-neon-gold">Acesso Imediato • Pagamento Seguro via Pix ou Cartão</span>
+        <h2 class="text-3xl sm:text-5xl font-black text-white">Escolha seu plano e eleve sua Live hoje</h2>
+        <p class="text-sm text-slate-400">Liberação automática logo após a confirmação do pagamento.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+        <div class="bg-neon-card border border-neon-border rounded-3xl p-7 flex flex-col justify-between space-y-6">
+          <div class="space-y-4">
+            <div class="flex justify-between items-center">
+              <span class="text-sm font-extrabold text-slate-200">Plano Mensal PRO</span>
+              <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300">CANCELE QUANDO QUISER</span>
+            </div>
+            <div>
+              <div class="text-xs text-slate-400 line-through">De R$ 59,90/mês</div>
+              <div class="text-4xl font-black text-white mt-1">R$ 29,90 <span class="text-sm font-normal text-slate-400">/ mês</span></div>
+            </div>
+            <ul class="space-y-2.5 text-xs sm:text-sm text-slate-300">
+              <li>✅ Acesso completo ao Painel TIK SCAN PRO</li>
+              <li>✅ Rankings Diário &amp; Semanal (Moedas, Likes, Shares)</li>
+              <li>✅ Big Gifter 3D + Baú de Prêmios + Notificações</li>
+              <li>✅ Voice Bot TTS em Português (Google Voices)</li>
+              <li>✅ Estúdio Gerador .WEBM Transparente (Presets padrão)</li>
+            </ul>
+          </div>
+          <a id="btnCheckoutMensal" href="#checkout-mensal" class="block w-full text-center py-4 rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white font-extrabold text-sm transition">
+            ASSINAR PLANO MENSAL (R$ 29,90)
+          </a>
+        </div>
+
+        <div class="relative bg-gradient-to-b from-[#1a1033] to-neon-card border-2 border-neon-pink rounded-3xl p-7 flex flex-col justify-between space-y-6 shadow-2xl shadow-neon-pink/25">
+          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-neon-pink to-amber-500 text-white text-[11px] font-black uppercase tracking-wider shadow-lg whitespace-nowrap">
+            🔥 MAIS VENDIDO • PACK VIP + ACESSO VITALÍCIO
+          </div>
+
+          <div class="space-y-4 pt-2">
+            <div class="flex justify-between items-center">
+              <span class="text-sm font-extrabold text-neon-cyan">Pack Studio VIP + Painel</span>
+              <span class="text-[10px] font-black px-2.5 py-1 rounded-full bg-neon-gold text-black">PAGAMENTO ÚNICO</span>
+            </div>
+            <div>
+              <div class="text-xs text-slate-400 line-through">De R$ 247,00</div>
+              <div class="text-4xl sm:text-5xl font-black text-white mt-1">R$ 97,00 <span class="text-sm font-normal text-slate-300">à vista</span></div>
+              <div class="text-xs text-emerald-400 font-bold mt-1">ou 12x de R$ 9,74 no cartão • Sem mensalidades!</div>
+            </div>
+
+            <ul class="space-y-2.5 text-xs sm:text-sm text-slate-100">
+              <li>🔥 <strong>Tudo do Plano Mensal liberado sem mensalidade</strong></li>
+              <li>⚡ <strong>Pack Completo PAC Incluso:</strong> Tap Tap Dark, Luva Clash &amp; Feras Elementais</li>
+              <li>🎬 <strong>Exportação Ilimitada .WEBM 1080×1920 Transparente</strong></li>
+              <li>✨ <strong>Modo IA Gemini Liberado</strong> (crie efeitos 3D por texto)</li>
+              <li>🎨 <strong>Atualizações Futuras do Pack + Suporte VIP WhatsApp</strong></li>
+            </ul>
+          </div>
+
+          <a id="btnCheckoutVip" href="#checkout-vip" class="block w-full text-center py-4 rounded-2xl bg-gradient-to-r from-neon-pink via-rose-500 to-amber-500 text-white font-black text-sm sm:text-base uppercase tracking-wide glow-btn-pink transition transform hover:-translate-y-0.5">
+            🚀 GARANTIR PACK VIP + PAINEL (R$ 97)
+          </a>
+        </div>
+      </div>
+
+      <div class="bg-neon-surface border border-emerald-500/30 rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
+        <div class="w-16 h-16 shrink-0 rounded-2xl bg-emerald-500/15 border border-emerald-400/40 flex items-center justify-center text-3xl">🛡️</div>
+        <div class="space-y-1">
+          <h3 class="text-base font-extrabold text-white">Garantia Incondicional de 7 Dias</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Teste os overlays, os efeitos .WEBM transparentes no OBS/TikTok Live Studio e o painel completo. Se não transformar o visual da sua live, devolvemos 100% do seu dinheiro sem perguntas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. FAQ -->
+  <section id="faq" class="py-16 bg-neon-surface border-t border-neon-border">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 space-y-6">
+      <h2 class="text-center text-2xl sm:text-3xl font-black text-white">Dúvidas Frequentes</h2>
+
+      <div class="space-y-3" id="faqList">
+        <details class="group bg-neon-card border border-neon-border rounded-2xl p-4 cursor-pointer" open>
+          <summary class="font-bold text-sm text-white flex justify-between items-center list-none">
+            <span>Funciona no TikTok Live Studio e no OBS Studio?</span>
+            <span class="text-neon-cyan group-open:rotate-45 transition text-lg">+</span>
+          </summary>
+          <p class="text-xs text-slate-400 mt-3 leading-relaxed">Sim! Os rankings e notificações funcionam via link <em>Browser Source / Fonte Web</em> com fundo transparente, e os efeitos 3D exportados em <strong>.WEBM VP9 Alpha</strong> funcionam nativamente como <em>Fonte de Mídia / Vídeo</em> no OBS e no TikTok Live Studio.</p>
+        </details>
+
+        <details class="group bg-neon-card border border-neon-border rounded-2xl p-4 cursor-pointer">
+          <summary class="font-bold text-sm text-white flex justify-between items-center list-none">
+            <span>Os efeitos .WEBM realmente têm fundo transparente?</span>
+            <span class="text-neon-cyan group-open:rotate-45 transition text-lg">+</span>
+          </summary>
+          <p class="text-xs text-slate-400 mt-3 leading-relaxed">Sim, 100% transparente (canal Alpha real em 1080×1920), sem precisar usar Chroma Key (tela verde). É só arrastar o arquivo baixado para cima da sua câmera ou jogo.</p>
+        </details>
+
+        <details class="group bg-neon-card border border-neon-border rounded-2xl p-4 cursor-pointer">
+          <summary class="font-bold text-sm text-white flex justify-between items-center list-none">
+            <span>Posso trocar os textos e cores dos efeitos do Pack?</span>
+            <span class="text-neon-cyan group-open:rotate-45 transition text-lg">+</span>
+          </summary>
+          <p class="text-xs text-slate-400 mt-3 leading-relaxed">Com certeza! No estúdio integrado você muda o texto (ex: "TAP / TAP", "X3", "META BATIDA", seu @), as cores da fumaça e dos raios em tempo real e baixa um novo vídeo .WEBM pronto em 6 segundos.</p>
+        </details>
+
+        <details class="group bg-neon-card border border-neon-border rounded-2xl p-4 cursor-pointer">
+          <summary class="font-bold text-sm text-white flex justify-between items-center list-none">
+            <span>Preciso colocar minha senha do TikTok?</span>
+            <span class="text-neon-cyan group-open:rotate-45 transition text-lg">+</span>
+          </summary>
+          <p class="text-xs text-slate-400 mt-3 leading-relaxed">Nunca! Basta digitar o seu <strong>@usuario</strong> público da live para conectar ou usar os arquivos .WEBM diretamente no seu software de transmissão.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="py-8 px-4 border-t border-neon-border text-center text-xs text-slate-500 space-y-2">
+    <div class="font-bold text-slate-300">TIK SCAN PRO &amp; TikArcade VFX Studio</div>
+    <p>Ferramenta independente para criadores de conteúdo ao vivo. Não possui vínculo ou afiliação com TikTok / ByteDance.</p>
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    const CONFIG = {
+      CUSTOM_VSL_VIDEO_URL: '',
+      CHECKOUT_URL_MENSAL: 'https://seu-checkout-aqui.com/mensal',
+      CHECKOUT_URL_VIP: 'https://seu-checkout-aqui.com/pack-vip',
+      APP_STUDIO_URL: 'index.html'
+    };
+
+    document.getElementById('navDemoLink').href = CONFIG.APP_STUDIO_URL;
+    document.getElementById('btnCheckoutMensal').href = CONFIG.CHECKOUT_URL_MENSAL;
+    document.getElementById('btnCheckoutVip').href = CONFIG.CHECKOUT_URL_VIP;
+
+    let remSec = 14 * 60 + 59;
+    setInterval(() => {
+      remSec = remSec > 0 ? remSec - 1 : 14 * 60 + 59;
+      const m = String(Math.floor(remSec / 60)).padStart(2, '0');
+      const s = String(remSec % 60).padStart(2, '0');
+      document.getElementById('urgencyTimer').textContent = `Expira em ${m}:${s}`;
+    }, 1000);
+
+    const vslCanvas = document.getElementById('vslCanvas');
+    const ctx = vslCanvas.getContext('2d');
+    const vslStartOverlay = document.getElementById('vslStartOverlay');
+    const vslControlsBar = document.getElementById('vslControlsBar');
+    const btnVslPlayPause = document.getElementById('btnVslPlayPause');
+    const btnVslSound = document.getElementById('btnVslSound');
+    const vslProgressFill = document.getElementById('vslProgressFill');
+    const vslTimeLabel = document.getElementById('vslTimeLabel');
+    const customVideoEl = document.getElementById('customVslVideo');
+
+    if (CONFIG.CUSTOM_VSL_VIDEO_URL) {
+      vslCanvas.classList.add('hidden');
+      vslStartOverlay.classList.add('hidden');
+      customVideoEl.src = CONFIG.CUSTOM_VSL_VIDEO_URL;
+      customVideoEl.classList.remove('hidden');
+    } else {
+      const VSL_DUR = 32.0;
+      let vslPlaying = false;
+      let vslMuted = false;
+      let vslTime = 0;
+      let lastTs = performance.now();
+      let audioCtx = null;
+      let thunderNoiseBuf = null;
+      let masterComp = null;
+      let firedCues = new Set();
+
+      function initAudioEngine() {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          masterComp = audioCtx.createDynamicsCompressor();
+          masterComp.threshold.value = -10;
+          masterComp.knee.value = 18;
+          masterComp.ratio.value = 6;
+          masterComp.connect(audioCtx.destination);
+
+          const sr = audioCtx.sampleRate;
+          const len = Math.floor(sr * 2.5);
+          thunderNoiseBuf = audioCtx.createBuffer(1, len, sr);
+          const data = thunderNoiseBuf.getChannelData(0);
+          let lastOut = 0;
+          for (let i = 0; i < len; i++) {
+            const white = Math.random() * 2 - 1;
+            lastOut = (lastOut + 0.08 * white) / 1.08;
+            data[i] = Math.max(-1, Math.min(1, white * 0.42 + lastOut * 2.6));
+          }
+        }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+      }
+
+      function playCinematicThunder(heavy = true) {
+        if (vslMuted) return;
+        initAudioEngine();
+        const now = audioCtx.currentTime;
+
+        const crackSrc = audioCtx.createBufferSource();
+        crackSrc.buffer = thunderNoiseBuf;
+        const crackFilter = audioCtx.createBiquadFilter();
+        crackFilter.type = 'bandpass';
+        crackFilter.frequency.setValueAtTime(2800, now);
+        crackFilter.frequency.exponentialRampToValueAtTime(520, now + 0.16);
+        crackFilter.Q.value = 2.2;
+        const crackGain = audioCtx.createGain();
+        crackGain.gain.setValueAtTime(0.001, now);
+        crackGain.gain.linearRampToValueAtTime(heavy ? 0.72 : 0.5, now + 0.008);
+        crackGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+        crackSrc.connect(crackFilter);
+        crackFilter.connect(crackGain);
+        crackGain.connect(masterComp);
+        crackSrc.start(now);
+        crackSrc.stop(now + 0.25);
+
+        const subOsc = audioCtx.createOscillator();
+        const subGain = audioCtx.createGain();
+        subOsc.type = 'sine';
+        subOsc.frequency.setValueAtTime(heavy ? 115 : 95, now);
+        subOsc.frequency.exponentialRampToValueAtTime(28, now + 0.65);
+        subGain.gain.setValueAtTime(0.001, now);
+        subGain.gain.linearRampToValueAtTime(heavy ? 0.95 : 0.72, now + 0.015);
+        subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.85);
+        subOsc.connect(subGain);
+        subGain.connect(masterComp);
+        subOsc.start(now);
+        subOsc.stop(now + 0.9);
+
+        const rumbleSrc = audioCtx.createBufferSource();
+        rumbleSrc.buffer = thunderNoiseBuf;
+        const rumbleLp = audioCtx.createBiquadFilter();
+        rumbleLp.type = 'lowpass';
+        rumbleLp.frequency.setValueAtTime(680, now);
+        rumbleLp.frequency.exponentialRampToValueAtTime(110, now + 1.8);
+        rumbleLp.Q.value = 1.4;
+
+        const rumbleGain = audioCtx.createGain();
+        rumbleGain.gain.setValueAtTime(0.001, now);
+        rumbleGain.gain.linearRampToValueAtTime(heavy ? 0.85 : 0.65, now + 0.06);
+        rumbleGain.gain.setValueAtTime(heavy ? 0.75 : 0.55, now + 0.28);
+        rumbleGain.gain.linearRampToValueAtTime(heavy ? 0.48 : 0.35, now + 0.55);
+        rumbleGain.gain.exponentialRampToValueAtTime(0.001, now + 2.15);
+
+        rumbleSrc.connect(rumbleLp);
+        rumbleLp.connect(rumbleGain);
+        rumbleGain.connect(masterComp);
+        rumbleSrc.start(now);
+        rumbleSrc.stop(now + 2.25);
+      }
+
+      const slides = [
+        { start: 0, end: 7, badge: 'PROBLEMA NAS LIVES', title: 'Sua Live ainda está sem\nefeitos visuais que chamam atenção?', sub: 'Lives paradas perdem retenção e recebem menos presentes.', accent: '#ff1f8e', demo: 'problem' },
+        { start: 7, end: 15, badge: 'SOLUÇÃO #1 — PACK 3D .WEBM', title: 'Efeitos 3D com Fundo Transparente\ne Áudio Grave Sincronizado', sub: 'Tap Tap Dark, Luva Clash, X2/X3 e Feras Elementais em 1080×1920.', accent: '#00f0ff', demo: 'pack' },
+        { start: 15, end: 24, badge: 'SOLUÇÃO #2 — TIK SCAN PRO', title: 'Pódio de Doadores, Baú de Prêmios\ne Voz que Lê o Chat ao Vivo', sub: 'Incentive a competição saudável entre fãs com rankings em tempo real.', accent: '#facc15', demo: 'rankings' },
+        { start: 24, end: 32, badge: 'PREÇO FIXO EM REAIS (R$)', title: 'Chega de pagar caro em Dólar!\nLibere seu Acesso Hoje', sub: 'Clique abaixo e escolha o Plano Mensal ou o Pack VIP Vitalício.', accent: '#22c55e', demo: 'cta' }
+      ];
+
+      function drawVslFrame(t) {
+        const w = vslCanvas.width, h = vslCanvas.height;
+        ctx.fillStyle = '#060913';
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.strokeStyle = 'rgba(0, 240, 255, 0.06)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < w; x += 64) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
+        for (let y = 0; y < h; y += 64) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
+
+        const s = slides.find(sl => t >= sl.start && t < sl.end) || slides[0];
+        const localT = t - s.start;
+        if (!firedCues.has(s.start) && vslPlaying) {
+          firedCues.add(s.start);
+          playCinematicThunder(true);
+        }
+
+        if (vslPlaying && localT < 0.28) {
+          const flashAlpha = (1 - localT / 0.28) * 0.45;
+          ctx.fillStyle = `rgba(255, 255, 255, ${flashAlpha})`;
+          ctx.fillRect(0, 0, w, h);
+        }
+
+        const grad = ctx.createRadialGradient(w * 0.72, h * 0.5, 40, w * 0.72, h * 0.5, 420);
+        grad.addColorStop(0, s.accent + '44');
+        grad.addColorStop(1, 'transparent');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.fillStyle = s.accent;
+        ctx.font = 'bold 20px Inter, sans-serif';
+        ctx.fillText('⚡ ' + s.badge, 72, 195);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '900 46px Inter, sans-serif';
+        s.title.split('\n').forEach((line, i) => {
+          ctx.fillText(line, 72, 265 + i * 58);
+        });
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '500 24px Inter, sans-serif';
+        ctx.fillText(s.sub, 72, 420);
+
+        const mx = 860, my = 80, mw = 310, mh = 550;
+        ctx.fillStyle = '#0e1422';
+        ctx.strokeStyle = s.accent;
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.roundRect(mx, my, mw, mh, 28);
+        ctx.fill(); ctx.stroke();
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.roundRect(mx + 6, my + 6, mw - 12, mh - 12, 22);
+        ctx.clip();
+
+        if (s.demo === 'pack') {
+          const pulse = 1 + Math.sin(localT * 6) * 0.08;
+          ctx.translate(mx + mw / 2, my + mh * 0.65);
+          ctx.scale(pulse, pulse);
+          ctx.fillStyle = '#ff2214';
+          ctx.font = '900 68px Impact, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('TAP TAP', 0, 0);
+          ctx.strokeStyle = '#00f0ff';
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.moveTo(-120, -180); ctx.lineTo(-20, -60); ctx.lineTo(40, -110); ctx.lineTo(100, 40);
+          ctx.stroke();
+        } else if (s.demo === 'rankings') {
+          ctx.fillStyle = '#facc15';
+          ctx.font = 'bold 24px Inter, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('🏆 TOP MOEDAS LIVE', mx + mw / 2, my + 100);
+          ['1º Maria_live • 25.8K', '2º joao_tk • 14.2K', '3º ana_stars • 8.5K'].forEach((row, idx) => {
+            ctx.fillStyle = idx === 0 ? 'rgba(250,204,21,0.2)' : 'rgba(255,255,255,0.08)';
+            ctx.fillRect(mx + 25, my + 145 + idx * 75, mw - 50, 56);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 18px Inter, sans-serif';
+            ctx.fillText(row, mx + mw / 2, my + 180 + idx * 75);
+          });
+        } else if (s.demo === 'cta') {
+          ctx.fillStyle = '#22c55e';
+          ctx.font = '900 44px Inter, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('R$ 97,00', mx + mw / 2, my + 240);
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 20px Inter, sans-serif';
+          ctx.fillText('PACK VIP + PAINEL', mx + mw / 2, my + 285);
+          ctx.fillStyle = '#ff1f8e';
+          ctx.fillRect(mx + 40, my + 330, mw - 80, 52);
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 18px Inter, sans-serif';
+          ctx.fillText('LIBERAR AGORA', mx + mw / 2, my + 362);
+        } else {
+          ctx.fillStyle = '#64748b';
+          ctx.font = 'bold 22px Inter, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('Live comum sem VFX...', mx + mw / 2, my + 260);
+          ctx.fillStyle = '#ff1f8e';
+          ctx.fillText('Hora do Upgrade! ⚡', mx + mw / 2, my + 310);
+        }
+        ctx.restore();
+        ctx.textAlign = 'left';
+      }
+
+      function loopVsl(now) {
+        requestAnimationFrame(loopVsl);
+        const dt = Math.min(0.05, (now - lastTs) / 1000);
+        lastTs = now;
+        if (vslPlaying) {
+          vslTime += dt;
+          if (vslTime >= VSL_DUR) { vslTime = 0; firedCues.clear(); }
+          vslProgressFill.style.width = `${(vslTime / VSL_DUR) * 100}%`;
+          vslTimeLabel.textContent = `00:${String(Math.floor(vslTime)).padStart(2,'0')} / 00:${VSL_DUR}`;
+        }
+        drawVslFrame(vslTime);
+      }
+
+      vslStartOverlay.addEventListener('click', () => {
+        vslStartOverlay.classList.add('hidden');
+        vslControlsBar.classList.remove('hidden');
+        vslPlaying = true;
+        firedCues.clear();
+        vslTime = 0;
+        initAudioEngine();
+        playCinematicThunder(true);
+        firedCues.add(0);
+      });
+      btnVslPlayPause.addEventListener('click', () => {
+        vslPlaying = !vslPlaying;
+        btnVslPlayPause.textContent = vslPlaying ? '⏸ Pausar' : '▶ Reproduzir';
+      });
+      btnVslSound.addEventListener('click', () => {
+        vslMuted = !vslMuted;
+        btnVslSound.textContent = vslMuted ? '🔇 Mudo' : '🔊 Som ON';
+      });
+
+      drawVslFrame(0);
+      requestAnimationFrame(loopVsl);
+    }
+  </script>
+</body>
+              </html>
