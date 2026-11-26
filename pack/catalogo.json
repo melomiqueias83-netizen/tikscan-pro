@@ -1,36 +1,36 @@
 {
-  "comercialUrl": "pack/comercial.webm",
+  "comercialUrl": "pack/Zeus01.mp4",
   "itens": [
     {
       "id": "guerreira",
       "nome": "Guerreira da Batalha",
       "categoria": "Efeito 3D",
-      "arquivo": "pack/guerreira.webm",
-      "formato": "WEBM Transparente",
+      "arquivo": "pack/Guerreira.mp4",
+      "formato": "MP4",
       "ativo": true
     },
     {
       "id": "zeus",
       "nome": "Zeus — Deus do Olimpo",
       "categoria": "Efeito 3D",
-      "arquivo": "pack/zeus.webm",
-      "formato": "WEBM Transparente",
+      "arquivo": "pack/Zeus02.mp4",
+      "formato": "MP4",
       "ativo": true
     },
     {
       "id": "leao",
       "nome": "Leão Rugindo",
       "categoria": "Efeito 3D",
-      "arquivo": "pack/leao.webm",
-      "formato": "WEBM Transparente",
+      "arquivo": "pack/Leaorei.mp4",
+      "formato": "MP4",
       "ativo": true
     },
     {
       "id": "diamante",
       "nome": "Diamante VIP",
       "categoria": "Efeito 3D",
-      "arquivo": "pack/diamante.webm",
-      "formato": "WEBM Transparente",
+      "arquivo": "pack/diamante1.mp4",
+      "formato": "MP4",
       "ativo": true
     },
     {
@@ -53,40 +53,40 @@
       "id": "luva-boxe",
       "nome": "Luva de Boxe (PK)",
       "categoria": "Batalha PK",
-      "arquivo": "pack/luva-de-boxe.webm",
-      "formato": "WEBM Transparente",
+      "arquivo": "pack/Luva1.mp4",
+      "formato": "MP4",
       "ativo": true
     },
     {
       "id": "batalha",
       "nome": "Batalha PK",
       "categoria": "Batalha PK",
-      "arquivo": "pack/batalha.webm",
-      "formato": "WEBM Transparente",
+      "arquivo": "pack/Guerreira.mp4",
+      "formato": "MP4",
       "ativo": true
     },
     {
       "id": "x2",
       "nome": "Multiplicador 2X",
       "categoria": "Batalha PK",
-      "arquivo": "pack/2x.webm",
-      "formato": "WEBM Transparente",
+      "arquivo": "pack/x2.mp4",
+      "formato": "MP4",
       "ativo": true
     },
     {
       "id": "x3",
       "nome": "Multiplicador 3X",
       "categoria": "Batalha PK",
-      "arquivo": "pack/3x.webm",
-      "formato": "WEBM Transparente",
+      "arquivo": "pack/x3.mp4",
+      "formato": "MP4",
       "ativo": true
     },
     {
       "id": "tap-tap",
       "nome": "Tap Tap (Curtidas)",
       "categoria": "Interação",
-      "arquivo": "pack/tap-tap.webm",
-      "formato": "WEBM Transparente",
+      "arquivo": "pack/Taptap1.mp4",
+      "formato": "MP4",
       "ativo": true
     },
     {
