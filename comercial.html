@@ -3,16 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gerador de Comercial 9:16 — TIK SCAN PRO</title>
-
+  <title>Gerador Comercial Live PK 9:16 — TIK SCAN PRO</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
-      }
-    }
-  </script>
   <style>
     * { box-sizing: border-box; }
     body { margin: 0; background: #07090f; color: #f8fafc; font-family: Inter, system-ui, -apple-system, sans-serif; }
@@ -22,431 +14,340 @@
 </head>
 <body class="min-h-screen flex flex-col lg:h-screen lg:overflow-hidden">
 
-  <!-- Header -->
   <header class="h-14 shrink-0 border-b border-slate-800 bg-[#0d111a] px-4 lg:px-6 flex items-center justify-between">
     <div class="flex items-center gap-2.5">
-      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-500 to-cyan-400 flex items-center justify-center font-black text-white text-sm">🎬</div>
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-rose-500 to-cyan-400 flex items-center justify-center font-black text-white text-sm">⚡</div>
       <div>
-        <h1 class="text-sm sm:text-base font-black text-white leading-none">Gerador de Comercial TikTok 9:16</h1>
-        <p class="text-[11px] text-slate-400">Vídeo 1080×1920 (18s) pronto para postar no TikTok / Reels</p>
+        <h1 class="text-sm sm:text-base font-black text-white leading-none">Gerador Comercial Live PK 9:16</h1>
+        <p class="text-[11px] text-slate-400">Simula uma Batalha PK real do TikTok com seu Efeito + Chat explodindo</p>
       </div>
     </div>
     <div class="flex items-center gap-2">
-      <a href="index.html" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold">← Painel</a>
+      <a href="index.html" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 font-bold">← Painel</a>
       <button id="btnMute" type="button" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 font-bold">🔊 Som ON</button>
     </div>
   </header>
 
   <main class="flex-1 flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden">
-    <!-- Esquerda: Personalização do Comercial -->
-    <aside class="w-full lg:w-[36%] border-b lg:border-b-0 lg:border-r border-slate-800 bg-[#0d111a] p-4 lg:p-5 space-y-4 overflow-y-auto">
-      <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-3">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-cyan-400">1. Roteiro &amp; Textos do Comercial</h2>
-
-        <div>
-          <label class="block text-[11px] text-slate-400 mb-1">Gancho Inicial (0s - 4.5s)</label>
-          <input id="inpHook" type="text" value="SUA LIVE AINDA É SEM GRAÇA?" class="w-full bg-[#07090f] border border-slate-700 rounded-lg px-3 py-2 text-xs font-bold text-white uppercase" />
-        </div>
-
-        <div>
-          <label class="block text-[11px] text-slate-400 mb-1">Nome da Marca / Ferramenta</label>
-          <input id="inpBrand" type="text" value="TIK SCAN PRO" class="w-full bg-[#07090f] border border-slate-700 rounded-lg px-3 py-2 text-xs font-bold text-cyan-300 uppercase" />
-        </div>
-
+    <!-- ESQUERDA: CONTROLES -->
+    <aside class="w-full lg:w-[36%] border-b lg:border-b-0 lg:border-r border-slate-800 bg-[#0d111a] p-4 space-y-4 overflow-y-auto">
+      <div class="p-3.5 rounded-xl bg-emerald-950/35 border border-emerald-500/40 space-y-2.5">
+        <div class="text-xs font-black text-emerald-300">1. Subir Mídias da Live</div>
+        <label class="block w-full py-2 px-3 rounded-lg bg-slate-900 border border-slate-700 hover:border-cyan-400 text-xs font-bold text-center cursor-pointer">
+          🖼️ Print / Foto da Live (Fundo)
+          <input id="inpLiveBg" type="file" accept="image/*" class="hidden" />
+        </label>
+        <label class="block w-full py-2.5 px-3 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950 text-xs font-black text-center cursor-pointer">
+          ⚔️ Subir Vídeo do Efeito (Fundo Verde/Preto)
+          <input id="inpEffectVid" type="file" accept="video/*" class="hidden" />
+        </label>
+        <div id="vidInfo" class="text-[10px] text-slate-400 truncate">Nenhum vídeo selecionado (usando Mega Raio Azul demo).</div>
         <div class="grid grid-cols-2 gap-2">
+          <select id="selKey" class="bg-[#07090f] border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white">
+            <option value="1">Remover Fundo Verde</option>
+            <option value="2">Remover Fundo Preto</option>
+            <option value="0">Sem Remoção</option>
+          </select>
           <div>
-            <label class="block text-[11px] text-slate-400 mb-1">Seu @ do TikTok</label>
-            <input id="inpHandle" type="text" value="@melomiqueias" class="w-full bg-[#07090f] border border-slate-700 rounded-lg px-3 py-2 text-xs font-bold text-white" />
+            <div class="flex justify-between text-[10px] text-slate-400"><span>Corte Fundo</span><span id="threshTxt">0.08</span></div>
+            <input id="rngThresh" type="range" min="0.01" max="0.45" step="0.01" value="0.08" class="w-full" />
           </div>
-          <div>
-            <label class="block text-[11px] text-slate-400 mb-1">Preço Destaque</label>
-            <input id="inpPrice" type="text" value="R$ 29,90/MÊS" class="w-full bg-[#07090f] border border-slate-700 rounded-lg px-3 py-2 text-xs font-bold text-emerald-400 uppercase" />
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-[11px] text-slate-400 mb-1">Chamada Final (CTA)</label>
-          <input id="inpCta" type="text" value="LINK NA BIO AGORA 👇" class="w-full bg-[#07090f] border border-slate-700 rounded-lg px-3 py-2 text-xs font-bold text-pink-400 uppercase" />
         </div>
       </div>
 
-      <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2 text-xs text-slate-300">
-        <div class="font-bold text-white">📋 Cenas do Comercial (18 segundos):</div>
-        <div class="flex justify-between text-[11px]"><span class="text-pink-400 font-bold">00s - 04.5s</span><span>Gancho + Tap Tap Pro (Toque na tela)</span></div>
-        <div class="flex justify-between text-[11px]"><span class="text-amber-400 font-bold">04.5s - 09s</span><span>Baú 3D + Chuva de Moedas Reais</span></div>
-        <div class="flex justify-between text-[11px]"><span class="text-cyan-400 font-bold">09s - 13.5s</span><span>Galáxia 3D (10K Estrelas) + Chroma Leão</span></div>
-        <div class="flex justify-between text-[11px]"><span class="text-emerald-400 font-bold">13.5s - 18s</span><span>Oferta em Reais + CTA Link na Bio</span></div>
+      <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2.5">
+        <div class="text-xs font-bold uppercase text-cyan-400">2. Textos da Live &amp; Oferta</div>
+        <div class="grid grid-cols-2 gap-2">
+          <div><label class="block text-[10px] text-slate-400 mb-1">Host 1 (Esq.)</label><input id="inpHost1" type="text" value="sander" class="w-full bg-[#07090f] border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-bold" /></div>
+          <div><label class="block text-[10px] text-slate-400 mb-1">Host 2 (Dir.)</label><input id="inpHost2" type="text" value="Lohan..." class="w-full bg-[#07090f] border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-bold" /></div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div><label class="block text-[10px] text-slate-400 mb-1">Quem enviou</label><input id="inpSender" type="text" value="cigano" class="w-full bg-[#07090f] border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-bold" /></div>
+          <div><label class="block text-[10px] text-slate-400 mb-1">Nome do Efeito</label><input id="inpGiftName" type="text" value="Efeito Zeus VIP" class="w-full bg-[#07090f] border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-bold" /></div>
+        </div>
+        <div><label class="block text-[10px] text-slate-400 mb-1">Texto Comercial no Final</label><input id="inpCta" type="text" value="QUER ISSO NA SUA LIVE? LINK NA BIO 👇" class="w-full bg-[#07090f] border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-bold text-pink-400 uppercase" /></div>
       </div>
 
-      <button id="btnRecordAd" type="button" class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-pink-600 via-rose-500 to-amber-500 hover:brightness-110 text-white font-black text-xs sm:text-sm uppercase tracking-wide shadow-lg shadow-pink-600/25 flex items-center justify-center gap-2">
+      <button id="btnRecord" type="button" class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-rose-600 via-pink-600 to-amber-500 text-white font-black text-xs sm:text-sm uppercase shadow-lg flex items-center justify-center gap-2">
         <span class="w-2.5 h-2.5 rounded-full bg-white"></span>
-        <span id="recLabel">Gravar e Baixar Comercial 9:16 (.WEBM)</span>
+        <span id="recLbl">Gravar e Baixar Comercial Live (.WEBM)</span>
       </button>
-
-      <p class="text-[11px] text-slate-500 leading-relaxed">
-        Dica: Se quiser postar em MP4 no iPhone, exporte no Chrome do Android/PC e, se necessário, suba direto no CapCut ou TikTok (TikTok aceita .WEBM direto pelo navegador/PC e vários Androids).
-      </p>
     </aside>
 
-    <!-- Direita: Palco 9:16 -->
+    <!-- DIREITA: PALCO 9:16 -->
     <section class="flex-1 flex flex-col bg-[#05070c] overflow-hidden">
-      <div class="p-3 border-b border-slate-800 bg-[#0d111a]/70 flex items-center justify-between gap-3">
-        <div class="flex items-center gap-2">
-          <button id="btnRestartAd" type="button" class="px-3 py-1.5 rounded-lg bg-slate-800 text-xs font-bold text-white">↺ Reiniciar (com Som)</button>
-          <button id="btnPlayPauseAd" type="button" class="px-3 py-1.5 rounded-lg bg-slate-800 text-xs font-bold text-white">⏸ Pausar</button>
+      <div class="p-3 border-b border-slate-800 bg-[#0d111a]/70 flex items-center justify-between gap-2">
+        <div class="flex gap-2">
+          <button id="btnRestart" type="button" class="px-3 py-1.5 rounded-lg bg-slate-800 text-xs font-bold">↺ Reiniciar</button>
+          <button id="btnPlayPause" type="button" class="px-3 py-1.5 rounded-lg bg-slate-800 text-xs font-bold">⏸ Pausar</button>
         </div>
         <div class="flex items-center gap-2">
-          <span id="adTimeText" class="text-xs font-mono text-cyan-400">0.0s / 18.0s</span>
-          <div class="w-24 h-1.5 bg-slate-800 rounded-full overflow-hidden"><div id="adBar" class="h-full bg-gradient-to-r from-pink-500 to-cyan-400 w-0"></div></div>
+          <span id="timeTxt" class="text-xs font-mono text-cyan-400">0.0s / 12.0s</span>
+          <div class="w-24 h-1.5 bg-slate-800 rounded-full overflow-hidden"><div id="barFill" class="h-full bg-gradient-to-r from-rose-500 to-cyan-400 w-0"></div></div>
         </div>
       </div>
 
       <div class="flex-1 p-4 flex items-center justify-center overflow-hidden relative">
         <div class="relative h-[68vh] lg:h-full max-h-[76vh] aspect-[9/16] rounded-2xl overflow-hidden border-2 border-slate-700 shadow-2xl bg-black">
-          <canvas id="adCanvas" width="1080" height="1920" class="w-full h-full block"></canvas>
+          <canvas id="liveCanvas" width="1080" height="1920" class="w-full h-full block"></canvas>
           <div id="recBadge" class="hidden absolute top-3 left-1/2 -translate-x-1/2 bg-black/85 border border-rose-500 px-3 py-1 rounded-full flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-rose-500 rec-dot"></span>
-            <span id="recBadgeTxt" class="text-xs font-mono font-bold text-white">REC 0.0s / 18.0s</span>
+            <span id="recBadgeTxt" class="text-xs font-mono font-bold text-white">REC 0.0s</span>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <script type="module">
-    import * as THREE from 'three';
+  <video id="effectVid" loop playsinline style="position:fixed;left:-9999px;top:0;width:16px;height:16px;opacity:0.001;pointer-events:none;"></video>
 
-    const AD_DURATION = 18.0;
-    const adCanvas = document.getElementById('adCanvas');
-    const ctx2d = adCanvas.getContext('2d');
+  <script>
+    const canvas = document.getElementById('liveCanvas');
+    const ctx = canvas.getContext('2d');
+    const offC = document.createElement('canvas');
+    const offCtx = offC.getContext('2d', { willReadFrequently: true });
+    const effectVid = document.getElementById('effectVid');
 
     const state = {
-      time: 0, playing: true, recording: false, muted: false, lastTs: performance.now(),
-      fired: new Set(), shake: 0,
-      hook: 'SUA LIVE AINDA É SEM GRAÇA?',
-      brand: 'TIK SCAN PRO',
-      handle: '@melomiqueias',
-      price: 'R$ 29,90/MÊS',
-      cta: 'LINK NA BIO AGORA 👇'
+      dur: 12.0, time: 0, playing: true, recording: false, muted: false, lastTs: performance.now(),
+      bgImg: null, hasVid: false, keyMode: 1, thresh: 0.08, smooth: 0.14,
+      host1: 'sander', host2: 'Lohan...', sender: 'cigano', giftName: 'Efeito Zeus VIP',
+      cta: 'QUER ISSO NA SUA LIVE? LINK NA BIO 👇', fired: new Set(), shake: 0
     };
 
-    // =========================================================================
-    // AUDIO ENGINE REALISTA DO COMERCIAL (TROVÃO + TOQUE TELA + MOEDAS + ESPAÇO)
-    // =========================================================================
-    class AdAudio {
-      constructor() { this.ctx = null; this.rec = null; this.spk = null; this.dest = null; this.noise = null; }
-      init() {
-        if (this.ctx) { if (this.ctx.state === 'suspended') this.ctx.resume(); return; }
-        const AC = window.AudioContext || window.webkitAudioContext; this.ctx = new AC();
-        this.dest = this.ctx.createMediaStreamDestination();
-        this.rec = this.ctx.createGain(); this.rec.gain.value = 0.9; this.rec.connect(this.dest);
-        this.spk = this.ctx.createGain(); this.spk.gain.value = state.muted ? 0 : 0.85;
-        this.rec.connect(this.spk); this.spk.connect(this.ctx.destination);
-        const k = this.ctx.createOscillator(), kg = this.ctx.createGain(); kg.gain.value = 0.00001; k.connect(kg); kg.connect(this.dest); k.start();
-        const sr = this.ctx.sampleRate; this.noise = this.ctx.createBuffer(1, sr * 2.5, sr);
-        const d = this.noise.getChannelData(0); let lo = 0;
-        for (let i = 0; i < d.length; i++) { const w = Math.random() * 2 - 1; lo = (lo + 0.08 * w) / 1.08; d[i] = Math.max(-1, Math.min(1, w * 0.45 + lo * 2.5)); }
-      }
-      setMuted(m) { if (this.spk && this.ctx) this.spk.gain.setTargetAtTime(m ? 0 : 0.85, this.ctx.currentTime, 0.02); }
-      thunder() {
-        if (!this.ctx || this.ctx.state === 'suspended') return;
-        const now = this.ctx.currentTime;
-        const sub = this.ctx.createOscillator(), sg = this.ctx.createGain();
-        sub.type = 'sine'; sub.frequency.setValueAtTime(120, now); sub.frequency.exponentialRampToValueAtTime(28, now + 0.7);
-        sg.gain.setValueAtTime(0.001, now); sg.gain.linearRampToValueAtTime(0.95, now + 0.015); sg.gain.exponentialRampToValueAtTime(0.001, now + 0.85);
-        sub.connect(sg); sg.connect(this.rec); sub.start(now); sub.stop(now + 0.9);
-        const s = this.ctx.createBufferSource(); s.buffer = this.noise;
-        const lp = this.ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.setValueAtTime(1100, now); lp.frequency.exponentialRampToValueAtTime(130, now + 1.5);
-        const g = this.ctx.createGain(); g.gain.setValueAtTime(0.75, now); g.gain.exponentialRampToValueAtTime(0.001, now + 1.6);
-        s.connect(lp); lp.connect(g); g.connect(this.rec); s.start(now); s.stop(now + 1.65);
-      }
-      tap(drop = false) {
-        if (!this.ctx || this.ctx.state === 'suspended') return;
-        const now = this.ctx.currentTime;
-        const o = this.ctx.createOscillator(), g = this.ctx.createGain();
-        o.type = 'sine'; o.frequency.setValueAtTime(150, now); o.frequency.exponentialRampToValueAtTime(48, now + 0.04);
-        g.gain.setValueAtTime(0.55, now); g.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
-        o.connect(g); g.connect(this.rec); o.start(now); o.stop(now + 0.06);
-        const s = this.ctx.createBufferSource(); s.buffer = this.noise;
-        const bp = this.ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 1900; bp.Q.value = 2.6;
-        const tg = this.ctx.createGain(); tg.gain.setValueAtTime(0.35, now); tg.gain.exponentialRampToValueAtTime(0.001, now + 0.02);
-        s.connect(bp); bp.connect(tg); tg.connect(this.rec); s.start(now); s.stop(now + 0.025);
-        if (drop) this.thunder();
-      }
-      coins(n = 26) {
-        if (!this.ctx || this.ctx.state === 'suspended') return;
-        const now = this.ctx.currentTime;
-        for (let i = 0; i < n; i++) {
-          const t0 = now + i * 0.065 + Math.random() * 0.04, bf = 3000 + Math.random() * 2100;
-          [1, 1.47, 2.09].forEach((r, idx) => {
-            const o = this.ctx.createOscillator(), g = this.ctx.createGain(); o.type = 'sine'; o.frequency.setValueAtTime(bf * r, t0);
-            g.gain.setValueAtTime(0.001, t0); g.gain.linearRampToValueAtTime(0.13 / (idx + 1), t0 + 0.003); g.gain.exponentialRampToValueAtTime(0.0008, t0 + 0.09);
-            o.connect(g); g.connect(this.rec); o.start(t0); o.stop(t0 + 0.14);
-          });
+    // Audio Engine (Áudio original do vídeo + Trovão de impacto no Mega Raio)
+    let actx = null, recBus = null, spkBus = null, dest = null, vidSrc = null, noiseBuf = null;
+    function initAudio() {
+      if (actx) { if (actx.state === 'suspended') actx.resume(); return; }
+      const AC = window.AudioContext || window.webkitAudioContext; actx = new AC();
+      dest = actx.createMediaStreamDestination();
+      recBus = actx.createGain(); recBus.gain.value = 0.95; recBus.connect(dest);
+      spkBus = actx.createGain(); spkBus.gain.value = state.muted ? 0 : 0.85;
+      recBus.connect(spkBus); spkBus.connect(actx.destination);
+      const k = actx.createOscillator(), kg = actx.createGain(); kg.gain.value = 0.00001; k.connect(kg); kg.connect(dest); k.start();
+      const sr = actx.sampleRate; noiseBuf = actx.createBuffer(1, sr * 2, sr);
+      const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      if (!vidSrc && state.hasVid) { vidSrc = actx.createMediaElementSource(effectVid); vidSrc.connect(recBus); }
+    }
+    function playThunder() {
+      if (!actx || actx.state === 'suspended') return;
+      const now = actx.currentTime;
+      const sub = actx.createOscillator(), sg = actx.createGain();
+      sub.type = 'sine'; sub.frequency.setValueAtTime(115, now); sub.frequency.exponentialRampToValueAtTime(28, now + 0.6);
+      sg.gain.setValueAtTime(0.001, now); sg.gain.linearRampToValueAtTime(0.9, now + 0.015); sg.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+      sub.connect(sg); sg.connect(recBus); sub.start(now); sub.stop(now + 0.85);
+      const s = actx.createBufferSource(); s.buffer = noiseBuf;
+      const lp = actx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.setValueAtTime(900, now); lp.frequency.exponentialRampToValueAtTime(140, now + 1.2);
+      const g = actx.createGain(); g.gain.setValueAtTime(0.65, now); g.gain.exponentialRampToValueAtTime(0.001, now + 1.3);
+      s.connect(lp); lp.connect(g); g.connect(recBus); s.start(now); s.stop(now + 1.35);
+    }
+
+    const chatLines = [
+      { u: '🔥 LINO', m: 'ATIVEM O HEART-ME 🔥', t: 0.4 },
+      { u: 'sasa.tartaruga', m: 'MANO 😱', t: 1.2 },
+      { u: 'Thay_salless', m: '@cigano Slc!!', t: 2.1 },
+      { u: 'SHELBY', m: 'SELOKOOOO ⚡', t: 3.2 },
+      { u: 'princesa jujuba', m: 'manooo que incrível', t: 4.5 },
+      { u: 'Y_U_R_I ⚡', m: 'PASSADA 💥', t: 6.0 },
+      { u: 'Matheus021!', m: 'crlh que foda 🔥', t: 7.5 },
+      { u: 'Cruz Santos', m: 'toooppp 🚀', t: 9.0 }
+    ];
+
+    function drawChromaVideo() {
+      if (!state.hasVid || effectVid.readyState < 2) return;
+      const vw = effectVid.videoWidth || 720, vh = effectVid.videoHeight || 1280;
+      const scale = Math.min(540 / vw, 720 / vh); // Processamento rápido 60fps para Canvas 2D
+      const pw = Math.floor(vw * scale), ph = Math.floor(vh * scale);
+      if (offC.width !== pw || offC.height !== ph) { offC.width = pw; offC.height = ph; }
+      offCtx.drawImage(effectVid, 0, 0, pw, ph);
+
+      if (state.keyMode !== 0) {
+        const img = offCtx.getImageData(0, 0, pw, ph), d = img.data;
+        const th = state.thresh * 255, sm = state.smooth * 255;
+        for (let i = 0; i < d.length; i += 4) {
+          const r = d[i], g = d[i + 1], b = d[i + 2];
+          if (state.keyMode === 1) {
+            const rb = Math.max(r, b), diff = g - rb;
+            if (diff > th) {
+              const a = Math.max(0, 1 - (diff - th) / sm);
+              d[i + 3] = a * 255;
+              if (g > rb) d[i + 1] = rb + (g - rb) * 0.15;
+            }
+          } else {
+            const luma = Math.max(r, g, b);
+            if (luma < th + sm) d[i + 3] = Math.max(0, (luma - th) / sm) * 255;
+          }
         }
+        offCtx.putImageData(img, 0, 0);
       }
-      cosmic() {
-        if (!this.ctx || this.ctx.state === 'suspended') return;
-        const now = this.ctx.currentTime;
-        const o = this.ctx.createOscillator(), g = this.ctx.createGain();
-        o.type = 'sine'; o.frequency.setValueAtTime(80, now); o.frequency.exponentialRampToValueAtTime(34, now + 2.5);
-        g.gain.setValueAtTime(0.001, now); g.gain.linearRampToValueAtTime(0.7, now + 0.35); g.gain.exponentialRampToValueAtTime(0.001, now + 3.5);
-        o.connect(g); g.connect(this.rec); o.start(now); o.stop(now + 3.6);
-      }
-    }
-    const adAudio = new AdAudio();
 
-    // =========================================================================
-    // RENDERER 3D OFFSCREEN (THREE.JS 1080x1920 TRANSPARENTE PARA COMPOR)
-    // =========================================================================
-    const glRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, preserveDrawingBuffer: true });
-    glRenderer.setSize(1080, 1920, false); glRenderer.setClearColor(0x000000, 0); glRenderer.outputColorSpace = THREE.SRGBColorSpace;
-    const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(45, 1080 / 1920, 0.1, 100);
-    camera.position.set(0, 0, 11.5);
-    scene.add(new THREE.AmbientLight(0xffffff, 0.95));
-    const dl = new THREE.DirectionalLight(0xffffff, 2.5); dl.position.set(4, 8, 8); scene.add(dl);
-
-    // 1. Cena Baú + 60 Moedas 3D
-    const chestGroup = new THREE.Group(); chestGroup.position.set(0, -1.6, 0);
-    const goldMat = new THREE.MeshStandardMaterial({ color: 0xffd000, metalness: 0.95, roughness: 0.15, emissive: 0xff8800, emissiveIntensity: 0.25 });
-    const woodMat = new THREE.MeshStandardMaterial({ color: 0x4a1d0b, roughness: 0.55 });
-    chestGroup.add(new THREE.Mesh(new THREE.BoxGeometry(2.3, 1.15, 1.5), woodMat));
-    const band = new THREE.Mesh(new THREE.BoxGeometry(2.38, 0.2, 1.56), goldMat); band.position.y = 0.45; chestGroup.add(band);
-    const lidPivot = new THREE.Group(); lidPivot.position.set(0, 0.57, -0.75);
-    const lid = new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.75, 2.32, 20, 1, false, 0, Math.PI), goldMat); lid.rotation.z = Math.PI / 2; lid.position.set(0, 0, 0.75);
-    lidPivot.add(lid); chestGroup.add(lidPivot);
-    const coinGeo = new THREE.CylinderGeometry(0.25, 0.25, 0.06, 18), coins = [];
-    for (let i = 0; i < 65; i++) {
-      const m = new THREE.Mesh(coinGeo, goldMat);
-      chestGroup.add(m);
-      coins.push({ m, delay: (i / 65) * 1.8, vx: (Math.random() - 0.5) * 3.8, vy: 4.8 + Math.random() * 4.5, rx: Math.random() * 10 });
-    }
-    scene.add(chestGroup);
-
-    // 2. Cena Galáxia 3D (10.000 Estrelas)
-    const galCount = 10000, gPos = new Float32Array(galCount * 3), gCol = new Float32Array(galCount * 3);
-    const c1 = new THREE.Color('#fff5cc'), c2 = new THREE.Color('#00f0ff'), c3 = new THREE.Color('#ff1f8e');
-    for (let i = 0; i < galCount; i++) {
-      const r = Math.pow(Math.random(), 1.35) * 4.6, ang = ((i % 4) / 4) * Math.PI * 2 + r * 1.45 + (Math.random() - 0.5) * 0.45;
-      gPos[i * 3] = Math.cos(ang) * r; gPos[i * 3 + 1] = (Math.random() - 0.5) * 0.35; gPos[i * 3 + 2] = Math.sin(ang) * r;
-      const cc = r < 1.1 ? c1.clone().lerp(c2, r / 1.1) : c2.clone().lerp(c3, Math.min(1, (r - 1.1) / 3.2));
-      gCol[i * 3] = cc.r; gCol[i * 3 + 1] = cc.g; gCol[i * 3 + 2] = cc.b;
-    }
-    const galGeo = new THREE.BufferGeometry();
-    galGeo.setAttribute('position', new THREE.BufferAttribute(gPos, 3));
-    galGeo.setAttribute('color', new THREE.BufferAttribute(gCol, 3));
-    const galMat = new THREE.PointsMaterial({ size: 0.085, vertexColors: true, transparent: true, opacity: 0.95 });
-    const galaxyGroup = new THREE.Group(); galaxyGroup.add(new THREE.Points(galGeo, galMat));
-    galaxyGroup.rotation.set(0.65, 0, -0.2); galaxyGroup.position.set(0, 0.2, 0);
-    scene.add(galaxyGroup);
-
-    // =========================================================================
-    // COMPOSITOR 2D + 3D PARA O COMERCIAL TIKTOK 1080x1920
-    // =========================================================================
-    function cue(id, t, th, fn) { if (t >= th && !state.fired.has(id)) { state.fired.add(id); fn(); } }
-
-    function wrapText(ctx, text, x, y, maxW, lh) {
-      const words = String(text || '').split(' ');
-      let line = '', cy = y;
-      for (let i = 0; i < words.length; i++) {
-        const test = line + words[i] + ' ';
-        if (ctx.measureText(test).width > maxW && i > 0) { ctx.fillText(line.trim(), x, cy); line = words[i] + ' '; cy += lh; }
-        else line = test;
-      }
-      ctx.fillText(line.trim(), x, cy);
+      // Desenha mantendo a proporção exata 1:1 centralizado no palco 9:16
+      const asp = vw / vh, stAsp = 1080 / 1920;
+      const dw = asp > stAsp ? 1080 : 1920 * asp, dh = asp > stAsp ? 1080 / asp : 1920;
+      ctx.drawImage(offC, (1080 - dw) / 2, (1920 - dh) / 2, dw, dh);
     }
 
-    function drawAdFrame(t, dt) {
+    function drawFrame(t, dt) {
       const w = 1080, h = 1920;
-
-      // Cues Sonoros Sincronizados
-      cue('c0', t, 0.05, () => { adAudio.thunder(); state.shake = 22; });
-      [0.6, 0.85, 1.1, 1.5, 1.75, 2.5, 2.75, 3.0].forEach((tp, i) => cue(`tap_${i}`, t, tp, () => { adAudio.tap(i === 4); state.shake = i === 4 ? 26 : 8; }));
-      cue('c1', t, 4.5, () => { adAudio.thunder(); adAudio.coins(30); state.shake = 24; });
-      cue('c2', t, 9.0, () => { adAudio.cosmic(); adAudio.thunder(); state.shake = 22; });
-      cue('c3', t, 13.5, () => { adAudio.thunder(); adAudio.coins(14); state.shake = 28; });
-
-      // Fundo Cyber Escuro Rico (Opaco para TikTok!)
-      ctx2d.fillStyle = '#05070d';
-      ctx2d.fillRect(0, 0, w, h);
-      ctx2d.strokeStyle = 'rgba(0, 240, 255, 0.06)'; ctx2d.lineWidth = 2;
-      for (let x = 0; x < w; x += 90) { ctx2d.beginPath(); ctx2d.moveTo(x, 0); ctx2d.lineTo(x, h); ctx2d.stroke(); }
-      for (let y = 0; y < h; y += 90) { ctx2d.beginPath(); ctx2d.moveTo(0, y); ctx2d.lineTo(w, y); ctx2d.stroke(); }
-
-      // Glow central por cena
-      const glowCol = t < 4.5 ? '#ff1f8e' : t < 9 ? '#facc15' : t < 13.5 ? '#00f0ff' : '#22c55e';
-      const gr = ctx2d.createRadialGradient(w / 2, h * 0.52, 40, w / 2, h * 0.52, 650);
-      gr.addColorStop(0, glowCol + '44'); gr.addColorStop(1, 'transparent');
-      ctx2d.fillStyle = gr; ctx2d.fillRect(0, 0, w, h);
-
-      // Atualiza objetos 3D conforme a cena
-      chestGroup.visible = t >= 4.5 && t < 9.0;
-      galaxyGroup.visible = t >= 9.0 && t < 13.5;
-
-      if (chestGroup.visible) {
-        const lt = t - 4.5;
-        chestGroup.rotation.y = Math.sin(lt * 1.6) * 0.25;
-        lidPivot.rotation.x = -Math.min(1, lt / 0.4) * 1.55;
-        coins.forEach(c => {
-          const ct = lt - c.delay;
-          if (ct < 0) { c.m.visible = false; return; }
-          c.m.visible = true;
-          let y = 0.2 + c.vy * ct - 6.5 * ct * ct;
-          if (y < -2.2) y = -2.2 + Math.abs(Math.sin((-2.2 - y) * 2.2)) * 0.8;
-          c.m.position.set(c.vx * ct, y, ct * 0.4);
-          c.m.rotation.set(c.rx * ct + Math.PI / 2, ct * 5, 0);
-        });
-      }
-      if (galaxyGroup.visible) {
-        const lt = t - 9.0;
-        galaxyGroup.rotation.y = lt * 0.55;
-        galaxyGroup.scale.setScalar(0.8 + Math.min(0.4, lt * 0.12));
-      }
-
-      glRenderer.render(scene, camera);
-
-      // Shake da Câmera
-      ctx2d.save();
+      ctx.save();
       if (state.shake > 0.5) {
-        ctx2d.translate((Math.random() - 0.5) * state.shake, (Math.random() - 0.5) * state.shake);
+        ctx.translate((Math.random() - 0.5) * state.shake, (Math.random() - 0.5) * state.shake);
         state.shake *= Math.pow(0.03, dt);
       }
-      ctx2d.drawImage(glRenderer.domElement, 0, 0);
 
-      ctx2d.textAlign = 'center';
+      // 1. FUNDO: Print enviado pelo usuário OU Simulação Realista de Batalha PK
+      if (state.bgImg) {
+        const ia = state.bgImg.width / state.bgImg.height, ca = w / h;
+        const bw = ia > ca ? h * ia : w, bh = ia > ca ? h : w / ia;
+        ctx.drawImage(state.bgImg, (w - bw) / 2, (h - bh) / 2, bw, bh);
+      } else {
+        // Simulação de Batalha PK igual ao vídeo do @sander
+        ctx.fillStyle = '#090b10'; ctx.fillRect(0, 0, w, h);
+        // Split esquerdo (Azul/Tempestade) e direito (Preto/Rosa Neon)
+        const gL = ctx.createLinearGradient(0, 300, 540, 1100);
+        gL.addColorStop(0, '#071b3d'); gL.addColorStop(1, '#020611');
+        ctx.fillStyle = gL; ctx.fillRect(0, 290, 538, 860);
 
-      // CENA 1 (0 - 4.5s): GANCHO + TAP TAP PRO NA TELA
-      if (t < 4.5) {
-        ctx2d.fillStyle = '#ff1f8e'; ctx2d.font = '900 42px Inter, sans-serif';
-        ctx2d.fillText('⚠️ ATENÇÃO STREAMER', w / 2, 260);
-        ctx2d.fillStyle = '#ffffff'; ctx2d.font = '900 84px Impact, sans-serif';
-        wrapText(ctx2d, state.hook, w / 2, 390, 920, 95);
+        const gR = ctx.createLinearGradient(542, 300, 1080, 1100);
+        gR.addColorStop(0, '#2c0a3a'); gR.addColorStop(1, '#09070e');
+        ctx.fillStyle = gR; ctx.fillRect(542, 290, 538, 860);
 
-        // Ondas de toque no vidro + Letreiro TAP TAP
-        const pulse = 1 + Math.abs(Math.sin(t * Math.PI * 3.5)) * 0.1;
-        ctx2d.save(); ctx2d.translate(w / 2, 1080); ctx2d.scale(pulse, pulse);
-        ctx2d.strokeStyle = '#ff2a1f'; ctx2d.lineWidth = 18;
-        ctx2d.font = '900 220px Impact, sans-serif'; ctx2d.strokeText('TAP TAP', 0, 0);
-        ctx2d.fillStyle = '#140508'; ctx2d.fillText('TAP TAP', 0, 0);
-        ctx2d.restore();
+        // Silhuetas estilizadas dos 2 streamers reagindo
+        ctx.fillStyle = 'rgba(255,255,255,0.08)';
+        ctx.beginPath(); ctx.arc(270, 630, 110, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(270, 930, 180, 210, 0, Math.PI, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(810, 640, 105, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(810, 930, 170, 200, 0, Math.PI, Math.PI * 2); ctx.fill();
 
-        const rp = (t * 2.2) % 1;
-        ctx2d.strokeStyle = `rgba(0,240,255,${1 - rp})`; ctx2d.lineWidth = 10;
-        ctx2d.beginPath(); ctx2d.arc(w / 2, 1060, 120 + rp * 340, 0, Math.PI * 2); ctx2d.stroke();
+        // HUD Superior da Live PK
+        ctx.fillStyle = 'rgba(0,0,0,0.65)'; ctx.fillRect(0, 0, w, 290);
+        ctx.fillStyle = '#fff'; ctx.font = 'bold 34px Inter, sans-serif'; ctx.fillText(state.host1, 130, 110);
+        ctx.fillStyle = '#94a3b8'; ctx.font = 'bold 26px Inter, sans-serif'; ctx.fillText('👁️ 2.502', 880, 110);
+        ctx.fillStyle = '#facc15'; ctx.font = 'bold 28px Inter, sans-serif'; ctx.fillText('⚔️ Batalha de LIVES • 4/6', 40, 185);
 
-        ctx2d.fillStyle = '#00f0ff'; ctx2d.font = '800 44px Inter, sans-serif';
-        ctx2d.fillText('TRANSFORME SUA LIVE HOJE ⚡', w / 2, 1580);
-      }
-      // CENA 2 (4.5 - 9.0s): BAÚ + CHUVA DE MOEDAS
-      else if (t < 9.0) {
-        ctx2d.fillStyle = '#facc15'; ctx2d.font = '900 54px Inter, sans-serif';
-        ctx2d.fillText('🪙 CHUVA DE MOEDAS 3D', w / 2, 260);
-        ctx2d.fillStyle = '#ffffff'; ctx2d.font = '900 76px Impact, sans-serif';
-        wrapText(ctx2d, 'BAÚ EXPLOSIVO COM SOM REAL DE MOEDAS CAINDO', w / 2, 370, 920, 88);
-        ctx2d.fillStyle = '#facc15'; ctx2d.font = '800 40px Inter, sans-serif';
-        ctx2d.fillText('100% TRANSPARENTE PARA OBS & TIKTOK STUDIO', w / 2, 1620);
-      }
-      // CENA 3 (9.0 - 13.5s): GALÁXIA 3D + CHROMA KEY LEÃO + RANKINGS
-      else if (t < 13.5) {
-        ctx2d.fillStyle = '#00f0ff'; ctx2d.font = '900 54px Inter, sans-serif';
-        ctx2d.fillText('🌌 UNIVERSO 3D + LEÃO CHROMA', w / 2, 250);
-        ctx2d.fillStyle = '#ffffff'; ctx2d.font = '900 74px Impact, sans-serif';
-        wrapText(ctx2d, 'GALÁXIA 12K ESTRELAS + REMOVEDOR DE FUNDO', w / 2, 360, 920, 86);
-        ctx2d.fillStyle = '#e2e8f0'; ctx2d.font = '700 38px Inter, sans-serif';
-        ctx2d.fillText('✔ Pódio Moedas • ✔ Big Gifter • ✔ Voz TTS PT-BR', w / 2, 1580);
-      }
-      // CENA 4 (13.5 - 18.0s): OFERTA FINAL + CTA
-      else {
-        const lt = t - 13.5, pop = Math.min(1, lt * 3.5);
-        ctx2d.fillStyle = '#00f0ff'; ctx2d.font = '900 84px Impact, sans-serif';
-        ctx2d.fillText(state.brand, w / 2, 420);
+        // Barra PK Vermelha vs Azul subindo em tempo real!
+        const score = Math.floor(104587 + t * 3500);
+        const pct = Math.min(0.88, 0.55 + t * 0.03);
+        ctx.fillStyle = '#e11d48'; ctx.fillRect(30, 225, 1020 * pct, 46);
+        ctx.fillStyle = '#0ea5e9'; ctx.fillRect(30 + 1020 * pct, 225, 1020 * (1 - pct), 46);
+        ctx.fillStyle = '#fff'; ctx.font = '900 28px Inter, sans-serif';
+        ctx.fillText(score.toLocaleString('pt-BR'), 50, 258);
+        ctx.textAlign = 'right'; ctx.fillText('110', 1030, 258); ctx.textAlign = 'left';
 
-        ctx2d.fillStyle = '#ffffff'; ctx2d.font = '800 44px Inter, sans-serif';
-        ctx2d.fillText('PAINEL COMPLETO + PACK 3D (.WEBM)', w / 2, 520);
-
-        // Card de Preço Neon
-        ctx2d.save(); ctx2d.translate(w / 2, 920); ctx2d.scale(pop, pop);
-        ctx2d.fillStyle = '#111827'; ctx2d.strokeStyle = '#ff1f8e'; ctx2d.lineWidth = 8;
-        ctx2d.beginPath(); ctx2d.roundRect(-380, -210, 760, 420, 40); ctx2d.fill(); ctx2d.stroke();
-        ctx2d.fillStyle = '#94a3b8'; ctx2d.font = '700 34px Inter, sans-serif';
-        ctx2d.fillText('PREÇO FIXO EM REAIS (SEM DÓLAR)', 0, -110);
-        ctx2d.fillStyle = '#22c55e'; ctx2d.font = '900 110px Impact, sans-serif';
-        ctx2d.fillText(state.price, 0, 20);
-        ctx2d.fillStyle = '#facc15'; ctx2d.font = '800 36px Inter, sans-serif';
-        ctx2d.fillText('ACESSO IMEDIATO • GARANTIA 7 DIAS', 0, 130);
-        ctx2d.restore();
-
-        // Botão CTA pulsante
-        const bp = 1 + Math.sin(lt * 8) * 0.04;
-        ctx2d.save(); ctx2d.translate(w / 2, 1420); ctx2d.scale(bp, bp);
-        ctx2d.fillStyle = '#ff1f8e';
-        ctx2d.beginPath(); ctx2d.roundRect(-370, -65, 740, 130, 32); ctx2d.fill();
-        ctx2d.fillStyle = '#ffffff'; ctx2d.font = '900 50px Inter, sans-serif';
-        ctx2d.fillText(state.cta, 0, 18);
-        ctx2d.restore();
-
-        ctx2d.fillStyle = '#94a3b8'; ctx2d.font = '700 36px Inter, sans-serif';
-        ctx2d.fillText(state.handle, w / 2, 1660);
+        ctx.fillStyle = '#facc15'; ctx.font = '900 30px Inter, sans-serif'; ctx.fillText('WIN ×1', 35, 345);
+        ctx.fillStyle = '#cbd5e1'; ctx.textAlign = 'right'; ctx.fillText('WIN ×0', 1045, 345); ctx.textAlign = 'left';
+        ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.beginPath(); ctx.roundRect(760, 1060, 290, 58, 28); ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.font = 'bold 28px Inter, sans-serif'; ctx.fillText(state.host2, 815, 1098);
       }
 
-      // Flash branco curto nas trocas de cena
-      [0, 4.5, 9.0, 13.5].forEach(ct => {
-        if (t >= ct && t < ct + 0.22) {
-          ctx2d.fillStyle = `rgba(255,255,255,${(1 - (t - ct) / 0.22) * 0.5})`;
-          ctx2d.fillRect(0, 0, w, h);
+      // 2. VÍDEO DO EFEITO COM CHROMA KEY OU MEGA RAIO AZUL DEMO
+      if (state.hasVid) {
+        drawChromaVideo();
+      } else {
+        // Demo do Mega Raio Azul de transição (igual 00:11 do vídeo do @sander!)
+        if (t > 1.0 && t < 8.5) {
+          if (!state.fired.has('bolt')) { state.fired.add('bolt'); playThunder(); state.shake = 26; }
+          const fade = t < 1.3 ? (t - 1) / 0.3 : (t > 7.8 ? (8.5 - t) / 0.7 : 1);
+          const g = ctx.createLinearGradient(120, 0, 420, 0);
+          g.addColorStop(0, 'transparent'); g.addColorStop(0.5, `rgba(0,180,255,${0.95 * fade})`); g.addColorStop(1, 'transparent');
+          ctx.fillStyle = g; ctx.fillRect(80, 280, 380, 920);
+          ctx.fillStyle = `rgba(255,255,255,${0.95 * fade})`; ctx.fillRect(250 + (Math.random() - 0.5) * 14, 290, 40, 880);
         }
+      }
+
+      // 3. BANNER DE PRESENTE ENVIADO + CHAT SUBINDO AO VIVO
+      ctx.fillStyle = 'rgba(0,0,0,0.72)'; ctx.beginPath(); ctx.roundRect(35, 990, 510, 110, 55); ctx.fill();
+      ctx.strokeStyle = '#00f0ff'; ctx.lineWidth = 3; ctx.stroke();
+      ctx.fillStyle = '#facc15'; ctx.font = '900 32px Inter, sans-serif'; ctx.fillText(state.sender, 70, 1038);
+      ctx.fillStyle = '#ffffff'; ctx.font = '600 28px Inter, sans-serif'; ctx.fillText(`enviou ${state.giftName} ⚡`, 70, 1078);
+
+      // Chat explodindo na parte inferior esquerda
+      const visibleChats = chatLines.filter(c => t >= c.t).slice(-5);
+      visibleChats.forEach((c, idx) => {
+        const y = 1230 + idx * 84;
+        ctx.fillStyle = 'rgba(0,0,0,0.55)'; ctx.beginPath(); ctx.roundRect(35, y - 42, 680, 68, 22); ctx.fill();
+        ctx.fillStyle = '#38bdf8'; ctx.font = '800 30px Inter, sans-serif'; ctx.fillText(c.u, 60, y + 2);
+        ctx.fillStyle = '#ffffff'; ctx.font = '700 30px Inter, sans-serif'; ctx.fillText(c.m, 60 + ctx.measureText(c.u).width + 18, y + 2);
       });
 
-      ctx2d.restore();
+      // 4. CTA COMERCIAL FINAL (9.0s -> 12.0s)
+      if (t >= 8.5) {
+        const p = Math.min(1, (t - 8.5) * 3);
+        ctx.fillStyle = `rgba(5,7,13,${0.72 * p})`; ctx.fillRect(0, 1520, w, 400);
+        ctx.fillStyle = '#ff1f8e'; ctx.beginPath(); ctx.roundRect(70, 1620, 940, 140, 32); ctx.fill();
+        ctx.fillStyle = '#ffffff'; ctx.font = '900 42px Inter, sans-serif'; ctx.textAlign = 'center';
+        ctx.fillText(state.cta, w / 2, 1705);
+        ctx.textAlign = 'left';
+      }
+
+      ctx.restore();
     }
 
     function loop(now) {
       requestAnimationFrame(loop);
       const dt = Math.min(0.05, (now - state.lastTs) / 1000); state.lastTs = now;
       if (state.playing || state.recording) {
-        state.time += dt;
-        if (!state.recording && state.time >= AD_DURATION) { state.time = 0; state.fired.clear(); }
+        if (state.hasVid && !effectVid.paused) state.time = effectVid.currentTime;
+        else { state.time += dt; if (!state.recording && state.time >= state.dur) { state.time = 0; state.fired.clear(); } }
       }
-      drawAdFrame(Math.min(AD_DURATION, state.time), dt);
-      document.getElementById('adTimeText').textContent = `${Math.min(AD_DURATION, state.time).toFixed(1)}s / 18.0s`;
-      document.getElementById('adBar').style.width = `${(Math.min(AD_DURATION, state.time) / AD_DURATION) * 100}%`;
+      drawFrame(Math.min(state.dur, state.time), dt);
+      document.getElementById('timeTxt').textContent = `${Math.min(state.dur, state.time).toFixed(1)}s / ${state.dur.toFixed(1)}s`;
+      document.getElementById('barFill').style.width = `${(Math.min(state.dur, state.time) / state.dur) * 100}%`;
     }
 
-    // Inputs & Controles
-    ['Hook','Brand','Handle','Price','Cta'].forEach(k => {
-      document.getElementById(`inp${k}`).addEventListener('input', e => { state[k.toLowerCase()] = e.target.value; });
+    // Listeners
+    document.getElementById('inpLiveBg').addEventListener('change', e => {
+      const f = e.target.files?.[0]; if (!f) return;
+      const img = new Image(); img.onload = () => { state.bgImg = img; }; img.src = URL.createObjectURL(f);
     });
-    document.getElementById('btnRestartAd').addEventListener('click', () => { adAudio.init(); state.time = 0; state.fired.clear(); state.playing = true; document.getElementById('btnPlayPauseAd').textContent = '⏸ Pausar'; });
-    document.getElementById('btnPlayPauseAd').addEventListener('click', e => { adAudio.init(); state.playing = !state.playing; e.target.textContent = state.playing ? '⏸ Pausar' : '▶ Reproduzir'; });
-    document.getElementById('btnMute').addEventListener('click', e => { adAudio.init(); state.muted = !state.muted; adAudio.setMuted(state.muted); e.target.textContent = state.muted ? '🔇 Mudo' : '🔊 Som ON'; });
+    document.getElementById('inpEffectVid').addEventListener('change', e => {
+      const f = e.target.files?.[0]; if (!f) return;
+      effectVid.src = URL.createObjectURL(f);
+      effectVid.onloadeddata = () => {
+        initAudio();
+        state.hasVid = true;
+        state.dur = (effectVid.duration && isFinite(effectVid.duration)) ? effectVid.duration : 10.0;
+        effectVid.currentTime = 0; effectVid.play().catch(() => {});
+        document.getElementById('vidInfo').textContent = `📹 ${f.name} (${state.dur.toFixed(1)}s)`;
+      };
+    });
+    document.getElementById('selKey').addEventListener('change', e => { state.keyMode = Number(e.target.value); });
+    document.getElementById('rngThresh').addEventListener('input', e => { state.thresh = parseFloat(e.target.value); document.getElementById('threshTxt').textContent = e.target.value; });
+    ['Host1','Host2','Sender','GiftName','Cta'].forEach(k => {
+      document.getElementById(`inp${k}`).addEventListener('input', e => { state[k.charAt(0).toLowerCase() + k.slice(1)] = e.target.value; });
+    });
 
-    // Exportar Comercial 18s (.WEBM 1080x1920)
-    document.getElementById('btnRecordAd').addEventListener('click', () => {
+    document.getElementById('btnRestart').addEventListener('click', () => { initAudio(); state.time = 0; state.fired.clear(); state.playing = true; if (state.hasVid) { effectVid.currentTime = 0; effectVid.play().catch(() => {}); } });
+    document.getElementById('btnPlayPause').addEventListener('click', e => { initAudio(); state.playing = !state.playing; e.target.textContent = state.playing ? '⏸ Pausar' : '▶ Reproduzir'; if (state.hasVid) { if (state.playing) effectVid.play().catch(() => {}); else effectVid.pause(); } });
+    document.getElementById('btnMute').addEventListener('click', e => { initAudio(); state.muted = !state.muted; if (spkBus) spkBus.gain.setTargetAtTime(state.muted ? 0 : 0.85, actx.currentTime, 0.02); e.target.textContent = state.muted ? '🔇 Mudo' : '🔊 Som ON'; });
+
+    document.getElementById('btnRecord').addEventListener('click', () => {
       if (state.recording) return;
       const mime = ['video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'].find(m => MediaRecorder.isTypeSupported(m));
-      if (!mime) return alert('Seu navegador não suporta gravação WebM. Use Chrome ou Edge.');
-      adAudio.init();
+      if (!mime) return alert('Use Chrome ou Edge para gravar o vídeo .WEBM.');
+      initAudio();
       state.recording = true; state.playing = true; state.time = 0; state.fired.clear(); state.lastTs = performance.now();
-      const btn = document.getElementById('btnRecordAd'), lbl = document.getElementById('recLabel'), badge = document.getElementById('recBadge');
+      if (state.hasVid) { effectVid.currentTime = 0; effectVid.play().catch(() => {}); }
+      const btn = document.getElementById('btnRecord'), lbl = document.getElementById('recLbl'), badge = document.getElementById('recBadge');
       btn.disabled = true; badge.classList.remove('hidden');
 
-      const vs = adCanvas.captureStream(60), at = adAudio.dest.stream.getAudioTracks();
+      const vs = canvas.captureStream(60), at = dest.stream.getAudioTracks();
       const rec = new MediaRecorder(new MediaStream([...vs.getVideoTracks(), ...at]), { mimeType: mime, videoBitsPerSecond: 10_000_000, audioBitsPerSecond: 192_000 });
       const chunks = [];
       rec.ondataavailable = e => { if (e.data?.size) chunks.push(e.data); };
       rec.onstop = () => {
         const url = URL.createObjectURL(new Blob(chunks, { type: mime })), a = document.createElement('a');
-        a.href = url; a.download = `comercial-tiktok-${state.brand.toLowerCase().replace(/[^a-z0-9]+/g,'-')}-9x16.webm`;
+        a.href = url; a.download = `comercial-live-pk-${Date.now()}.webm`;
         document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000);
-        state.recording = false; btn.disabled = false; lbl.textContent = 'Gravar e Baixar Comercial 9:16 (.WEBM)'; badge.classList.add('hidden');
+        state.recording = false; btn.disabled = false; lbl.textContent = 'Gravar e Baixar Comercial Live (.WEBM)'; badge.classList.add('hidden');
       };
       rec.start(100);
       const t0 = performance.now(), iv = setInterval(() => {
-        const el = Math.min(18, (performance.now() - t0) / 1000);
-        lbl.textContent = `Gravando Comercial... (${el.toFixed(1)}s / 18.0s)`;
-        document.getElementById('recBadgeTxt').textContent = `REC ${el.toFixed(1)}s / 18.0s`;
+        const el = Math.min(state.dur, (performance.now() - t0) / 1000);
+        lbl.textContent = `Gravando... (${el.toFixed(1)}s / ${state.dur.toFixed(1)}s)`;
+        document.getElementById('recBadgeTxt').textContent = `REC ${el.toFixed(1)}s`;
       }, 100);
-      setTimeout(() => { clearInterval(iv); if (rec.state !== 'inactive') rec.stop(); }, 18050);
+      setTimeout(() => { clearInterval(iv); if (rec.state !== 'inactive') rec.stop(); }, state.dur * 1000 + 80);
     });
 
     requestAnimationFrame(loop);
