@@ -1,5 +1,5 @@
 {
-  "comercialUrl": "pack/Zeus01.mp4",
+  "comercialUrl": "pack/Leaorei.mp4",
   "itens": [
     {
       "id": "guerreira",
@@ -103,6 +103,14 @@
       "categoria": "Molduras",
       "arquivo": "pack/molduras-png.zip",
       "formato": "PNG Transparente",
+      "ativo": true
+    },
+    {
+      "id": "mwy74wv9",
+      "nome": "LEÃO",
+      "categoria": "Efeito 3D",
+      "arquivo": "pack/Leaorei.mp4",
+      "formato": "MP4",
       "ativo": true
     }
   ]
