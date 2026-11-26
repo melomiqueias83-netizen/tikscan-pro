@@ -3,354 +3,665 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gerador Comercial Live PK 9:16 — TIK SCAN PRO</title>
+  <title>Gerador de Comercial 9:16 — TIK SCAN PRO</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     * { box-sizing: border-box; }
-    body { margin: 0; background: #07090f; color: #f8fafc; font-family: Inter, system-ui, -apple-system, sans-serif; }
-    @keyframes pulseRec { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+    body { margin: 0; background: #090d16; color: #f1f5f9; font-family: Inter, system-ui, -apple-system, sans-serif; }
+    input[type="range"] { -webkit-appearance: none; appearance: none; height: 5px; background: #243047; border-radius: 999px; outline: none; }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 15px; height: 15px; border-radius: 50%; background: #00f0ff; cursor: pointer; border: 2px solid #090d16; }
+    @keyframes pulseRec { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
     .rec-dot { animation: pulseRec 1s infinite; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col lg:h-screen lg:overflow-hidden">
+<body class="min-h-screen flex flex-col">
 
-  <header class="h-14 shrink-0 border-b border-slate-800 bg-[#0d111a] px-4 lg:px-6 flex items-center justify-between">
+  <!-- TOPO SIMPLES -->
+  <header class="bg-[#0f1523] border-b border-slate-800 px-4 py-3 flex items-center justify-between gap-3">
     <div class="flex items-center gap-2.5">
-      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-rose-500 to-cyan-400 flex items-center justify-center font-black text-white text-sm">⚡</div>
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-500 via-blue-600 to-cyan-400 flex items-center justify-center font-black text-white text-xs">TS</div>
       <div>
-        <h1 class="text-sm sm:text-base font-black text-white leading-none">Gerador Comercial Live PK 9:16</h1>
-        <p class="text-[11px] text-slate-400">Simula uma Batalha PK real do TikTok com seu Efeito + Chat explodindo</p>
+        <div class="text-sm font-black text-white leading-none">Gerador de Comercial 9:16</div>
+        <div class="text-[10px] text-cyan-400 mt-0.5">Divulgue seus efeitos em ação na Batalha PK</div>
       </div>
     </div>
-    <div class="flex items-center gap-2">
-      <a href="index.html" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 font-bold">← Painel</a>
-      <button id="btnMute" type="button" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 font-bold">🔊 Som ON</button>
-    </div>
+    <a href="index.html" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200">Voltar ao Painel</a>
   </header>
 
-  <main class="flex-1 flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden">
-    <!-- ESQUERDA: CONTROLES -->
-    <aside class="w-full lg:w-[36%] border-b lg:border-b-0 lg:border-r border-slate-800 bg-[#0d111a] p-4 space-y-4 overflow-y-auto">
-      <div class="p-3.5 rounded-xl bg-emerald-950/35 border border-emerald-500/40 space-y-2.5">
-        <div class="text-xs font-black text-emerald-300">1. Subir Mídias da Live</div>
-        <label class="block w-full py-2 px-3 rounded-lg bg-slate-900 border border-slate-700 hover:border-cyan-400 text-xs font-bold text-center cursor-pointer">
-          🖼️ Print / Foto da Live (Fundo)
-          <input id="inpLiveBg" type="file" accept="image/*" class="hidden" />
-        </label>
-        <label class="block w-full py-2.5 px-3 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950 text-xs font-black text-center cursor-pointer">
-          ⚔️ Subir Vídeo do Efeito (Fundo Verde/Preto)
-          <input id="inpEffectVid" type="file" accept="video/*" class="hidden" />
-        </label>
-        <div id="vidInfo" class="text-[10px] text-slate-400 truncate">Nenhum vídeo selecionado (usando Mega Raio Azul demo).</div>
-        <div class="grid grid-cols-2 gap-2">
-          <select id="selKey" class="bg-[#07090f] border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white">
-            <option value="1">Remover Fundo Verde</option>
-            <option value="2">Remover Fundo Preto</option>
-            <option value="0">Sem Remoção</option>
-          </select>
-          <div>
-            <div class="flex justify-between text-[10px] text-slate-400"><span>Corte Fundo</span><span id="threshTxt">0.08</span></div>
-            <input id="rngThresh" type="range" min="0.01" max="0.45" step="0.01" value="0.08" class="w-full" />
-          </div>
-        </div>
-      </div>
+  <main class="flex-1 max-w-6xl w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
 
-      <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2.5">
-        <div class="text-xs font-bold uppercase text-cyan-400">2. Textos da Live &amp; Oferta</div>
-        <div class="grid grid-cols-2 gap-2">
-          <div><label class="block text-[10px] text-slate-400 mb-1">Host 1 (Esq.)</label><input id="inpHost1" type="text" value="sander" class="w-full bg-[#07090f] border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-bold" /></div>
-          <div><label class="block text-[10px] text-slate-400 mb-1">Host 2 (Dir.)</label><input id="inpHost2" type="text" value="Lohan..." class="w-full bg-[#07090f] border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-bold" /></div>
-        </div>
-        <div class="grid grid-cols-2 gap-2">
-          <div><label class="block text-[10px] text-slate-400 mb-1">Quem enviou</label><input id="inpSender" type="text" value="cigano" class="w-full bg-[#07090f] border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-bold" /></div>
-          <div><label class="block text-[10px] text-slate-400 mb-1">Nome do Efeito</label><input id="inpGiftName" type="text" value="Efeito Zeus VIP" class="w-full bg-[#07090f] border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-bold" /></div>
-        </div>
-        <div><label class="block text-[10px] text-slate-400 mb-1">Texto Comercial no Final</label><input id="inpCta" type="text" value="QUER ISSO NA SUA LIVE? LINK NA BIO 👇" class="w-full bg-[#07090f] border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-bold text-pink-400 uppercase" /></div>
-      </div>
+    <!-- CONTROLES ENXUTOS -->
+    <section class="lg:col-span-5 bg-[#121929] border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-4">
 
-      <button id="btnRecord" type="button" class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-rose-600 via-pink-600 to-amber-500 text-white font-black text-xs sm:text-sm uppercase shadow-lg flex items-center justify-center gap-2">
-        <span class="w-2.5 h-2.5 rounded-full bg-white"></span>
-        <span id="recLbl">Gravar e Baixar Comercial Live (.WEBM)</span>
-      </button>
-    </aside>
-
-    <!-- DIREITA: PALCO 9:16 -->
-    <section class="flex-1 flex flex-col bg-[#05070c] overflow-hidden">
-      <div class="p-3 border-b border-slate-800 bg-[#0d111a]/70 flex items-center justify-between gap-2">
+      <!-- 1. PRINT DA LIVE -->
+      <div class="space-y-2">
+        <div class="text-xs font-black uppercase text-slate-400">1. Fundo da Live (Opcional)</div>
         <div class="flex gap-2">
-          <button id="btnRestart" type="button" class="px-3 py-1.5 rounded-lg bg-slate-800 text-xs font-bold">↺ Reiniciar</button>
-          <button id="btnPlayPause" type="button" class="px-3 py-1.5 rounded-lg bg-slate-800 text-xs font-bold">⏸ Pausar</button>
+          <label class="flex-1 py-2.5 px-3 rounded-xl bg-[#0b101b] border border-slate-700 hover:border-cyan-400 text-xs font-bold text-center text-white cursor-pointer truncate">
+            Subir Print da Live
+            <input id="inpBgImg" type="file" accept="image/*" class="hidden" />
+          </label>
+          <button id="btnClearBg" type="button" class="hidden px-3 py-2 rounded-xl bg-slate-800 text-xs text-rose-300 font-bold">Remover</button>
         </div>
-        <div class="flex items-center gap-2">
-          <span id="timeTxt" class="text-xs font-mono text-cyan-400">0.0s / 12.0s</span>
-          <div class="w-24 h-1.5 bg-slate-800 rounded-full overflow-hidden"><div id="barFill" class="h-full bg-gradient-to-r from-rose-500 to-cyan-400 w-0"></div></div>
-        </div>
+        <div id="bgStatus" class="text-[11px] text-slate-400">Usando Arena PK simulada (ou suba um print real).</div>
       </div>
 
-      <div class="flex-1 p-4 flex items-center justify-center overflow-hidden relative">
-        <div class="relative h-[68vh] lg:h-full max-h-[76vh] aspect-[9/16] rounded-2xl overflow-hidden border-2 border-slate-700 shadow-2xl bg-black">
-          <canvas id="liveCanvas" width="1080" height="1920" class="w-full h-full block"></canvas>
-          <div id="recBadge" class="hidden absolute top-3 left-1/2 -translate-x-1/2 bg-black/85 border border-rose-500 px-3 py-1 rounded-full flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 rec-dot"></span>
-            <span id="recBadgeTxt" class="text-xs font-mono font-bold text-white">REC 0.0s</span>
+      <!-- 2. VÍDEOS DO COMERCIAL -->
+      <div class="space-y-2.5 pt-2 border-t border-slate-800">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-black uppercase text-emerald-400">2. Efeitos da Propaganda</span>
+          <span id="playlistCount" class="text-[11px] font-mono text-slate-400">0 vídeos</span>
+        </div>
+
+        <label class="block w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 hover:brightness-110 text-slate-950 font-black text-xs text-center cursor-pointer shadow">
+          + Adicionar Vídeo(s) de Efeito
+          <input id="inpEffectVids" type="file" accept="video/*" multiple class="hidden" />
+        </label>
+
+        <div id="playlistBox" class="space-y-2 max-h-60 overflow-y-auto">
+          <div class="text-xs text-slate-500 text-center py-4 border border-dashed border-slate-700 rounded-xl">
+            Adicione 1 ou vários vídeos (Zeus, Leão, Guerreira...) para rodar em sequência.
           </div>
         </div>
       </div>
+
+      <!-- 3. TEXTO DA PROPAGANDA (CTA) -->
+      <div class="space-y-2.5 pt-2 border-t border-slate-800">
+        <div class="text-xs font-black uppercase text-amber-400">3. Texto da Propaganda (CTA Final)</div>
+        <input id="inpCtaTop" type="text" value="QUER ESSES EFEITOS NA SUA LIVE?" class="w-full bg-[#0b101b] border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white" />
+        <input id="inpCtaBottom" type="text" value="DE R$ 99 POR R$ 29,99 • LINK NA BIO" class="w-full bg-[#0b101b] border border-slate-700 rounded-xl px-3 py-2 text-xs font-black text-cyan-300" />
+      </div>
+
+      <!-- AJUSTE FINO OPCIONAL (FECHADO PARA NÃO POLUIR) -->
+      <details class="bg-[#0b101b] border border-slate-800 rounded-xl p-3">
+        <summary class="text-xs font-bold text-slate-300 cursor-pointer">Ajuste Fino do Recorte (Chroma Key / Despill)</summary>
+        <div class="mt-3 space-y-2.5">
+          <div class="grid grid-cols-3 gap-2">
+            <div><div class="flex justify-between text-[10px] text-slate-400"><span>Corte</span><span id="lblThresh">0.09</span></div><input id="rngThresh" type="range" min="0.01" max="0.45" step="0.01" value="0.09" class="w-full" /></div>
+            <div><div class="flex justify-between text-[10px] text-slate-400"><span>Suave</span><span id="lblSmooth">0.14</span></div><input id="rngSmooth" type="range" min="0.02" max="0.40" step="0.01" value="0.14" class="w-full" /></div>
+            <div><div class="flex justify-between text-[10px] text-slate-400"><span>Despill</span><span id="lblDespill">0.90</span></div><input id="rngDespill" type="range" min="0.00" max="1.00" step="0.05" value="0.90" class="w-full" /></div>
+          </div>
+          <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
+            <input id="chkHideCorner" type="checkbox" checked />
+            <span>Ocultar marca d'água do canto inferior direito</span>
+          </label>
+        </div>
+      </details>
+
+      <!-- BOTÕES PRINCIPAIS -->
+      <div class="grid grid-cols-2 gap-2.5 pt-1">
+        <button id="btnPreview" type="button" class="py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-black text-xs uppercase">Testar Prévia</button>
+        <button id="btnRecord" type="button" class="py-3 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 hover:brightness-110 text-slate-950 font-black text-xs uppercase">Baixar (.WEBM)</button>
+      </div>
+      <div id="statusMsg" class="text-[11px] text-center text-slate-400">Pronto para gerar seu comercial 1080×1920.</div>
+
     </section>
+
+    <!-- PALCO 9:16 AO VIVO -->
+    <section class="lg:col-span-7 flex flex-col items-center justify-center bg-[#060910] border border-slate-800 rounded-2xl p-4">
+      <div class="relative w-full max-w-[340px] aspect-[9/16] rounded-2xl overflow-hidden border-2 border-slate-700 bg-black shadow-2xl">
+        <canvas id="mainCanvas" width="1080" height="1920" class="w-full h-full block"></canvas>
+        <div id="recBadge" class="hidden absolute top-3 left-1/2 -translate-x-1/2 bg-black/85 border border-rose-500 px-3 py-1 rounded-full flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-rose-500 rec-dot"></span>
+          <span id="recTimer" class="text-[11px] font-mono font-bold text-white">REC 0.0s</span>
+        </div>
+      </div>
+      <div class="mt-2.5 text-[11px] text-slate-400">Formato 1080×1920 (TikTok Ads / Reels / Vitrine do Site)</div>
+    </section>
+
   </main>
 
-  <video id="effectVid" loop playsinline style="position:fixed;left:-9999px;top:0;width:16px;height:16px;opacity:0.001;pointer-events:none;"></video>
+  <!-- Vídeo fora da tela para decodificação GPU 60fps + áudio original -->
+  <video id="effectVid" playsinline style="position:fixed;left:-9999px;top:0;width:16px;height:16px;opacity:0.001;pointer-events:none;"></video>
 
   <script>
-    const canvas = document.getElementById('liveCanvas');
-    const ctx = canvas.getContext('2d');
-    const offC = document.createElement('canvas');
-    const offCtx = offC.getContext('2d', { willReadFrequently: true });
+    const mainCanvas = document.getElementById('mainCanvas');
+    const ctx = mainCanvas.getContext('2d');
     const effectVid = document.getElementById('effectVid');
 
+    // =========================================================================
+    // 1. CHROMA KEY NA GPU (WEBGL + DESPILL + MÁSCARA CANTO)
+    // =========================================================================
+    const chromaCanvas = document.createElement('canvas');
+    chromaCanvas.width = 1080;
+    chromaCanvas.height = 1920;
+    const gl = chromaCanvas.getContext('webgl', { alpha: true, premultipliedAlpha: true, preserveDrawingBuffer: true });
+
+    let glProgram = null, glTex = null, glUniforms = {};
+    function initWebGLChroma() {
+      if (!gl) return;
+      const vsSrc = `
+        attribute vec2 aPos;
+        varying vec2 vUv;
+        void main() {
+          vUv = aPos * 0.5 + 0.5;
+          gl_Position = vec4(aPos, 0.0, 1.0);
+        }
+      `;
+      const fsSrc = `
+        precision mediump float;
+        uniform sampler2D uTex;
+        uniform int uMode;
+        uniform float uThresh;
+        uniform float uSmooth;
+        uniform float uDespill;
+        uniform int uHideCorner;
+        varying vec2 vUv;
+        void main() {
+          vec4 tex = texture2D(uTex, vUv);
+          float alpha = tex.a;
+          if (uMode == 1) {
+            float rb = max(tex.r, tex.b);
+            float gd = tex.g - rb;
+            alpha = 1.0 - smoothstep(uThresh, uThresh + uSmooth, gd);
+            if (tex.g > rb && uDespill > 0.0) {
+              tex.g = mix(tex.g, rb, clamp(gd * 4.5, 0.0, 1.0) * uDespill);
+            }
+          } else if (uMode == 2) {
+            float luma = max(tex.r, max(tex.g, tex.b));
+            alpha = smoothstep(uThresh, uThresh + uSmooth, luma);
+          }
+          if (uHideCorner == 1) {
+            float mx = smoothstep(0.91, 0.94, vUv.x);
+            float my = 1.0 - smoothstep(0.04, 0.07, vUv.y);
+            alpha *= (1.0 - mx * my);
+          }
+          gl_FragColor = vec4(tex.rgb * alpha, alpha);
+        }
+      `;
+      const compile = (type, src) => {
+        const s = gl.createShader(type);
+        gl.shaderSource(s, src);
+        gl.compileShader(s);
+        return s;
+      };
+      glProgram = gl.createProgram();
+      gl.attachShader(glProgram, compile(gl.VERTEX_SHADER, vsSrc));
+      gl.attachShader(glProgram, compile(gl.FRAGMENT_SHADER, fsSrc));
+      gl.linkProgram(glProgram);
+      gl.useProgram(glProgram);
+
+      const buf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+      const loc = gl.getAttribLocation(glProgram, 'aPos');
+      gl.enableVertexAttribArray(loc);
+      gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+      glTex = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, glTex);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+      glUniforms = {
+        uMode: gl.getUniformLocation(glProgram, 'uMode'),
+        uThresh: gl.getUniformLocation(glProgram, 'uThresh'),
+        uSmooth: gl.getUniformLocation(glProgram, 'uSmooth'),
+        uDespill: gl.getUniformLocation(glProgram, 'uDespill'),
+        uHideCorner: gl.getUniformLocation(glProgram, 'uHideCorner')
+      };
+    }
+    initWebGLChroma();
+
+    // =========================================================================
+    // 2. ÁUDIO ROTEADO PRO GRAVADOR .WEBM
+    // =========================================================================
+    let actx = null, dest = null, vidSrc = null;
+    function ensureAudio() {
+      if (actx) { if (actx.state === 'suspended') actx.resume(); return; }
+      const AC = window.AudioContext || window.webkitAudioContext;
+      actx = new AC();
+      dest = actx.createMediaStreamDestination();
+      const gain = actx.createGain();
+      gain.gain.value = 0.95;
+      gain.connect(dest);
+      gain.connect(actx.destination);
+
+      vidSrc = actx.createMediaElementSource(effectVid);
+      vidSrc.connect(gain);
+
+      const keep = actx.createOscillator(), kg = actx.createGain();
+      kg.gain.value = 0.00001;
+      keep.connect(kg);
+      kg.connect(dest);
+      keep.start();
+    }
+
+    // =========================================================================
+    // 3. ESTADO DA PLAYLIST & SIMULAÇÃO PK
+    // =========================================================================
     const state = {
-      dur: 12.0, time: 0, playing: true, recording: false, muted: false, lastTs: performance.now(),
-      bgImg: null, hasVid: false, keyMode: 1, thresh: 0.08, smooth: 0.14,
-      host1: 'sander', host2: 'Lohan...', sender: 'cigano', giftName: 'Efeito Zeus VIP',
-      cta: 'QUER ISSO NA SUA LIVE? LINK NA BIO 👇', fired: new Set(), shake: 0
+      bgImg: null,
+      playlist: [],
+      running: false,
+      recording: false,
+      phase: 'idle', // 'idle' | 'video' | 'cta'
+      seqIdx: 0,
+      videoReady: false,
+      ctaTimer: 0,
+      totalElapsed: 0,
+      thresh: 0.09,
+      smooth: 0.14,
+      despill: 0.90,
+      hideCorner: 1,
+      scoreLeft: 4200,
+      scoreRight: 3850,
+      boltAlpha: 0,
+      bannerAlpha: 0,
+      chatIdx: 0,
+      lastChatTs: 0,
+      activeChat: [
+        { u: 'lucas_tk', m: 'Começou a batalha!!', c: '#38bdf8' },
+        { u: 'ana_live', m: 'Manda presente pesado!', c: '#f472b6' }
+      ]
     };
 
-    // Audio Engine (Áudio original do vídeo + Trovão de impacto no Mega Raio)
-    let actx = null, recBus = null, spkBus = null, dest = null, vidSrc = null, noiseBuf = null;
-    function initAudio() {
-      if (actx) { if (actx.state === 'suspended') actx.resume(); return; }
-      const AC = window.AudioContext || window.webkitAudioContext; actx = new AC();
-      dest = actx.createMediaStreamDestination();
-      recBus = actx.createGain(); recBus.gain.value = 0.95; recBus.connect(dest);
-      spkBus = actx.createGain(); spkBus.gain.value = state.muted ? 0 : 0.85;
-      recBus.connect(spkBus); spkBus.connect(actx.destination);
-      const k = actx.createOscillator(), kg = actx.createGain(); kg.gain.value = 0.00001; k.connect(kg); kg.connect(dest); k.start();
-      const sr = actx.sampleRate; noiseBuf = actx.createBuffer(1, sr * 2, sr);
-      const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
-      if (!vidSrc && state.hasVid) { vidSrc = actx.createMediaElementSource(effectVid); vidSrc.connect(recBus); }
-    }
-    function playThunder() {
-      if (!actx || actx.state === 'suspended') return;
-      const now = actx.currentTime;
-      const sub = actx.createOscillator(), sg = actx.createGain();
-      sub.type = 'sine'; sub.frequency.setValueAtTime(115, now); sub.frequency.exponentialRampToValueAtTime(28, now + 0.6);
-      sg.gain.setValueAtTime(0.001, now); sg.gain.linearRampToValueAtTime(0.9, now + 0.015); sg.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
-      sub.connect(sg); sg.connect(recBus); sub.start(now); sub.stop(now + 0.85);
-      const s = actx.createBufferSource(); s.buffer = noiseBuf;
-      const lp = actx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.setValueAtTime(900, now); lp.frequency.exponentialRampToValueAtTime(140, now + 1.2);
-      const g = actx.createGain(); g.gain.setValueAtTime(0.65, now); g.gain.exponentialRampToValueAtTime(0.001, now + 1.3);
-      s.connect(lp); lp.connect(g); g.connect(recBus); s.start(now); s.stop(now + 1.35);
-    }
-
-    const chatLines = [
-      { u: '🔥 LINO', m: 'ATIVEM O HEART-ME 🔥', t: 0.4 },
-      { u: 'sasa.tartaruga', m: 'MANO 😱', t: 1.2 },
-      { u: 'Thay_salless', m: '@cigano Slc!!', t: 2.1 },
-      { u: 'SHELBY', m: 'SELOKOOOO ⚡', t: 3.2 },
-      { u: 'princesa jujuba', m: 'manooo que incrível', t: 4.5 },
-      { u: 'Y_U_R_I ⚡', m: 'PASSADA 💥', t: 6.0 },
-      { u: 'Matheus021!', m: 'crlh que foda 🔥', t: 7.5 },
-      { u: 'Cruz Santos', m: 'toooppp 🚀', t: 9.0 }
+    const CHAT_POOL = [
+      { u: 'rayssa_br', m: 'QUE EFEITO ABSURDO!!', c: '#facc15' },
+      { u: 'pedro_live', m: 'Olha o recorte perfeito na live', c: '#34d399' },
+      { u: 'maria_tk', m: 'Como coloca isso no TikTok Studio?', c: '#38bdf8' },
+      { u: 'thiago_pk', m: 'OLHA O PLACAR VIRANDO!', c: '#fb7185' },
+      { u: 'juliana_vip', m: 'Link tá na bio por R$ 29,99!', c: '#a78bfa' }
     ];
+    const SENDERS_POOL = ['Maria_live', 'joao_tk', 'Raynnara', 'pedro_go', 'ana_stars'];
 
-    function drawChromaVideo() {
-      if (!state.hasVid || effectVid.readyState < 2) return;
-      const vw = effectVid.videoWidth || 720, vh = effectVid.videoHeight || 1280;
-      const scale = Math.min(540 / vw, 720 / vh); // Processamento rápido 60fps para Canvas 2D
-      const pw = Math.floor(vw * scale), ph = Math.floor(vh * scale);
-      if (offC.width !== pw || offC.height !== ph) { offC.width = pw; offC.height = ph; }
-      offCtx.drawImage(effectVid, 0, 0, pw, ph);
+    // Upload Print da Live
+    document.getElementById('inpBgImg').addEventListener('change', e => {
+      const f = e.target.files?.[0]; if (!f) return;
+      const img = new Image();
+      img.onload = () => {
+        state.bgImg = img;
+        document.getElementById('bgStatus').textContent = `Print ativo: ${f.name}`;
+        document.getElementById('btnClearBg').classList.remove('hidden');
+      };
+      img.src = URL.createObjectURL(f);
+      e.target.value = '';
+    });
+    document.getElementById('btnClearBg').addEventListener('click', () => {
+      state.bgImg = null;
+      document.getElementById('bgStatus').textContent = 'Usando Arena PK simulada.';
+      document.getElementById('btnClearBg').classList.add('hidden');
+    });
 
-      if (state.keyMode !== 0) {
-        const img = offCtx.getImageData(0, 0, pw, ph), d = img.data;
-        const th = state.thresh * 255, sm = state.smooth * 255;
-        for (let i = 0; i < d.length; i += 4) {
-          const r = d[i], g = d[i + 1], b = d[i + 2];
-          if (state.keyMode === 1) {
-            const rb = Math.max(r, b), diff = g - rb;
-            if (diff > th) {
-              const a = Math.max(0, 1 - (diff - th) / sm);
-              d[i + 3] = a * 255;
-              if (g > rb) d[i + 1] = rb + (g - rb) * 0.15;
-            }
-          } else {
-            const luma = Math.max(r, g, b);
-            if (luma < th + sm) d[i + 3] = Math.max(0, (luma - th) / sm) * 255;
-          }
-        }
-        offCtx.putImageData(img, 0, 0);
+    // Upload Múltiplo de Vídeos para Propaganda
+    document.getElementById('inpEffectVids').addEventListener('change', async e => {
+      const files = [...(e.target.files || [])];
+      if (!files.length) return;
+      for (let i = 0; i < files.length; i++) {
+        const f = files[i];
+        const meta = await probeVideo(f);
+        const cleanTitle = f.name.replace(/\.[^.]+$/, '').replace(/[_-]+/g, ' ').trim();
+        state.playlist.push({
+          id: Date.now().toString(36) + '_' + i,
+          url: meta.url,
+          giftName: cleanTitle || `Efeito ${state.playlist.length + 1}`,
+          sender: SENDERS_POOL[state.playlist.length % SENDERS_POOL.length],
+          dur: meta.dur,
+          w: meta.w,
+          h: meta.h,
+          keyMode: meta.keyMode
+        });
       }
+      renderPlaylist();
+      e.target.value = '';
+    });
 
-      // Desenha mantendo a proporção exata 1:1 centralizado no palco 9:16
-      const asp = vw / vh, stAsp = 1080 / 1920;
-      const dw = asp > stAsp ? 1080 : 1920 * asp, dh = asp > stAsp ? 1080 / asp : 1920;
-      ctx.drawImage(offC, (1080 - dw) / 2, (1920 - dh) / 2, dw, dh);
+    function probeVideo(file) {
+      return new Promise(resolve => {
+        const url = URL.createObjectURL(file);
+        const v = document.createElement('video');
+        v.muted = true; v.playsInline = true; v.src = url;
+        v.onloadeddata = () => {
+          v.currentTime = Math.min(0.2, (v.duration || 1) * 0.1);
+        };
+        v.onseeked = () => {
+          let keyMode = 1;
+          try {
+            const c = document.createElement('canvas'); c.width = 24; c.height = 24;
+            const cx = c.getContext('2d'); cx.drawImage(v, 0, 0, 24, 24);
+            const p = cx.getImageData(2, 2, 1, 1).data;
+            if (p[1] > p[0] * 1.25 && p[1] > p[2] * 1.25) keyMode = 1;
+            else if (p[0] < 24 && p[1] < 24 && p[2] < 24) keyMode = 2;
+            else keyMode = 0;
+          } catch {}
+          resolve({ url, dur: (v.duration && isFinite(v.duration)) ? v.duration : 5.0, w: v.videoWidth || 1080, h: v.videoHeight || 1920, keyMode });
+        };
+        v.onerror = () => resolve({ url, dur: 5.0, w: 1080, h: 1920, keyMode: 1 });
+      });
     }
 
-    function drawFrame(t, dt) {
-      const w = 1080, h = 1920;
-      ctx.save();
-      if (state.shake > 0.5) {
-        ctx.translate((Math.random() - 0.5) * state.shake, (Math.random() - 0.5) * state.shake);
-        state.shake *= Math.pow(0.03, dt);
+    function renderPlaylist() {
+      const box = document.getElementById('playlistBox');
+      document.getElementById('playlistCount').textContent = `${state.playlist.length} vídeo(s)`;
+      if (!state.playlist.length) {
+        box.innerHTML = '<div class="text-xs text-slate-500 text-center py-4 border border-dashed border-slate-700 rounded-xl">Adicione 1 ou vários vídeos (Zeus, Leão, Guerreira...) para rodar em sequência.</div>';
+        return;
+      }
+      box.innerHTML = state.playlist.map((it, idx) => `
+        <div class="bg-[#0b101b] border border-slate-800 rounded-xl p-2.5 space-y-2">
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-[11px] font-black text-cyan-400">#${idx + 1} • ${it.dur.toFixed(1)}s</span>
+            <div class="flex items-center gap-1">
+              <button data-mv="-1" data-idx="${idx}" class="px-1.5 py-0.5 rounded bg-slate-800 text-[10px] text-white">↑</button>
+              <button data-mv="1" data-idx="${idx}" class="px-1.5 py-0.5 rounded bg-slate-800 text-[10px] text-white">↓</button>
+              <button data-del="${idx}" class="px-1.5 py-0.5 rounded bg-rose-500/20 text-[10px] text-rose-300">✕</button>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-1.5">
+            <input data-ed="giftName" data-idx="${idx}" value="${it.giftName}" placeholder="Efeito" class="bg-[#121929] border border-slate-700 rounded-lg px-2 py-1 text-[11px] text-white font-bold" />
+            <input data-ed="sender" data-idx="${idx}" value="${it.sender}" placeholder="Quem enviou" class="bg-[#121929] border border-slate-700 rounded-lg px-2 py-1 text-[11px] text-slate-200" />
+            <select data-ed="keyMode" data-idx="${idx}" class="bg-[#121929] border border-slate-700 rounded-lg px-1.5 py-1 text-[11px] text-cyan-300">
+              <option value="1" ${it.keyMode===1?'selected':''}>Fundo Verde</option>
+              <option value="2" ${it.keyMode===2?'selected':''}>Fundo Preto</option>
+              <option value="0" ${it.keyMode===0?'selected':''}>Original</option>
+            </select>
+          </div>
+        </div>
+      `).join('');
+
+      box.querySelectorAll('[data-ed]').forEach(el => el.addEventListener('input', () => {
+        const idx = Number(el.dataset.idx);
+        state.playlist[idx][el.dataset.ed] = el.dataset.ed === 'keyMode' ? Number(el.value) : el.value;
+      }));
+      box.querySelectorAll('[data-mv]').forEach(b => b.addEventListener('click', () => {
+        const i = Number(b.dataset.idx), d = Number(b.dataset.mv), j = i + d;
+        if (j < 0 || j >= state.playlist.length) return;
+        [state.playlist[i], state.playlist[j]] = [state.playlist[j], state.playlist[i]];
+        renderPlaylist();
+      }));
+      box.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => {
+        const i = Number(b.dataset.del);
+        URL.revokeObjectURL(state.playlist[i].url);
+        state.playlist.splice(i, 1);
+        renderPlaylist();
+      }));
+    }
+
+    document.getElementById('rngThresh').addEventListener('input', e => { state.thresh = parseFloat(e.target.value); document.getElementById('lblThresh').textContent = state.thresh.toFixed(2); });
+    document.getElementById('rngSmooth').addEventListener('input', e => { state.smooth = parseFloat(e.target.value); document.getElementById('lblSmooth').textContent = state.smooth.toFixed(2); });
+    document.getElementById('rngDespill').addEventListener('input', e => { state.despill = parseFloat(e.target.value); document.getElementById('lblDespill').textContent = state.despill.toFixed(2); });
+    document.getElementById('chkHideCorner').addEventListener('change', e => { state.hideCorner = e.target.checked ? 1 : 0; });
+
+    // =========================================================================
+    // 4. SEQUENCIADOR DA PLAYLIST + GRAVAÇÃO .WEBM
+    // =========================================================================
+    let activeRecorder = null, recChunks = [];
+
+    function playPlaylistItem(idx) {
+      if (idx >= state.playlist.length) {
+        state.phase = 'cta';
+        state.ctaTimer = 2.6;
+        state.boltAlpha = 1.0;
+        return;
+      }
+      state.phase = 'video';
+      state.seqIdx = idx;
+      state.videoReady = false;
+      const item = state.playlist[idx];
+
+      state.scoreLeft += 1200;
+      state.boltAlpha = 0.85;
+      state.bannerAlpha = 1.0;
+      const msg = CHAT_POOL[state.chatIdx % CHAT_POOL.length];
+      state.chatIdx++;
+      state.activeChat.push(msg);
+      if (state.activeChat.length > 5) state.activeChat.shift();
+
+      effectVid.loop = false;
+      effectVid.src = item.url;
+      effectVid.currentTime = 0;
+      effectVid.oncanplay = () => {
+        state.videoReady = true;
+        effectVid.play().catch(() => {});
+      };
+      effectVid.onended = () => {
+        if (!state.running) return;
+        playPlaylistItem(state.seqIdx + 1);
+      };
+      document.getElementById('statusMsg').textContent = `Rodando #${idx + 1}: ${item.giftName}`;
+    }
+
+    function startSequence(recordMode) {
+      if (!state.playlist.length) {
+        document.getElementById('statusMsg').textContent = 'Adicione pelo menos 1 vídeo de efeito primeiro!';
+        return;
+      }
+      ensureAudio();
+      state.running = true;
+      state.recording = recordMode;
+      state.totalElapsed = 0;
+      state.scoreLeft = 4200;
+      state.scoreRight = 3850;
+      state.activeChat = [
+        { u: 'lucas_tk', m: 'Começou a batalha!!', c: '#38bdf8' },
+        { u: 'ana_live', m: 'Manda presente pesado!', c: '#f472b6' }
+      ];
+
+      if (recordMode) {
+        const mime = ['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'].find(m => window.MediaRecorder && MediaRecorder.isTypeSupported(m)) || '';
+        if (!mime) { document.getElementById('statusMsg').textContent = 'Use Chrome/Edge para baixar .WEBM.'; state.recording = false; return; }
+        recChunks = [];
+        const vs = mainCanvas.captureStream(60);
+        const at = dest ? dest.stream.getAudioTracks() : [];
+        activeRecorder = new MediaRecorder(new MediaStream([...vs.getVideoTracks(), ...at]), { mimeType: mime, videoBitsPerSecond: 10_000_000, audioBitsPerSecond: 192_000 });
+        activeRecorder.ondataavailable = e => { if (e.data?.size) recChunks.push(e.data); };
+        activeRecorder.onstop = () => {
+          const url = URL.createObjectURL(new Blob(recChunks, { type: mime }));
+          const a = document.createElement('a'); a.href = url; a.download = 'comercial-tikscan-pro.webm';
+          document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(() => URL.revokeObjectURL(url), 4000);
+          document.getElementById('recBadge').classList.add('hidden');
+          document.getElementById('btnRecord').disabled = false;
+          document.getElementById('btnPreview').disabled = false;
+          document.getElementById('statusMsg').textContent = 'Comercial .WEBM baixado com sucesso!';
+        };
+        activeRecorder.start(100);
+        document.getElementById('recBadge').classList.remove('hidden');
+        document.getElementById('btnRecord').disabled = true;
+        document.getElementById('btnPreview').disabled = true;
       }
 
-      // 1. FUNDO: Print enviado pelo usuário OU Simulação Realista de Batalha PK
+      playPlaylistItem(0);
+    }
+
+    function finishSequence() {
+      state.running = false;
+      state.phase = 'idle';
+      state.videoReady = false;
+      effectVid.pause();
+      if (state.recording && activeRecorder && activeRecorder.state !== 'inactive') {
+        state.recording = false;
+        activeRecorder.stop();
+      } else {
+        document.getElementById('statusMsg').textContent = 'Prévia concluída! Clique em Baixar (.WEBM) quando quiser.';
+      }
+    }
+
+    document.getElementById('btnPreview').addEventListener('click', () => startSequence(false));
+    document.getElementById('btnRecord').addEventListener('click', () => startSequence(true));
+
+    // =========================================================================
+    // 5. RENDERIZAÇÃO DO PALCO 1080x1920
+    // =========================================================================
+    function drawArenaBackground(t) {
       if (state.bgImg) {
-        const ia = state.bgImg.width / state.bgImg.height, ca = w / h;
-        const bw = ia > ca ? h * ia : w, bh = ia > ca ? h : w / ia;
-        ctx.drawImage(state.bgImg, (w - bw) / 2, (h - bh) / 2, bw, bh);
-      } else {
-        // Simulação de Batalha PK igual ao vídeo do @sander
-        ctx.fillStyle = '#090b10'; ctx.fillRect(0, 0, w, h);
-        // Split esquerdo (Azul/Tempestade) e direito (Preto/Rosa Neon)
-        const gL = ctx.createLinearGradient(0, 300, 540, 1100);
-        gL.addColorStop(0, '#071b3d'); gL.addColorStop(1, '#020611');
-        ctx.fillStyle = gL; ctx.fillRect(0, 290, 538, 860);
-
-        const gR = ctx.createLinearGradient(542, 300, 1080, 1100);
-        gR.addColorStop(0, '#2c0a3a'); gR.addColorStop(1, '#09070e');
-        ctx.fillStyle = gR; ctx.fillRect(542, 290, 538, 860);
-
-        // Silhuetas estilizadas dos 2 streamers reagindo
-        ctx.fillStyle = 'rgba(255,255,255,0.08)';
-        ctx.beginPath(); ctx.arc(270, 630, 110, 0, Math.PI * 2); ctx.fill();
-        ctx.beginPath(); ctx.ellipse(270, 930, 180, 210, 0, Math.PI, Math.PI * 2); ctx.fill();
-        ctx.beginPath(); ctx.arc(810, 640, 105, 0, Math.PI * 2); ctx.fill();
-        ctx.beginPath(); ctx.ellipse(810, 930, 170, 200, 0, Math.PI, Math.PI * 2); ctx.fill();
-
-        // HUD Superior da Live PK
-        ctx.fillStyle = 'rgba(0,0,0,0.65)'; ctx.fillRect(0, 0, w, 290);
-        ctx.fillStyle = '#fff'; ctx.font = 'bold 34px Inter, sans-serif'; ctx.fillText(state.host1, 130, 110);
-        ctx.fillStyle = '#94a3b8'; ctx.font = 'bold 26px Inter, sans-serif'; ctx.fillText('👁️ 2.502', 880, 110);
-        ctx.fillStyle = '#facc15'; ctx.font = 'bold 28px Inter, sans-serif'; ctx.fillText('⚔️ Batalha de LIVES • 4/6', 40, 185);
-
-        // Barra PK Vermelha vs Azul subindo em tempo real!
-        const score = Math.floor(104587 + t * 3500);
-        const pct = Math.min(0.88, 0.55 + t * 0.03);
-        ctx.fillStyle = '#e11d48'; ctx.fillRect(30, 225, 1020 * pct, 46);
-        ctx.fillStyle = '#0ea5e9'; ctx.fillRect(30 + 1020 * pct, 225, 1020 * (1 - pct), 46);
-        ctx.fillStyle = '#fff'; ctx.font = '900 28px Inter, sans-serif';
-        ctx.fillText(score.toLocaleString('pt-BR'), 50, 258);
-        ctx.textAlign = 'right'; ctx.fillText('110', 1030, 258); ctx.textAlign = 'left';
-
-        ctx.fillStyle = '#facc15'; ctx.font = '900 30px Inter, sans-serif'; ctx.fillText('WIN ×1', 35, 345);
-        ctx.fillStyle = '#cbd5e1'; ctx.textAlign = 'right'; ctx.fillText('WIN ×0', 1045, 345); ctx.textAlign = 'left';
-        ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.beginPath(); ctx.roundRect(760, 1060, 290, 58, 28); ctx.fill();
-        ctx.fillStyle = '#fff'; ctx.font = 'bold 28px Inter, sans-serif'; ctx.fillText(state.host2, 815, 1098);
+        const iw = state.bgImg.width, ih = state.bgImg.height;
+        const sc = Math.max(1080 / iw, 1920 / ih);
+        const dw = iw * sc, dh = ih * sc;
+        ctx.drawImage(state.bgImg, (1080 - dw) / 2, (1920 - dh) / 2, dw, dh);
+        ctx.fillStyle = 'rgba(0,0,0,0.18)';
+        ctx.fillRect(0, 0, 1080, 1920);
+        return;
       }
+      // Arena PK Simulada caso não tenha subido print
+      const gL = ctx.createLinearGradient(0, 0, 540, 1920);
+      gL.addColorStop(0, '#0f172a'); gL.addColorStop(0.5, '#1e1b4b'); gL.addColorStop(1, '#090d16');
+      ctx.fillStyle = gL; ctx.fillRect(0, 0, 540, 1920);
 
-      // 2. VÍDEO DO EFEITO COM CHROMA KEY OU MEGA RAIO AZUL DEMO
-      if (state.hasVid) {
-        drawChromaVideo();
-      } else {
-        // Demo do Mega Raio Azul de transição (igual 00:11 do vídeo do @sander!)
-        if (t > 1.0 && t < 8.5) {
-          if (!state.fired.has('bolt')) { state.fired.add('bolt'); playThunder(); state.shake = 26; }
-          const fade = t < 1.3 ? (t - 1) / 0.3 : (t > 7.8 ? (8.5 - t) / 0.7 : 1);
-          const g = ctx.createLinearGradient(120, 0, 420, 0);
-          g.addColorStop(0, 'transparent'); g.addColorStop(0.5, `rgba(0,180,255,${0.95 * fade})`); g.addColorStop(1, 'transparent');
-          ctx.fillStyle = g; ctx.fillRect(80, 280, 380, 920);
-          ctx.fillStyle = `rgba(255,255,255,${0.95 * fade})`; ctx.fillRect(250 + (Math.random() - 0.5) * 14, 290, 40, 880);
-        }
-      }
+      const gR = ctx.createLinearGradient(540, 0, 1080, 1920);
+      gR.addColorStop(0, '#1f1024'); gR.addColorStop(0.5, '#3b0764'); gR.addColorStop(1, '#090d16');
+      ctx.fillStyle = gR; ctx.fillRect(540, 0, 540, 1920);
 
-      // 3. BANNER DE PRESENTE ENVIADO + CHAT SUBINDO AO VIVO
-      ctx.fillStyle = 'rgba(0,0,0,0.72)'; ctx.beginPath(); ctx.roundRect(35, 990, 510, 110, 55); ctx.fill();
-      ctx.strokeStyle = '#00f0ff'; ctx.lineWidth = 3; ctx.stroke();
-      ctx.fillStyle = '#facc15'; ctx.font = '900 32px Inter, sans-serif'; ctx.fillText(state.sender, 70, 1038);
-      ctx.fillStyle = '#ffffff'; ctx.font = '600 28px Inter, sans-serif'; ctx.fillText(`enviou ${state.giftName} ⚡`, 70, 1078);
+      ctx.strokeStyle = 'rgba(0,240,255,0.4)'; ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.moveTo(540, 260); ctx.lineTo(540, 1450); ctx.stroke();
 
-      // Chat explodindo na parte inferior esquerda
-      const visibleChats = chatLines.filter(c => t >= c.t).slice(-5);
-      visibleChats.forEach((c, idx) => {
-        const y = 1230 + idx * 84;
-        ctx.fillStyle = 'rgba(0,0,0,0.55)'; ctx.beginPath(); ctx.roundRect(35, y - 42, 680, 68, 22); ctx.fill();
-        ctx.fillStyle = '#38bdf8'; ctx.font = '800 30px Inter, sans-serif'; ctx.fillText(c.u, 60, y + 2);
-        ctx.fillStyle = '#ffffff'; ctx.font = '700 30px Inter, sans-serif'; ctx.fillText(c.m, 60 + ctx.measureText(c.u).width + 18, y + 2);
-      });
+      ctx.fillStyle = 'rgba(255,255,255,0.08)';
+      ctx.beginPath(); ctx.arc(270, 740, 130, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(810, 740, 130, 0, Math.PI * 2); ctx.fill();
 
-      // 4. CTA COMERCIAL FINAL (9.0s -> 12.0s)
-      if (t >= 8.5) {
-        const p = Math.min(1, (t - 8.5) * 3);
-        ctx.fillStyle = `rgba(5,7,13,${0.72 * p})`; ctx.fillRect(0, 1520, w, 400);
-        ctx.fillStyle = '#ff1f8e'; ctx.beginPath(); ctx.roundRect(70, 1620, 940, 140, 32); ctx.fill();
-        ctx.fillStyle = '#ffffff'; ctx.font = '900 42px Inter, sans-serif'; ctx.textAlign = 'center';
-        ctx.fillText(state.cta, w / 2, 1705);
-        ctx.textAlign = 'left';
-      }
+      ctx.fillStyle = '#e2e8f0'; ctx.font = 'bold 34px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText('@sua_live', 270, 920);
+      ctx.fillText('@adversario_pk', 810, 920);
+    }
 
+    function drawTopPKBar() {
+      // Topo Live + Viewers
+      ctx.fillStyle = 'rgba(0,0,0,0.6)';
+      ctx.beginPath(); ctx.roundRect(36, 56, 310, 68, 34); ctx.fill();
+      ctx.fillStyle = '#ef4444'; ctx.beginPath(); ctx.roundRect(50, 70, 92, 40, 12); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.font = '900 22px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('LIVE', 96, 98);
+      ctx.textAlign = 'left'; ctx.font = 'bold 24px sans-serif'; ctx.fillText('2.4K assistindo', 156, 98);
+
+      // Barra PK
+      const tot = state.scoreLeft + state.scoreRight;
+      const pct = Math.max(0.18, Math.min(0.82, state.scoreLeft / tot));
+      const bx = 40, by = 152, bw = 1000, bh = 52;
+      ctx.fillStyle = '#0f172a'; ctx.beginPath(); ctx.roundRect(bx, by, bw, bh, 26); ctx.fill();
+      ctx.save(); ctx.beginPath(); ctx.roundRect(bx, by, bw, bh, 26); ctx.clip();
+      const glBar = ctx.createLinearGradient(bx, 0, bx + bw * pct, 0);
+      glBar.addColorStop(0, '#00f0ff'); glBar.addColorStop(1, '#2563eb');
+      ctx.fillStyle = glBar; ctx.fillRect(bx, by, bw * pct, bh);
+      const grBar = ctx.createLinearGradient(bx + bw * pct, 0, bx + bw, 0);
+      grBar.addColorStop(0, '#ff1f8e'); grBar.addColorStop(1, '#dc2626');
+      ctx.fillStyle = grBar; ctx.fillRect(bx + bw * pct, by, bw * (1 - pct), bh);
+      ctx.restore();
+
+      ctx.fillStyle = '#fff'; ctx.font = '900 28px sans-serif';
+      ctx.textAlign = 'left'; ctx.fillText(state.scoreLeft.toLocaleString('pt-BR'), bx + 22, by + 36);
+      ctx.textAlign = 'right'; ctx.fillText(state.scoreRight.toLocaleString('pt-BR'), bx + bw - 22, by + 36);
+
+      ctx.fillStyle = '#facc15'; ctx.strokeStyle = '#000'; ctx.lineWidth = 6; ctx.font = '900 32px sans-serif'; ctx.textAlign = 'center';
+      ctx.strokeText('PK', bx + bw * pct, by + 37); ctx.fillText('PK', bx + bw * pct, by + 37);
+    }
+
+    function drawChromaVideo(item) {
+      if (!gl || !glProgram || !state.videoReady || effectVid.readyState < 2) return;
+      gl.viewport(0, 0, 1080, 1920);
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.useProgram(glProgram);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+      gl.bindTexture(gl.TEXTURE_2D, glTex);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, effectVid);
+
+      gl.uniform1i(glUniforms.uMode, item.keyMode);
+      gl.uniform1f(glUniforms.uThresh, state.thresh);
+      gl.uniform1f(glUniforms.uSmooth, state.smooth);
+      gl.uniform1f(glUniforms.uDespill, state.despill);
+      gl.uniform1i(glUniforms.uHideCorner, state.hideCorner);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+      const vAsp = (item.w || 1080) / (item.h || 1920), sAsp = 1080 / 1920;
+      const dw = vAsp > sAsp ? 1080 : 1920 * vAsp;
+      const dh = vAsp > sAsp ? 1080 / vAsp : 1920;
+      ctx.drawImage(chromaCanvas, (1080 - dw) / 2, (1920 - dh) / 2, dw, dh);
+    }
+
+    function drawMegaBolt(alpha) {
+      if (alpha <= 0.02) return;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.strokeStyle = '#00f0ff'; ctx.shadowColor = '#00f0ff'; ctx.shadowBlur = 35; ctx.lineWidth = 14;
+      ctx.beginPath(); ctx.moveTo(540, 210);
+      for (let y = 300; y <= 1400; y += 110) ctx.lineTo(540 + (Math.random() - 0.5) * 140, y);
+      ctx.stroke();
+      ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 5; ctx.stroke();
       ctx.restore();
     }
 
-    function loop(now) {
-      requestAnimationFrame(loop);
-      const dt = Math.min(0.05, (now - state.lastTs) / 1000); state.lastTs = now;
-      if (state.playing || state.recording) {
-        if (state.hasVid && !effectVid.paused) state.time = effectVid.currentTime;
-        else { state.time += dt; if (!state.recording && state.time >= state.dur) { state.time = 0; state.fired.clear(); } }
-      }
-      drawFrame(Math.min(state.dur, state.time), dt);
-      document.getElementById('timeTxt').textContent = `${Math.min(state.dur, state.time).toFixed(1)}s / ${state.dur.toFixed(1)}s`;
-      document.getElementById('barFill').style.width = `${(Math.min(state.dur, state.time) / state.dur) * 100}%`;
+    function drawGiftBanner(item) {
+      if (!item || state.bannerAlpha <= 0.02) return;
+      ctx.save();
+      ctx.globalAlpha = state.bannerAlpha;
+      const gx = 40, gy = 235, gw = 640, gh = 86;
+      const g = ctx.createLinearGradient(gx, gy, gx + gw, gy);
+      g.addColorStop(0, 'rgba(255,31,142,0.92)'); g.addColorStop(1, 'rgba(37,99,235,0.92)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.roundRect(gx, gy, gw, gh, 43); ctx.fill();
+      ctx.strokeStyle = '#00f0ff'; ctx.lineWidth = 3; ctx.stroke();
+      ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.font = '900 27px sans-serif';
+      ctx.fillText(`${item.sender} enviou`, gx + 28, gy + 36);
+      ctx.fillStyle = '#facc15'; ctx.font = '900 28px sans-serif';
+      ctx.fillText(item.giftName.toUpperCase(), gx + 28, gy + 70);
+      ctx.restore();
     }
 
-    // Listeners
-    document.getElementById('inpLiveBg').addEventListener('change', e => {
-      const f = e.target.files?.[0]; if (!f) return;
-      const img = new Image(); img.onload = () => { state.bgImg = img; }; img.src = URL.createObjectURL(f);
-    });
-    document.getElementById('inpEffectVid').addEventListener('change', e => {
-      const f = e.target.files?.[0]; if (!f) return;
-      effectVid.src = URL.createObjectURL(f);
-      effectVid.onloadeddata = () => {
-        initAudio();
-        state.hasVid = true;
-        state.dur = (effectVid.duration && isFinite(effectVid.duration)) ? effectVid.duration : 10.0;
-        effectVid.currentTime = 0; effectVid.play().catch(() => {});
-        document.getElementById('vidInfo').textContent = `📹 ${f.name} (${state.dur.toFixed(1)}s)`;
-      };
-    });
-    document.getElementById('selKey').addEventListener('change', e => { state.keyMode = Number(e.target.value); });
-    document.getElementById('rngThresh').addEventListener('input', e => { state.thresh = parseFloat(e.target.value); document.getElementById('threshTxt').textContent = e.target.value; });
-    ['Host1','Host2','Sender','GiftName','Cta'].forEach(k => {
-      document.getElementById(`inp${k}`).addEventListener('input', e => { state[k.charAt(0).toLowerCase() + k.slice(1)] = e.target.value; });
-    });
+    function drawChat() {
+      const baseY = 1600;
+      state.activeChat.forEach((c, idx) => {
+        const y = baseY - (state.activeChat.length - 1 - idx) * 62;
+        ctx.fillStyle = 'rgba(0,0,0,0.58)';
+        ctx.beginPath(); ctx.roundRect(36, y - 34, 680, 48, 24); ctx.fill();
+        ctx.font = '900 24px sans-serif'; ctx.fillStyle = c.c; ctx.textAlign = 'left';
+        ctx.fillText(`${c.u}:`, 58, y - 2);
+        const uw = ctx.measureText(`${c.u}: `).width;
+        ctx.font = '600 24px sans-serif'; ctx.fillStyle = '#f8fafc';
+        ctx.fillText(c.m, 58 + uw, y - 2);
+      });
+    }
 
-    document.getElementById('btnRestart').addEventListener('click', () => { initAudio(); state.time = 0; state.fired.clear(); state.playing = true; if (state.hasVid) { effectVid.currentTime = 0; effectVid.play().catch(() => {}); } });
-    document.getElementById('btnPlayPause').addEventListener('click', e => { initAudio(); state.playing = !state.playing; e.target.textContent = state.playing ? '⏸ Pausar' : '▶ Reproduzir'; if (state.hasVid) { if (state.playing) effectVid.play().catch(() => {}); else effectVid.pause(); } });
-    document.getElementById('btnMute').addEventListener('click', e => { initAudio(); state.muted = !state.muted; if (spkBus) spkBus.gain.setTargetAtTime(state.muted ? 0 : 0.85, actx.currentTime, 0.02); e.target.textContent = state.muted ? '🔇 Mudo' : '🔊 Som ON'; });
+    function drawCTACard(isFinalPhase) {
+      const topTxt = document.getElementById('inpCtaTop').value.trim();
+      const botTxt = document.getElementById('inpCtaBottom').value.trim();
+      if (!topTxt && !botTxt) return;
 
-    document.getElementById('btnRecord').addEventListener('click', () => {
-      if (state.recording) return;
-      const mime = ['video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'].find(m => MediaRecorder.isTypeSupported(m));
-      if (!mime) return alert('Use Chrome ou Edge para gravar o vídeo .WEBM.');
-      initAudio();
-      state.recording = true; state.playing = true; state.time = 0; state.fired.clear(); state.lastTs = performance.now();
-      if (state.hasVid) { effectVid.currentTime = 0; effectVid.play().catch(() => {}); }
-      const btn = document.getElementById('btnRecord'), lbl = document.getElementById('recLbl'), badge = document.getElementById('recBadge');
-      btn.disabled = true; badge.classList.remove('hidden');
+      const y = isFinalPhase ? 820 : 1685;
+      const h = isFinalPhase ? 260 : 165;
+      ctx.save();
+      ctx.fillStyle = isFinalPhase ? 'rgba(9,13,22,0.92)' : 'rgba(9,13,22,0.84)';
+      ctx.strokeStyle = '#00f0ff'; ctx.lineWidth = isFinalPhase ? 6 : 3;
+      ctx.beginPath(); ctx.roundRect(50, y, 980, h, 32); ctx.fill(); ctx.stroke();
 
-      const vs = canvas.captureStream(60), at = dest.stream.getAudioTracks();
-      const rec = new MediaRecorder(new MediaStream([...vs.getVideoTracks(), ...at]), { mimeType: mime, videoBitsPerSecond: 10_000_000, audioBitsPerSecond: 192_000 });
-      const chunks = [];
-      rec.ondataavailable = e => { if (e.data?.size) chunks.push(e.data); };
-      rec.onstop = () => {
-        const url = URL.createObjectURL(new Blob(chunks, { type: mime })), a = document.createElement('a');
-        a.href = url; a.download = `comercial-live-pk-${Date.now()}.webm`;
-        document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000);
-        state.recording = false; btn.disabled = false; lbl.textContent = 'Gravar e Baixar Comercial Live (.WEBM)'; badge.classList.add('hidden');
-      };
-      rec.start(100);
-      const t0 = performance.now(), iv = setInterval(() => {
-        const el = Math.min(state.dur, (performance.now() - t0) / 1000);
-        lbl.textContent = `Gravando... (${el.toFixed(1)}s / ${state.dur.toFixed(1)}s)`;
-        document.getElementById('recBadgeTxt').textContent = `REC ${el.toFixed(1)}s`;
-      }, 100);
-      setTimeout(() => { clearInterval(iv); if (rec.state !== 'inactive') rec.stop(); }, state.dur * 1000 + 80);
-    });
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#ffffff'; ctx.font = `900 ${isFinalPhase ? 44 : 34}px sans-serif`;
+      ctx.fillText(topTxt, 540, y + (isFinalPhase ? 105 : 68));
+      ctx.fillStyle = '#22d3ee'; ctx.font = `900 ${isFinalPhase ? 46 : 36}px sans-serif`;
+      ctx.fillText(botTxt, 540, y + (isFinalPhase ? 185 : 124));
+      ctx.restore();
+    }
 
+    let lastTs = performance.now();
+    function loop(now) {
+      requestAnimationFrame(loop);
+      const dt = Math.min(0.05, (now - lastTs) / 1000);
+      lastTs = now;
+
+      if (state.running) {
+        state.totalElapsed += dt;
+        state.scoreRight += Math.round(dt * 45);
+        state.boltAlpha = Math.max(0, state.boltAlpha - dt * 1.4);
+        if (state.phase === 'cta') {
+          state.ctaTimer -= dt;
+          if (state.ctaTimer <= 0) finishSequence();
+        }
+        if (state.recording) {
+          document.getElementById('recTimer').textContent = `REC ${state.totalElapsed.toFixed(1)}s`;
+        }
+      }
+
+      drawArenaBackground(now / 1000);
+      drawTopPKBar();
+
+      if (state.phase === 'video' && state.playlist[state.seqIdx]) {
+        drawChromaVideo(state.playlist[state.seqIdx]);
+        drawGiftBanner(state.playlist[state.seqIdx]);
+      }
+      drawMegaBolt(state.boltAlpha);
+      drawChat();
+      drawCTACard(state.phase === 'cta');
+    }
     requestAnimationFrame(loop);
   </script>
 </body>
-  </html>
+</html>
