@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TIK SCAN PRO — Overlays, Pack VFX 3D &amp; Automação TikTok Live</title>
+  <title>TIK SCAN PRO — Overlay para TikTok Live &amp; Effect Battle</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            ts: { bg:'#0b0f17', sidebar:'#0f1522', panel:'#131b2b', card:'#182235', border:'#25324b', blue:'#2563eb', cyan:'#00f0ff', pink:'#ff1f8e', gold:'#facc15' }
+            ts: { bg:'#0e1017', sidebar:'#13161f', panel:'#181c27', card:'#1f2433', border:'#2b3245', blue:'#2563eb', cyan:'#00f0ff', pink:'#ec4899', gold:'#facc15' }
           }
         }
       }
@@ -19,13 +19,13 @@
   <script type="importmap">{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }</script>
   <style>
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:#0b0f17;color:#f1f5f9;font-family:Inter,system-ui,-apple-system,sans-serif}
+    html,body{margin:0;padding:0;background:#0e1017;color:#f1f5f9;font-family:Inter,system-ui,-apple-system,sans-serif}
     body.obs-clean-mode{background:transparent!important;overflow:hidden}
-    .checkerboard-bg{background-color:#121824;background-image:linear-gradient(45deg,#1a2233 25%,transparent 25%),linear-gradient(-45deg,#1a2233 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#1a2233 75%),linear-gradient(-45deg,transparent 75%,#1a2233 75%);background-size:22px 22px;background-position:0 0,0 11px,11px -11px,-11px 0}
-    ::-webkit-scrollbar{width:6px;height:6px} ::-webkit-scrollbar-track{background:#0b0f17} ::-webkit-scrollbar-thumb{background:#29354d;border-radius:999px}
-    input[type="range"]{-webkit-appearance:none;appearance:none;height:5px;background:#25324b;border-radius:999px;outline:none}
-    input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:15px;height:15px;border-radius:50%;background:#00f0ff;cursor:pointer;border:2px solid #0b0f17}
-    input[type="color"]{-webkit-appearance:none;border:none;width:32px;height:28px;border-radius:6px;cursor:pointer;background:transparent;padding:0}
+    .checkerboard-bg{background-color:#151923;background-image:linear-gradient(45deg,#1d2230 25%,transparent 25%),linear-gradient(-45deg,#1d2230 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#1d2230 75%),linear-gradient(-45deg,transparent 75%,#1d2230 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0}
+    ::-webkit-scrollbar{width:6px;height:6px} ::-webkit-scrollbar-track{background:#0e1017} ::-webkit-scrollbar-thumb{background:#2e364a;border-radius:999px}
+    input[type="range"]{-webkit-appearance:none;appearance:none;height:5px;background:#2b3245;border-radius:999px;outline:none}
+    input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:15px;height:15px;border-radius:50%;background:#00f0ff;cursor:pointer;border:2px solid #0e1017}
+    input[type="color"]{-webkit-appearance:none;border:none;width:30px;height:26px;border-radius:6px;cursor:pointer;background:transparent;padding:0}
     input[type="color"]::-webkit-color-swatch-wrapper{padding:0} input[type="color"]::-webkit-color-swatch{border:2px solid #334155;border-radius:6px}
     @keyframes animGirar{from{transform:rotate(0)}to{transform:rotate(360deg)}}
     @keyframes animPulsar{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
@@ -39,20 +39,20 @@
     .flip-card.is-flipped{transform:rotateY(180deg)}.flip-face{position:absolute;inset:0;backface-visibility:hidden;display:flex;align-items:center;justify-content:center}.flip-face.back{transform:rotateY(180deg)}
     .frame-gold{box-shadow:0 0 18px rgba(250,204,21,.65);border:3px solid #facc15}.frame-silver{box-shadow:0 0 15px rgba(148,163,184,.65);border:3px solid #cbd5e1}
     .frame-bronze{box-shadow:0 0 14px rgba(217,119,6,.6);border:3px solid #d97706}.frame-crystal{box-shadow:0 0 22px rgba(56,189,248,.85);border:3.5px solid #38bdf8}
-    .frame-games{box-shadow:0 0 18px #ff1f8e,0 0 26px #00f0ff;border:3px solid #00f0ff;outline:2px dashed #ff1f8e;outline-offset:2px}
+    .frame-games{box-shadow:0 0 18px #ec4899,0 0 26px #00f0ff;border:3px solid #00f0ff;outline:2px dashed #ec4899;outline-offset:2px}
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-  <!-- CONFIRMAÇÃO DE PAGAMENTO MERCADO PAGO -->
-  <div id="mpProcessingScreen" class="hidden fixed inset-0 z-50 bg-ts-bg flex items-center justify-center p-6">
-    <div class="bg-ts-panel border border-cyan-500/40 rounded-2xl max-w-md w-full p-7 text-center space-y-4 shadow-2xl">
-      <div class="w-12 h-12 mx-auto rounded-full border-4 border-cyan-400 border-t-transparent animate-spin"></div>
-      <h2 id="mpProcTitle" class="text-lg font-black text-white">Confirmando pagamento no Mercado Pago...</h2>
-      <p id="mpProcMsg" class="text-xs text-slate-400">Aguarde um segundo enquanto liberamos seu acesso exclusivo ao Pack e Overlays.</p>
-      <button id="mpRetryBtn" type="button" class="hidden w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black text-xs">Verificar Pagamento Novamente</button>
-      <a href="/" class="block text-xs text-slate-400 underline">Voltar para o início</a>
-    </div>
+  <!-- PLAYER TRANSPARENTE PARA PRISM / OBS (?fx=pack/... ou ?overlay=eventos) -->
+  <div id="fxPlayerScreen" class="hidden fixed inset-0 z-50 flex items-center justify-center pointer-events-none bg-transparent">
+    <video id="fxStageVideo" playsinline class="w-full h-full object-contain bg-transparent hidden"></video>
+  </div>
+
+  <!-- OVERLAY LIMPO OBS (?overlay=moedas/likes/shares/gifter/notif) -->
+  <div id="obsCleanScreen" class="hidden fixed inset-0 z-50 flex items-center justify-center p-6 pointer-events-none">
+    <div id="obsCleanMount" class="pointer-events-auto"></div>
+    <button id="btnExitCleanMode" type="button" class="pointer-events-auto fixed bottom-4 right-4 opacity-20 hover:opacity-100 px-3 py-1.5 rounded-lg bg-black/80 border border-white/20 text-xs text-white">Voltar</button>
   </div>
 
   <!-- BLOQUEIO DE LINK -->
@@ -61,14 +61,8 @@
       <div class="text-xs font-black uppercase tracking-widest text-rose-400">Acesso Restrito</div>
       <h2 class="text-xl font-black text-white">Link Expirado ou Inválido</h2>
       <p id="accessBlockedReason" class="text-xs text-slate-400">Adquira seu acesso PRO ou solicite um novo link.</p>
-      <a href="/" class="block w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-extrabold text-xs uppercase">Ir para Oferta PRO (R$ 29,99)</a>
+      <a href="?" class="block w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-extrabold text-xs uppercase">Ir para Oferta PRO (R$ 29,99)</a>
     </div>
-  </div>
-
-  <!-- OVERLAY LIMPO OBS -->
-  <div id="obsCleanScreen" class="hidden fixed inset-0 z-50 flex items-center justify-center p-6 pointer-events-none">
-    <div id="obsCleanMount" class="pointer-events-auto"></div>
-    <button id="btnExitCleanMode" type="button" class="pointer-events-auto fixed bottom-4 right-4 opacity-25 hover:opacity-100 px-3 py-1.5 rounded-lg bg-black/80 border border-white/20 text-xs text-white">Voltar</button>
   </div>
 
   <!-- MODAL LOGIN ADMIN -->
@@ -77,24 +71,26 @@
       <button id="btnCloseAdminLogin" type="button" class="absolute top-3 right-4 text-slate-400 hover:text-white">✕</button>
       <div class="text-xs font-black uppercase tracking-widest text-emerald-400">Área Restrita</div>
       <h2 class="text-lg font-black text-white">Acesso Administrador</h2>
-      <input id="inputAdminGatePass" type="password" placeholder="Digite sua senha Admin..." class="w-full bg-ts-bg border border-ts-border rounded-xl px-4 py-2.5 text-sm text-white text-center outline-none focus:border-cyan-400" />
+      <input id="inputAdminGatePass" type="password" placeholder="Senha Admin..." class="w-full bg-ts-bg border border-ts-border rounded-xl px-4 py-2.5 text-sm text-white text-center outline-none focus:border-cyan-400" />
       <button id="btnEnterAdminMode" type="button" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950 font-black text-xs uppercase">Entrar no Painel Admin</button>
       <p id="adminGateErr" class="hidden text-xs text-rose-400">Senha incorreta.</p>
     </div>
   </div>
 
-  <!-- VITRINE PÚBLICA ESTILO TIKFINITY MOBILE + CHECKOUT MERCADO PAGO -->
+  <!-- ===================================================================== -->
+  <!-- 1. VITRINE PÚBLICA + CHECKOUT PIX QR CODE MERCADO PAGO                -->
+  <!-- ===================================================================== -->
   <div id="publicLandingShell" class="hidden min-h-screen flex flex-col bg-ts-bg">
-    <header class="sticky top-0 z-30 bg-ts-sidebar/90 backdrop-blur border-b border-ts-border px-4 py-3 flex items-center justify-between">
+    <header class="sticky top-0 z-30 bg-ts-sidebar/95 backdrop-blur border-b border-ts-border px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-ts-pink via-blue-600 to-ts-cyan flex items-center justify-center font-black text-white text-sm shadow-lg">TS</div>
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-pink-500 via-blue-600 to-cyan-400 flex items-center justify-center font-black text-white text-sm shadow-lg">TS</div>
         <div>
           <div class="text-sm font-black text-white tracking-tight">TIK SCAN PRO</div>
-          <div class="text-[10px] text-cyan-400 font-semibold">Overlays + Pack VFX 3D para Lives</div>
+          <div class="text-[10px] text-cyan-400 font-semibold">Overlay para TikTok Live &amp; Effect Battle</div>
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <a href="#checkoutBox" class="px-3 py-1.5 rounded-lg bg-gradient-to-r from-ts-pink to-blue-600 text-white text-xs font-extrabold">Assinar PRO</a>
+        <a href="#checkoutBox" class="px-3 py-1.5 rounded-lg bg-gradient-to-r from-pink-500 to-blue-600 text-white text-xs font-extrabold">Assinar PRO</a>
         <button id="btnOpenAdminGate" type="button" class="px-2.5 py-1.5 rounded-lg bg-ts-card border border-ts-border text-[11px] font-bold text-slate-400 hover:text-white">Admin</button>
       </div>
     </header>
@@ -107,7 +103,7 @@
             <div id="publicPromoFallback" class="hidden absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-gradient-to-b from-ts-panel to-ts-bg">
               <div class="text-[11px] font-black uppercase tracking-widest text-cyan-400 mb-2">Demonstração Oficial 9:16</div>
               <div class="text-base font-black text-white mb-2">Efeitos 3D em Batalha PK Real</div>
-              <p class="text-xs text-slate-400">O vídeo oficial da apresentação aparecerá aqui automaticamente assim que você publicar no Admin.</p>
+              <p class="text-xs text-slate-400">O vídeo oficial (<span class="font-mono text-cyan-300">pack/comercial.webm</span>) aparecerá aqui automaticamente assim que for publicado.</p>
             </div>
           </div>
         </div>
@@ -118,40 +114,49 @@
           </div>
 
           <h1 class="text-2xl sm:text-4xl font-black text-white leading-tight">
-            Transforme sua Live do TikTok com <span class="text-transparent bg-clip-text bg-gradient-to-r from-ts-cyan to-ts-pink">Efeitos 3D Reais</span> e Rankings PRO
+            Efeitos 3D de Batalha e <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-pink-500">Overlays Automáticos</span> na sua Live
           </h1>
 
           <p class="text-sm text-slate-300 leading-relaxed">
-            Chega de alertas amadores. Leve o painel completo estilo TikFinity + <strong>Pack Completo de Vídeos 3D Transparentes</strong> prontos para baixar e rodar no TikTok LIVE Studio e OBS.
+            Tenha o painel completo com <strong>Effect Battle (.WEBM Transparente)</strong>, gatilhos automáticos de <strong>X2 / X3 / Luva / HeartMe</strong>, Rankings, Voice Bot e Guia para TikTok Studio, OBS e PRISM.
           </p>
 
           <div class="bg-ts-panel border-2 border-cyan-500/60 rounded-2xl p-5 sm:p-6 space-y-4 shadow-2xl">
             <div class="flex flex-wrap items-end justify-between gap-3 border-b border-ts-border pb-4">
               <div>
-                <div class="text-xs font-bold uppercase text-cyan-400">Plano Único Lançamento • Acesso PRO + Pack</div>
+                <div class="text-xs font-bold uppercase text-cyan-400">Plano Único Lançamento • PRO + Effect Battle</div>
                 <div class="flex items-baseline gap-2.5 mt-1">
                   <span class="text-sm text-slate-500 line-through font-bold">R$ 99,00</span>
                   <span class="text-4xl font-black text-white">R$ 29,99</span>
                 </div>
               </div>
-              <span class="px-2.5 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-[11px] font-bold">Liberação Automática</span>
+              <span class="px-2.5 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-[11px] font-bold">Pix Automático na Hora</span>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-200">
-              <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>Pack 10 Efeitos (.WEBM / .MP4)</div>
-              <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>Rankings Moedas, Likes e Shares</div>
-              <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>Big Gifter 3D + Notificações OBS</div>
-              <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>Guia Passo a Passo TikTok Studio &amp; OBS</div>
-            </div>
-
-            <div class="space-y-2.5 pt-2">
-              <label class="block text-xs font-bold text-slate-300">Seu @ do TikTok (para gerar seu link exclusivo):</label>
+            <!-- FORMULÁRIO PIX -->
+            <div id="pixFormBox" class="space-y-2.5">
+              <label class="block text-xs font-bold text-slate-300">Seu @ do TikTok (para gerar seu acesso exclusivo):</label>
               <input id="mpInputUser" type="text" placeholder="@seu_usuario_tiktok" class="w-full bg-ts-bg border border-ts-border rounded-xl px-4 py-3 text-sm text-white font-semibold outline-none focus:border-cyan-400" />
-              <button id="btnPayMercadoPago" type="button" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-blue-600 hover:brightness-110 text-slate-950 font-black text-sm uppercase tracking-wide shadow-lg transition">
-                Adquirir Acesso PRO — R$ 29,99 (Pix / Cartão)
+              <input id="mpInputEmail" type="email" placeholder="Seu e-mail (para recibo Pix - opcional)" class="w-full bg-ts-bg border border-ts-border rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-cyan-400" />
+              <button id="btnGeneratePix" type="button" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 via-cyan-500 to-blue-600 hover:brightness-110 text-slate-950 font-black text-sm uppercase tracking-wide shadow-lg transition">
+                Pagar R$ 29,99 via Pix (QR Code)
               </button>
               <p id="mpCheckoutErr" class="hidden text-xs text-rose-400 text-center"></p>
-              <div class="text-[11px] text-slate-400 text-center">Pagamento processado com segurança pelo Mercado Pago. Após aprovar, seu link abre na hora.</div>
+            </div>
+
+            <!-- TELA DO QR CODE PIX GERADO -->
+            <div id="pixQrBox" class="hidden space-y-3 text-center pt-1">
+              <div class="text-xs font-black uppercase text-emerald-400">Pix Gerado! Escaneie ou copie o código abaixo:</div>
+              <img id="pixQrImg" class="w-48 h-48 mx-auto rounded-xl bg-white p-2 border-2 border-cyan-400" alt="QR Code Pix" />
+              <div class="flex gap-2">
+                <input id="pixCopiaCola" readonly class="flex-1 bg-ts-bg border border-ts-border rounded-xl px-3 py-2 text-[11px] font-mono text-cyan-300" />
+                <button id="btnCopyPixCode" type="button" class="px-4 py-2 rounded-xl bg-cyan-500 text-slate-950 font-black text-xs">Copiar Pix</button>
+              </div>
+              <div class="flex items-center justify-center gap-2 text-xs text-amber-300 font-bold">
+                <span class="w-3 h-3 rounded-full border-2 border-amber-300 border-t-transparent animate-spin"></span>
+                <span id="pixWaitText">Aguardando pagamento... Liberação automática em segundos!</span>
+              </div>
+              <button id="btnCancelPix" type="button" class="text-[11px] text-slate-400 underline">Alterar @ ou gerar novo Pix</button>
             </div>
           </div>
         </div>
@@ -159,47 +164,55 @@
 
       <section class="space-y-4">
         <div class="text-center space-y-1">
-          <h2 class="text-lg sm:text-xl font-black text-white">Tudo o que está incluso no seu Acesso PRO</h2>
-          <p class="text-xs text-slate-400">Estrutura limpa, rápida e compatível com PC e Celular</p>
+          <h2 class="text-lg sm:text-xl font-black text-white">Prévia dos Efeitos do Effect Battle</h2>
+          <p class="text-xs text-slate-400">Todos recortados em .WEBM transparente pronto para live</p>
         </div>
         <div id="publicPackPreviewGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3"></div>
       </section>
     </main>
   </div>
 
-  <!-- PAINEL INTERNO (MODO CLIENTE TRAVADO OU MODO ADMIN COM EDIÇÃO) -->
+  <!-- ===================================================================== -->
+  <!-- 2. PAINEL PROFISSIONAL (PADRÃO TIKSCAN: CLIENTE TRAVADO OU ADMIN)     -->
+  <!-- ===================================================================== -->
   <div id="mainAppShell" class="hidden flex-1 flex flex-col lg:flex-row lg:h-screen lg:overflow-hidden">
     <aside id="sidebarDrawer" class="hidden lg:flex w-64 shrink-0 bg-ts-sidebar border-r border-ts-border flex-col h-full">
       <div class="p-4 border-b border-ts-border space-y-3">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2.5">
-            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-ts-pink via-blue-600 to-ts-cyan flex items-center justify-center font-black text-white text-sm">TS</div>
-            <div><div class="text-sm font-black text-white leading-none">TIK SCAN PRO</div><div id="roleBadgeLabel" class="text-[10px] text-cyan-400 mt-0.5 font-bold">ÁREA DO CLIENTE</div></div>
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-pink-500 via-blue-600 to-cyan-400 flex items-center justify-center font-black text-white text-sm shadow">TS</div>
+            <div><div class="text-sm font-black text-white leading-none">TIK SCAN</div><div id="roleBadgeLabel" class="text-[10px] text-slate-400 mt-0.5 font-semibold">Overlay para TikTok Live</div></div>
           </div>
           <button id="btnCloseMobileMenu" type="button" class="lg:hidden text-slate-400 hover:text-white px-1">✕</button>
         </div>
         <div class="bg-ts-card border border-ts-border rounded-xl px-3 py-2 flex items-center justify-between gap-2">
-          <div class="min-w-0"><div id="sidebarUserHandle" class="text-xs font-bold text-white truncate">@cliente</div><div id="sidebarConnStatus" class="text-[10px] font-bold text-emerald-400">● ACESSO LIBERADO</div></div>
-          <span id="sidebarPlanBadge" class="text-[10px] px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-bold shrink-0">PRO</span>
+          <div class="min-w-0"><div id="sidebarUserHandle" class="text-xs font-bold text-white truncate">@cliente</div><div id="sidebarConnStatus" class="text-[10px] font-bold text-amber-400">● PRONTO</div></div>
+          <span class="text-[10px] px-1.5 py-0.5 rounded bg-ts-bg border border-ts-border text-slate-300 font-bold">BR</span>
         </div>
       </div>
 
       <nav class="flex-1 overflow-y-auto p-2.5 space-y-1 text-xs font-semibold">
-        <div class="pt-1 pb-1 px-2 text-[10px] font-bold uppercase text-slate-500">Pack &amp; Instalação</div>
-        <button data-tab="pack" class="side-tab w-full text-left px-3 py-2.5 rounded-lg bg-blue-600 text-white shadow">Baixar Meu Pack</button>
-        <button data-tab="guia" class="side-tab w-full text-left px-3 py-2 rounded-lg text-slate-300 hover:bg-ts-card">Guia TikTok Studio &amp; OBS</button>
+        <div class="pt-1 pb-1 px-2 text-[10px] font-bold uppercase tracking-wider text-slate-500">Painel</div>
+        <button data-tab="conexao" class="side-tab w-full text-left px-3 py-2 rounded-lg text-slate-300 hover:bg-ts-card">Conexão</button>
+        <button data-tab="sobreposicoes" class="side-tab w-full text-left px-3 py-2 rounded-lg flex items-center justify-between text-slate-300 hover:bg-ts-card">
+          <span>Sobreposições</span><span class="text-[10px] px-1.5 py-0.5 rounded bg-pink-600 text-white font-bold">5</span>
+        </button>
+        <button data-tab="events" class="side-tab w-full text-left px-3 py-2 rounded-lg flex items-center justify-between text-slate-300 hover:bg-ts-card">
+          <span>Events (Triggers)</span><span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+        </button>
+        <button data-tab="effectbattle" class="side-tab w-full text-left px-3 py-2 rounded-lg flex items-center justify-between bg-blue-600 text-white shadow">
+          <span>Effect Battle</span><span id="sidebarPackBadge" class="text-[10px] px-1.5 py-0.5 rounded bg-purple-600 text-white font-bold">PACK</span>
+        </button>
+        <button data-tab="tts" class="side-tab w-full text-left px-3 py-2 rounded-lg text-slate-300 hover:bg-ts-card">Sound Alerts (TTS)</button>
 
-        <div class="pt-3 pb-1 px-2 text-[10px] font-bold uppercase text-slate-500">Overlays da Live</div>
-        <button data-tab="conexao" class="side-tab w-full text-left px-3 py-2 rounded-lg text-slate-300 hover:bg-ts-card">Conexão Live</button>
-        <button data-tab="moedas" class="side-tab w-full text-left px-3 py-2 rounded-lg text-slate-300 hover:bg-ts-card">Ranking Moedas</button>
-        <button data-tab="likes" class="side-tab w-full text-left px-3 py-2 rounded-lg text-slate-300 hover:bg-ts-card">Ranking Likes</button>
-        <button data-tab="shares" class="side-tab w-full text-left px-3 py-2 rounded-lg text-slate-300 hover:bg-ts-card">Ranking Shares</button>
-        <button data-tab="gifter" class="side-tab w-full text-left px-3 py-2 rounded-lg text-slate-300 hover:bg-ts-card">Big Gifter 3D</button>
-        <button data-tab="notificacoes" class="side-tab w-full text-left px-3 py-2 rounded-lg text-slate-300 hover:bg-ts-card">Notificações OBS</button>
-        <button data-tab="tts" class="side-tab w-full text-left px-3 py-2 rounded-lg text-slate-300 hover:bg-ts-card">Voice Bot (TTS)</button>
+        <div class="pt-3 pb-1 px-2 text-[10px] font-bold uppercase tracking-wider text-slate-500">Integrações</div>
+        <button data-tab="guia" class="side-tab w-full text-left px-3 py-2 rounded-lg flex items-center justify-between text-slate-300 hover:bg-ts-card">
+          <span>Integrações &amp; Guia</span><span class="text-[10px] px-1.5 py-0.5 rounded bg-cyan-600 text-white font-bold">3</span>
+        </button>
 
+        <!-- EXCLUSIVO ADMINISTRADOR -->
         <div id="adminSidebarSection" class="hidden pt-3 space-y-1 border-t border-ts-border/70 mt-3">
-          <div class="pb-1 px-2 text-[10px] font-bold uppercase text-emerald-400">Administração (Só Você)</div>
+          <div class="pb-1 px-2 text-[10px] font-bold uppercase tracking-wider text-emerald-400">Administração</div>
           <button data-tab="admpack" class="side-tab w-full text-left px-3 py-2 rounded-lg text-emerald-300 hover:bg-ts-card">Publicar Pack Global</button>
           <button data-tab="vfx" class="side-tab w-full text-left px-3 py-2 rounded-lg text-cyan-300 hover:bg-ts-card">Estúdio Chroma (.WEBM)</button>
           <button data-tab="admlinks" class="side-tab w-full text-left px-3 py-2 rounded-lg text-amber-300 hover:bg-ts-card">Links VIP Influenciadores</button>
@@ -216,7 +229,7 @@
       <header class="h-13 shrink-0 bg-ts-panel border-b border-ts-border px-4 py-2.5 flex items-center justify-between gap-3">
         <div class="flex items-center gap-2.5">
           <button id="btnMobileMenu" type="button" class="lg:hidden px-3 py-1.5 rounded-lg bg-ts-card border border-ts-border text-xs font-bold">Menu</button>
-          <span id="topSectionTitle" class="text-sm font-bold text-white">Baixar Meu Pack</span>
+          <span id="topSectionTitle" class="text-sm font-bold text-white">Effect Battle</span>
         </div>
         <div class="flex items-center gap-2">
           <span id="headerPlanPill" class="text-[11px] px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 font-bold">PRO</span>
@@ -224,198 +237,232 @@
         </div>
       </header>
 
-      <div id="liveSimToolbar" class="hidden bg-[#0f141e] border-b border-ts-border px-4 py-2 flex flex-wrap items-center justify-between gap-2 shrink-0">
-        <div class="flex items-center gap-1.5 flex-wrap">
-          <span class="text-[10px] font-bold uppercase text-amber-400 mr-1">Simular Live:</span>
-          <button data-sim="gift1" class="sim-btn text-[11px] px-2.5 py-1 rounded bg-ts-card border border-ts-border text-slate-200 font-semibold">+1 Moeda</button>
-          <button data-sim="gift100" class="sim-btn text-[11px] px-2.5 py-1 rounded bg-ts-card border border-ts-border text-pink-300 font-semibold">+100 Moedas</button>
-          <button data-sim="strong" class="sim-btn text-[11px] px-2.5 py-1 rounded bg-ts-card border border-ts-border text-amber-300 font-semibold">+500 Big Gift</button>
-          <button data-sim="follow" class="sim-btn text-[11px] px-2.5 py-1 rounded bg-ts-card border border-ts-border text-emerald-300 font-semibold">+Seguidor</button>
-          <button data-sim="like" class="sim-btn text-[11px] px-2.5 py-1 rounded bg-ts-card border border-ts-border text-cyan-300 font-semibold">+25 Likes</button>
-          <button data-sim="share" class="sim-btn text-[11px] px-2.5 py-1 rounded bg-ts-card border border-ts-border text-blue-300 font-semibold">+1 Share</button>
+      <!-- FAIXA DE STATUS DA LIVE (IGUAL AO PRINT) -->
+      <div id="liveStatusBanner" class="bg-rose-950/50 border-b border-rose-500/40 px-4 py-2 flex flex-wrap items-center justify-between gap-2 text-xs shrink-0">
+        <div class="flex items-center gap-2 text-rose-200 font-semibold">
+          <span id="liveStatusDot" class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+          <span id="liveStatusMsg">Bridge WS desconectado para @cliente. Use o Simulador abaixo ou conecte seu Bridge em Conexão.</span>
         </div>
-        <button id="btnAutoLive" type="button" class="text-[11px] px-3 py-1 rounded-full bg-blue-500/20 border border-blue-500/40 text-blue-300 font-bold">Auto-Live: OFF</button>
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <button data-sim="x2" class="sim-btn text-[11px] px-2 py-1 rounded bg-amber-500/20 border border-amber-400/50 text-amber-300 font-bold">⚡ Simular 2X</button>
+          <button data-sim="x3" class="sim-btn text-[11px] px-2 py-1 rounded bg-orange-500/20 border border-orange-400/50 text-orange-300 font-bold">🔥 Simular 3X</button>
+          <button data-sim="luva" class="sim-btn text-[11px] px-2 py-1 rounded bg-rose-500/20 border border-rose-400/50 text-rose-300 font-bold">🥊 Luva</button>
+          <button data-sim="heartme" class="sim-btn text-[11px] px-2 py-1 rounded bg-pink-500/20 border border-pink-400/50 text-pink-300 font-bold">💖 HeartMe</button>
+          <button data-sim="rose" class="sim-btn text-[11px] px-2 py-1 rounded bg-emerald-500/20 border border-emerald-400/50 text-emerald-300 font-bold">🌹 Rosa</button>
+        </div>
       </div>
 
       <main class="flex-1 overflow-y-auto">
-        <!-- CLIENTE: DOWNLOAD DO PACK -->
-        <section id="tab-pack" class="tab-panel max-w-5xl mx-auto p-4 lg:p-6 space-y-5">
-          <div class="bg-gradient-to-r from-ts-panel to-ts-card border border-cyan-500/35 rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+
+        <!-- 1. EFFECT BATTLE (VITRINE TRANSPARENTE COM FILTROS E DOWNLOAD .WEBM + LINK PRISM) -->
+        <section id="tab-effectbattle" class="tab-panel max-w-6xl mx-auto p-4 lg:p-6 space-y-5">
+          <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <div class="text-xs font-black uppercase text-cyan-400">Pack Oficial Liberado</div>
-              <h2 class="text-lg font-black text-white mt-0.5">Seus Efeitos 3D &amp; Molduras para Download</h2>
-              <p class="text-xs text-slate-400 mt-1">Baixe cada arquivo abaixo e siga o Guia TikTok Studio / OBS para colocar na sua live.</p>
+              <h2 class="text-lg font-black text-white">Effect Battle — Galeria .WEBM Transparente</h2>
+              <p class="text-xs text-slate-400 mt-1">Baixe em <strong class="text-white">.WEBM</strong> para usar como Media Source no OBS/TikTok Studio (marque <span class="text-cyan-300">"Shutdown source when not visible"</span>), ou copie o <strong class="text-cyan-300">Link Web</strong> para o PRISM.</p>
             </div>
-            <button data-goto-tab="guia" class="shrink-0 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-extrabold text-white">Ver Guia de Instalação</button>
+            <div id="effectFilterPills" class="flex flex-wrap gap-1.5 shrink-0">
+              <button data-cat-filter="Todos" class="eb-filter px-3 py-1.5 rounded-full text-xs font-bold bg-pink-600 text-white">Todos</button>
+              <button data-cat-filter="Batalha 3D" class="eb-filter px-3 py-1.5 rounded-full text-xs font-bold bg-ts-card border border-ts-border text-slate-300">Batalha 3D</button>
+              <button data-cat-filter="X2" class="eb-filter px-3 py-1.5 rounded-full text-xs font-bold bg-ts-card border border-ts-border text-slate-300">X2</button>
+              <button data-cat-filter="X3" class="eb-filter px-3 py-1.5 rounded-full text-xs font-bold bg-ts-card border border-ts-border text-slate-300">X3</button>
+              <button data-cat-filter="Luva" class="eb-filter px-3 py-1.5 rounded-full text-xs font-bold bg-ts-card border border-ts-border text-slate-300">Luva</button>
+              <button data-cat-filter="Tap" class="eb-filter px-3 py-1.5 rounded-full text-xs font-bold bg-ts-card border border-ts-border text-slate-300">Tap</button>
+              <button data-cat-filter="Molduras" class="eb-filter px-3 py-1.5 rounded-full text-xs font-bold bg-ts-card border border-ts-border text-slate-300">Molduras</button>
+            </div>
           </div>
-          <div id="clientPackGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+          <div id="clientPackGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
         </section>
 
-        <!-- CLIENTE: GUIA TIKTOK LIVE STUDIO & OBS STUDIO -->
-        <section id="tab-guia" class="tab-panel hidden max-w-4xl mx-auto p-4 lg:p-6 space-y-5">
-          <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-3">
-            <span class="text-[10px] font-black uppercase px-2.5 py-1 rounded bg-ts-pink/20 text-ts-pink border border-ts-pink/40">Passo a Passo Oficial</span>
-            <h2 class="text-xl font-black text-white">Como colocar os Vídeos e Imagens no TikTok LIVE Studio e OBS</h2>
-            <p class="text-xs text-slate-300">Os vídeos em <strong>.WEBM Transparente</strong> já entram recortados sem fundo, e os arquivos em <strong>.MP4</strong> podem usar Chroma Key caso tenham fundo verde/preto.</p>
+        <!-- 2. EVENTS (AÇÕES | EVENTOS TRIGGERS | TELA DE SOBREPOSIÇÃO) -->
+        <section id="tab-events" class="tab-panel hidden max-w-5xl mx-auto p-4 lg:p-6 space-y-4">
+          <div class="flex flex-wrap gap-2">
+            <button data-ev-sub="acoes" class="ev-sub-btn px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white">⚡ Ações (<span id="evCountAcoes">0</span>)</button>
+            <button data-ev-sub="triggers" class="ev-sub-btn px-4 py-2 rounded-xl text-xs font-bold bg-ts-card border border-ts-border text-slate-300">🔔 Eventos / Triggers (<span id="evCountTriggers">5</span>)</button>
+            <button data-ev-sub="tela" class="ev-sub-btn px-4 py-2 rounded-xl text-xs font-bold bg-ts-card border border-ts-border text-slate-300">🖥️ Tela de Sobreposição</button>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-3">
-              <div class="text-sm font-black text-cyan-300">1. No TikTok LIVE Studio (PC)</div>
-              <ol class="text-xs text-slate-300 space-y-2.5 list-decimal list-inside leading-relaxed">
-                <li>Baixe os arquivos desejados na aba <strong>Baixar Meu Pack</strong>.</li>
-                <li>Abra o <strong>TikTok LIVE Studio</strong> e selecione a cena da sua live.</li>
-                <li>Clique em <strong>Adicionar fonte</strong> → escolha <strong>Vídeo</strong> (para efeitos .webm/.mp4) ou <strong>Imagem</strong> (para molduras .png).</li>
-                <li>Selecione o arquivo baixado no seu computador.</li>
-                <li>Posicione no centro da tela vertical <strong>9:16</strong> acima da sua webcam.</li>
-                <li>Se usar algum vídeo em fundo verde (.mp4), clique com botão direito na fonte → <strong>Propriedades / Filtros → Chroma Key (Verde)</strong>. Nos arquivos <strong>.WEBM</strong> já vai recortado direto!</li>
-              </ol>
-            </div>
-
-            <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-3">
-              <div class="text-sm font-black text-emerald-300">2. No OBS Studio (PC)</div>
-              <ol class="text-xs text-slate-300 space-y-2.5 list-decimal list-inside leading-relaxed">
-                <li>No OBS, vá no painel <strong>Fontes</strong> e clique no botão <strong>+</strong>.</li>
-                <li>Para vídeos de efeito (<strong>.WEBM / .MP4</strong>): escolha <strong>Fonte de Mídia</strong> → clique em <strong>Localizar</strong> e selecione o vídeo baixado.</li>
-                <li>Deixe marcada a opção <strong>Reiniciar a reprodução quando a fonte ficar ativa</strong> (desmarque <em>Loop</em> se for um alerta único).</li>
-                <li>Para Molduras (<strong>.PNG</strong>): clique em <strong>+ → Imagem</strong> e suba a moldura por cima do seu pódio/câmera.</li>
-                <li>O canal transparente (Alpha) do <strong>.WEBM</strong> funciona nativamente no OBS sem precisar configurar Chroma Key!</li>
-              </ol>
-            </div>
+          <!-- SUB-ABA AÇÕES -->
+          <div id="evSub-acoes" class="ev-sub-panel bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-3">
+            <div><h3 class="text-sm font-black text-white">Ações (Vídeos do Effect Battle)</h3><p class="text-xs text-slate-400">Vídeos disponíveis para disparar automaticamente quando um evento acontecer na live.</p></div>
+            <input id="searchActionInput" type="text" placeholder="Buscar ação por nome..." class="w-full bg-ts-bg border border-ts-border rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-cyan-400" />
+            <div id="eventsActionsList" class="space-y-2 max-h-[420px] overflow-y-auto"></div>
           </div>
 
-          <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-3">
-            <div class="text-sm font-black text-amber-300">3. Como ligar os Overlays Ao Vivo (Rankings, Notificações e Big Gifter)</div>
-            <ol class="text-xs text-slate-300 space-y-2 list-decimal list-inside leading-relaxed">
-              <li>Entre na aba do overlay desejado aqui no menu (ex: <strong>Ranking Moedas</strong> ou <strong>Notificações OBS</strong>) e clique em <strong>Copiar</strong> no campo do link OBS.</li>
-              <li>No <strong>OBS Studio</strong> ou <strong>TikTok LIVE Studio</strong>, adicione uma fonte do tipo <strong>Navegador (Browser Source / Link)</strong>.</li>
-              <li>Cole o link copiado e configure o tamanho recomendado: <strong>450×240</strong> para Rankings ou <strong>550×180</strong> para Notificações.</li>
-              <li>Pronto! O fundo já é 100% transparente e atualiza em tempo real durante sua live.</li>
-            </ol>
+          <!-- SUB-ABA TRIGGERS (X2, X3, LUVA, HEARTME, ROSA, SEGUIDOR) -->
+          <div id="evSub-triggers" class="ev-sub-panel hidden bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-3">
+            <div><h3 class="text-sm font-black text-white">Eventos (Triggers Automáticos)</h3><p class="text-xs text-slate-400">Defina qual vídeo toma conta da tela sozinho quando o TikTok enviar X2, X3, Luva ou Presente (via Bridge WS ou Simulador).</p></div>
+            <div id="eventsTriggersList" class="space-y-2.5"></div>
+          </div>
+
+          <!-- SUB-ABA TELA DE SOBREPOSIÇÃO -->
+          <div id="evSub-tela" class="ev-sub-panel hidden bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-4">
+            <div><h3 class="text-sm font-black text-white">Tela de Sobreposição Automática (OBS / TikTok Studio / PRISM)</h3><p class="text-xs text-slate-400">Adicione esta URL como Fonte de Navegador (1080×1920). Sempre que entrar X2, X3, Luva ou Presente, o vídeo toca sozinho transparente.</p></div>
+            <div class="flex gap-2">
+              <input id="obsUrlEventos" readonly class="flex-1 bg-ts-bg border border-ts-border rounded-xl px-3 py-2 text-xs font-mono text-cyan-300" />
+              <button data-copy="obsUrlEventos" class="copy-btn px-4 py-2 rounded-xl bg-blue-600 text-xs font-bold text-white">Copiar Link</button>
+            </div>
+            <div class="relative h-80 max-w-[200px] mx-auto rounded-2xl border-2 border-ts-border checkerboard-bg overflow-hidden flex items-center justify-center">
+              <video id="eventsPreviewStageVid" playsinline class="w-full h-full object-contain hidden"></video>
+              <span id="eventsPreviewIdle" class="text-[11px] text-slate-400 text-center px-4">Clique em "Testar" em qualquer Ação ou Trigger para ver disparar aqui!</span>
+            </div>
           </div>
         </section>
 
-        <!-- CONEXÃO -->
+        <!-- 3. SOBREPOSIÇÕES (MOEDAS, LIKES, SHARES, BIG GIFTER, NOTIFICAÇÕES) -->
+        <section id="tab-sobreposicoes" class="tab-panel hidden max-w-6xl mx-auto p-4 lg:p-6 space-y-4">
+          <div class="flex flex-wrap gap-2">
+            <button data-ov-sub="moedas" class="ov-sub-btn px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white">Moedas</button>
+            <button data-ov-sub="likes" class="ov-sub-btn px-4 py-2 rounded-xl text-xs font-bold bg-ts-card border border-ts-border text-slate-300">Likes</button>
+            <button data-ov-sub="shares" class="ov-sub-btn px-4 py-2 rounded-xl text-xs font-bold bg-ts-card border border-ts-border text-slate-300">Shares</button>
+            <button data-ov-sub="gifter" class="ov-sub-btn px-4 py-2 rounded-xl text-xs font-bold bg-ts-card border border-ts-border text-slate-300">Big Gifter 3D</button>
+            <button data-ov-sub="notif" class="ov-sub-btn px-4 py-2 rounded-xl text-xs font-bold bg-ts-card border border-ts-border text-slate-300">Notificações</button>
+          </div>
+
+          <!-- MOEDAS -->
+          <div id="ovSub-moedas" class="ov-sub-panel space-y-4">
+            <div class="flex flex-wrap justify-between gap-2">
+              <div class="flex gap-2"><button data-moedas-period="diario" class="period-btn px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white">Diário</button><button data-moedas-period="semanal" class="period-btn px-4 py-2 rounded-xl text-xs font-bold bg-ts-card border border-ts-border text-slate-300">Semanal</button></div>
+              <button data-clean="moedas" class="btn-open-clean px-3 py-2 rounded-lg bg-cyan-600 text-white text-xs font-bold">Overlay Limpo</button>
+            </div>
+            <div class="bg-ts-panel border border-ts-border rounded-2xl p-5"><div id="previewMoedasContainer" class="min-h-[190px] rounded-xl border border-ts-border p-4 flex items-center justify-center checkerboard-bg"></div></div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 space-y-2.5">
+                <div class="flex gap-2"><button data-rank-count="moedas" data-val="3" class="rank-count-btn flex-1 py-1.5 rounded-lg text-xs font-bold border border-blue-500 bg-blue-600/25">3</button><button data-rank-count="moedas" data-val="5" class="rank-count-btn flex-1 py-1.5 rounded-lg text-xs font-bold border border-ts-border bg-ts-card">5</button><button data-rank-count="moedas" data-val="10" class="rank-count-btn flex-1 py-1.5 rounded-lg text-xs font-bold border border-ts-border bg-ts-card">10</button></div>
+                <div class="grid grid-cols-2 gap-2"><button id="btnMoedasPodium" class="py-2 rounded-lg text-xs font-bold border border-blue-500 bg-blue-600/25">Pódio</button><button id="btnMoedasLista" class="py-2 rounded-lg text-xs font-bold border border-ts-border bg-ts-card">Lista</button></div>
+                <label class="flex justify-between text-xs"><span>Fundo transparente</span><input id="chkMoedasTransparent" type="checkbox" checked /></label>
+                <label class="flex justify-between text-xs"><span>Molduras Games</span><input id="chkMoedasGames" type="checkbox" /></label>
+              </div>
+              <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 space-y-2.5">
+                <div class="flex justify-between text-xs font-bold"><span>Molduras PNG</span><button id="btnRestoreMoedasFrames" type="button" class="text-cyan-400">Restaurar</button></div>
+                <div class="grid grid-cols-3 gap-2 text-center">
+                  <div class="bg-ts-bg border border-ts-border rounded-lg p-2"><div class="text-[10px] text-yellow-400 font-bold">1º</div><label class="text-[10px] cursor-pointer text-cyan-300">PNG<input type="file" accept="image/*" data-frame-upload="1" class="hidden frame-upload-input" /></label></div>
+                  <div class="bg-ts-bg border border-ts-border rounded-lg p-2"><div class="text-[10px] text-slate-300 font-bold">2º</div><label class="text-[10px] cursor-pointer text-cyan-300">PNG<input type="file" accept="image/*" data-frame-upload="2" class="hidden frame-upload-input" /></label></div>
+                  <div class="bg-ts-bg border border-ts-border rounded-lg p-2"><div class="text-[10px] text-amber-500 font-bold">3º</div><label class="text-[10px] cursor-pointer text-cyan-300">PNG<input type="file" accept="image/*" data-frame-upload="3" class="hidden frame-upload-input" /></label></div>
+                </div>
+                <div class="flex justify-between text-xs"><span>Escala</span><span id="moedasScaleVal">100%</span></div><input id="rangeMoedasScale" type="range" min="60" max="150" value="100" class="w-full" />
+              </div>
+              <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 space-y-2.5">
+                <div class="grid grid-cols-3 gap-1.5"><button data-anim="none" class="anim-btn py-1.5 rounded-lg text-[11px] font-bold border border-fuchsia-500 bg-fuchsia-600/30">Nenhuma</button><button data-anim="girar" class="anim-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card">Girar</button><button data-anim="pulsar" class="anim-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card">Pulsar</button><button data-anim="quicar" class="anim-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card">Quicar</button><button data-anim="balancar" class="anim-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card">Balançar</button><button data-anim="brilhar" class="anim-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card">Brilhar</button></div>
+                <div class="flex gap-2"><input id="colorMoedas" type="color" value="#facc15" /><select id="selectMoedasFont" class="flex-1 bg-ts-bg border border-ts-border rounded-lg px-2 py-1 text-xs"><option value="system">System</option><option value="impact">Arcade</option><option value="mono">Mono</option></select></div>
+                <div class="flex gap-1.5"><input id="obsUrlMoedas" readonly class="flex-1 bg-ts-bg border border-ts-border rounded-lg px-2 py-1 text-[10px] font-mono text-cyan-300" /><button data-copy="obsUrlMoedas" class="copy-btn px-2 py-1 rounded-lg bg-ts-card border border-ts-border text-[10px] font-bold">Copiar</button></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- LIKES -->
+          <div id="ovSub-likes" class="ov-sub-panel hidden space-y-4">
+            <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-3"><div class="flex justify-between"><div><h2 class="text-base font-bold">Ranking Tap-Tap</h2><p class="text-xs text-slate-400" id="likesTotalSubtitle">Total: 0</p></div><button data-clean="likes" class="btn-open-clean px-3 py-1.5 rounded-lg bg-cyan-600 text-xs font-bold">Overlay Limpo</button></div><div id="previewLikesContainer" class="min-h-[200px] rounded-xl border border-ts-border p-4 flex items-center justify-center checkerboard-bg"></div></div>
+            <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 grid grid-cols-1 md:grid-cols-2 gap-4"><div class="space-y-2"><div class="flex gap-2"><button data-rank-count="likes" data-val="3" class="likes-count-btn flex-1 py-1.5 rounded-lg text-xs font-bold border border-ts-border bg-ts-card">3</button><button data-rank-count="likes" data-val="5" class="likes-count-btn flex-1 py-1.5 rounded-lg text-xs font-bold border border-blue-500 bg-blue-600/25">5</button><button data-rank-count="likes" data-val="10" class="likes-count-btn flex-1 py-1.5 rounded-lg text-xs font-bold border border-ts-border bg-ts-card">10</button></div><div class="flex justify-between text-xs"><span>Espaçamento</span><span id="likesGapVal">8px</span></div><input id="rangeLikesGap" type="range" min="2" max="24" value="8" class="w-full" /></div><div class="flex items-end gap-2"><input id="obsUrlLikes" readonly class="flex-1 bg-ts-bg border border-ts-border rounded-lg px-2.5 py-1.5 text-xs font-mono text-cyan-300" /><button data-copy="obsUrlLikes" class="copy-btn px-3 py-1.5 rounded-lg bg-ts-card border border-ts-border text-xs font-bold">Copiar</button></div></div>
+          </div>
+
+          <!-- SHARES -->
+          <div id="ovSub-shares" class="ov-sub-panel hidden space-y-4">
+            <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-3"><div class="flex justify-between"><h2 class="text-base font-bold">Ranking de Shares</h2><div class="flex gap-2"><button id="btnResetShares" type="button" class="px-3 py-1.5 rounded-lg bg-ts-card border border-ts-border text-xs font-bold">Zerar</button><button data-clean="shares" class="btn-open-clean px-3 py-1.5 rounded-lg bg-cyan-600 text-xs font-bold">Overlay Limpo</button></div></div><div id="previewSharesContainer" class="min-h-[190px] rounded-xl border border-ts-border p-4 flex items-center justify-center checkerboard-bg"></div></div>
+            <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 flex gap-3 items-center justify-between"><div class="flex gap-2"><button data-rank-count="shares" data-val="3" class="shares-count-btn px-3 py-1.5 rounded-lg text-xs font-bold border border-blue-500 bg-blue-600/25">Top 3</button><button data-rank-count="shares" data-val="5" class="shares-count-btn px-3 py-1.5 rounded-lg text-xs font-bold border border-ts-border bg-ts-card">Top 5</button></div><div class="flex gap-2 flex-1 max-w-md"><input id="obsUrlShares" readonly class="flex-1 bg-ts-bg border border-ts-border rounded-lg px-2.5 py-1.5 text-xs font-mono text-cyan-300" /><button data-copy="obsUrlShares" class="copy-btn px-3 py-1.5 rounded-lg bg-ts-card border border-ts-border text-xs font-bold">Copiar</button></div></div>
+          </div>
+
+          <!-- BIG GIFTER -->
+          <div id="ovSub-gifter" class="ov-sub-panel hidden space-y-4">
+            <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-3"><div class="flex justify-between"><h2 class="text-base font-bold">Big Gifter 3D</h2><button data-clean="gifter" class="btn-open-clean px-3 py-1.5 rounded-lg bg-cyan-600 text-xs font-bold">Overlay Limpo</button></div><div id="previewGifterContainer" class="min-h-[200px] rounded-xl border border-ts-border p-4 flex items-center justify-center checkerboard-bg"></div></div>
+            <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 grid grid-cols-1 md:grid-cols-2 gap-4"><div class="space-y-2.5"><div class="grid grid-cols-5 gap-1.5"><button data-gframe="none" class="gframe-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card">Sem</button><button data-gframe="gold" class="gframe-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card text-yellow-300">Ouro</button><button data-gframe="silver" class="gframe-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card text-slate-200">Prata</button><button data-gframe="bronze" class="gframe-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card text-amber-400">Bronze</button><button data-gframe="crystal" class="gframe-btn py-1.5 rounded-lg text-[11px] font-bold border border-cyan-400 bg-cyan-500/20 text-cyan-300">Cristal</button></div><div class="flex flex-wrap items-center gap-3"><div class="flex items-center gap-1.5"><input id="colorGifterTitle" type="color" value="#facc15" /><span class="text-[11px]">Título</span></div><div class="flex items-center gap-1.5"><input id="colorGifterCoins" type="color" value="#ffd700" /><span class="text-[11px]">Moedas</span></div><label class="px-2.5 py-1 rounded-lg bg-ts-bg border border-ts-border text-[11px] text-cyan-300 font-bold cursor-pointer">PNG Presente<input id="inputGifterPng" type="file" accept="image/*" class="hidden" /></label><button id="btnClearGifterPng" type="button" class="text-[11px] text-slate-400">Limpar</button></div></div><div class="space-y-2"><div class="flex justify-between text-xs"><span>Escala</span><span id="gifterScaleVal">100%</span></div><input id="rangeGifterScale" type="range" min="70" max="160" value="100" class="w-full" /><div class="flex gap-2"><input id="obsUrlGifter" readonly class="flex-1 bg-ts-bg border border-ts-border rounded-lg px-2.5 py-1.5 text-xs font-mono text-cyan-300" /><button data-copy="obsUrlGifter" class="copy-btn px-3 py-1.5 rounded-lg bg-ts-card border border-ts-border text-xs font-bold">Copiar</button></div></div></div>
+          </div>
+
+          <!-- NOTIFICAÇÕES -->
+          <div id="ovSub-notif" class="ov-sub-panel hidden space-y-4">
+            <div class="flex flex-wrap gap-2"><button data-notif-type="follow" class="notif-sub-btn px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white">Novo Seguidor</button><button data-notif-type="slim" class="notif-sub-btn px-4 py-2 rounded-xl text-xs font-bold bg-ts-card border border-ts-border">Seguidor Slim</button><button data-notif-type="heartme" class="notif-sub-btn px-4 py-2 rounded-xl text-xs font-bold bg-ts-card border border-ts-border">HeartMe</button><button data-notif-type="strong" class="notif-sub-btn px-4 py-2 rounded-xl text-xs font-bold bg-ts-card border border-ts-border">Strong On</button></div>
+            <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-3"><div class="flex justify-between"><h2 class="text-base font-bold">Notificações OBS</h2><div class="flex gap-2"><button id="btnTestNotif" type="button" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-xs font-bold">Testar</button><button data-clean="notif" class="btn-open-clean px-3 py-1.5 rounded-lg bg-cyan-600 text-xs font-bold">Overlay Limpo</button></div></div><div id="previewNotifContainer" class="min-h-[160px] rounded-xl border border-ts-border p-4 flex items-center justify-center checkerboard-bg"></div></div>
+            <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 grid grid-cols-1 md:grid-cols-3 gap-3"><input id="inputNotifMsg" type="text" value="Obrigado por seguir!" class="bg-ts-bg border border-ts-border rounded-lg px-3 py-1.5 text-xs" /><div class="flex items-center gap-2"><input id="colorNotif" type="color" value="#22c55e" /><span id="notifColorHex" class="text-xs font-mono">#22C55E</span></div><input id="inputStrongMin" type="number" value="500" class="bg-ts-bg border border-ts-border rounded-lg px-3 py-1.5 text-xs" /><div class="md:col-span-3 flex gap-2"><input id="obsUrlNotif" readonly class="flex-1 bg-ts-bg border border-ts-border rounded-lg px-3 py-1.5 text-xs font-mono text-cyan-300" /><button data-copy="obsUrlNotif" class="copy-btn px-3 py-1.5 rounded-lg bg-ts-card border border-ts-border text-xs font-bold">Copiar</button></div></div>
+          </div>
+        </section>
+
+        <!-- 4. CONEXÃO -->
         <section id="tab-conexao" class="tab-panel hidden max-w-xl mx-auto p-6">
           <div class="bg-ts-panel border border-ts-border rounded-2xl p-6 space-y-4 text-center shadow-2xl">
-            <h2 class="text-lg font-black text-white">Conexão da Live</h2>
+            <h2 class="text-lg font-black text-white">Conexão TikTok Live &amp; Bridge WS</h2>
             <div class="bg-ts-bg border border-ts-border rounded-xl p-3 flex items-center justify-between text-left">
-              <div><div id="connCardUser" class="text-sm font-bold text-white">@cliente</div><div id="connCardStatus" class="text-[11px] font-bold text-emerald-400">● ACESSO ATIVO</div></div>
+              <div><div id="connCardUser" class="text-sm font-bold text-white">@cliente</div><div id="connCardStatus" class="text-[11px] font-bold text-amber-400">● PRONTO</div></div>
               <button id="btnDisconnect" type="button" class="text-xs text-slate-400 px-2">✕</button>
             </div>
             <input id="inputTiktokUser" type="text" value="@live_demo" class="w-full bg-ts-bg border border-ts-border rounded-xl px-4 py-2.5 text-sm text-white font-semibold" />
             <button id="btnConnectUser" type="button" class="w-full py-2.5 rounded-xl bg-blue-600 text-white text-xs font-extrabold">Atualizar @usuário</button>
             <div class="grid grid-cols-2 gap-2"><span id="connStatusPill" class="py-2 px-3 rounded-xl bg-rose-500/15 text-rose-300 text-xs font-bold">● WS: Offline</span><button id="btnConnectWs" type="button" class="py-2 px-3 rounded-xl bg-ts-card border border-ts-border text-xs font-bold text-white">Conectar Bridge WS</button></div>
             <input id="inputWsUrl" type="text" value="ws://localhost:8081" class="w-full bg-ts-bg border border-ts-border rounded-lg px-3 py-1.5 text-xs font-mono text-white" />
-            <button id="btnActivateTestMode" type="button" class="w-full py-2.5 rounded-xl bg-amber-500 text-slate-950 font-black text-xs uppercase">Ativar Modo Simulação</button>
             <button id="btnClearAllLive" type="button" class="w-full py-2 rounded-xl bg-red-600/20 border border-red-500/40 text-red-300 font-bold text-xs">Limpar Rankings</button>
           </div>
         </section>
 
-        <!-- MOEDAS -->
-        <section id="tab-moedas" class="tab-panel hidden max-w-6xl mx-auto p-4 lg:p-6 space-y-4">
-          <div class="flex flex-wrap justify-between gap-2">
-            <div class="flex gap-2"><button data-moedas-period="diario" class="period-btn px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white">Diário</button><button data-moedas-period="semanal" class="period-btn px-4 py-2 rounded-xl text-xs font-bold bg-ts-card border border-ts-border text-slate-300">Semanal</button></div>
-            <button data-clean="moedas" class="btn-open-clean px-3 py-2 rounded-lg bg-cyan-600 text-white text-xs font-bold">Overlay Limpo (OBS)</button>
-          </div>
-          <div class="bg-ts-panel border border-ts-border rounded-2xl p-5"><div id="previewMoedasContainer" class="min-h-[200px] rounded-xl border border-ts-border p-4 flex items-center justify-center checkerboard-bg"></div></div>
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 space-y-2.5">
-              <div class="flex gap-2"><button data-rank-count="moedas" data-val="3" class="rank-count-btn flex-1 py-1.5 rounded-lg text-xs font-bold border border-blue-500 bg-blue-600/25">3</button><button data-rank-count="moedas" data-val="5" class="rank-count-btn flex-1 py-1.5 rounded-lg text-xs font-bold border border-ts-border bg-ts-card">5</button><button data-rank-count="moedas" data-val="10" class="rank-count-btn flex-1 py-1.5 rounded-lg text-xs font-bold border border-ts-border bg-ts-card">10</button></div>
-              <div class="grid grid-cols-2 gap-2"><button id="btnMoedasPodium" class="py-2 rounded-lg text-xs font-bold border border-blue-500 bg-blue-600/25">Pódio</button><button id="btnMoedasLista" class="py-2 rounded-lg text-xs font-bold border border-ts-border bg-ts-card">Lista</button></div>
-              <label class="flex justify-between text-xs"><span>Fundo transparente</span><input id="chkMoedasTransparent" type="checkbox" checked /></label>
-              <label class="flex justify-between text-xs"><span>Molduras Games</span><input id="chkMoedasGames" type="checkbox" /></label>
-            </div>
-            <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 space-y-2.5">
-              <div class="flex justify-between text-xs font-bold"><span>Molduras PNG Próprias</span><button id="btnRestoreMoedasFrames" type="button" class="text-cyan-400">Restaurar</button></div>
-              <div class="grid grid-cols-3 gap-2 text-center">
-                <div class="bg-ts-bg border border-ts-border rounded-lg p-2"><div class="text-[10px] text-yellow-400 font-bold">1º</div><label class="text-[10px] cursor-pointer text-cyan-300">PNG<input type="file" accept="image/*" data-frame-upload="1" class="hidden frame-upload-input" /></label></div>
-                <div class="bg-ts-bg border border-ts-border rounded-lg p-2"><div class="text-[10px] text-slate-300 font-bold">2º</div><label class="text-[10px] cursor-pointer text-cyan-300">PNG<input type="file" accept="image/*" data-frame-upload="2" class="hidden frame-upload-input" /></label></div>
-                <div class="bg-ts-bg border border-ts-border rounded-lg p-2"><div class="text-[10px] text-amber-500 font-bold">3º</div><label class="text-[10px] cursor-pointer text-cyan-300">PNG<input type="file" accept="image/*" data-frame-upload="3" class="hidden frame-upload-input" /></label></div>
-              </div>
-              <div class="flex justify-between text-xs"><span>Escala</span><span id="moedasScaleVal">100%</span></div><input id="rangeMoedasScale" type="range" min="60" max="150" value="100" class="w-full" />
-            </div>
-            <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 space-y-2.5">
-              <div class="grid grid-cols-3 gap-1.5"><button data-anim="none" class="anim-btn py-1.5 rounded-lg text-[11px] font-bold border border-fuchsia-500 bg-fuchsia-600/30">Nenhuma</button><button data-anim="girar" class="anim-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card">Girar</button><button data-anim="pulsar" class="anim-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card">Pulsar</button><button data-anim="quicar" class="anim-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card">Quicar</button><button data-anim="balancar" class="anim-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card">Balançar</button><button data-anim="brilhar" class="anim-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card">Brilhar</button></div>
-              <div class="flex gap-2"><input id="colorMoedas" type="color" value="#facc15" /><select id="selectMoedasFont" class="flex-1 bg-ts-bg border border-ts-border rounded-lg px-2 py-1 text-xs"><option value="system">System</option><option value="impact">Arcade Impact</option><option value="mono">Mono</option></select></div>
-              <div class="flex gap-1.5"><input id="obsUrlMoedas" readonly class="flex-1 bg-ts-bg border border-ts-border rounded-lg px-2 py-1 text-[10px] font-mono text-cyan-300" /><button data-copy="obsUrlMoedas" class="copy-btn px-2 py-1 rounded-lg bg-ts-card border border-ts-border text-[10px] font-bold">Copiar</button></div>
-            </div>
-          </div>
-        </section>
-
-        <!-- LIKES -->
-        <section id="tab-likes" class="tab-panel hidden max-w-5xl mx-auto p-4 lg:p-6 space-y-4">
-          <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-3"><div class="flex justify-between"><div><h2 class="text-base font-bold">Ranking Tap-Tap</h2><p class="text-xs text-slate-400" id="likesTotalSubtitle">Total: 0</p></div><button data-clean="likes" class="btn-open-clean px-3 py-1.5 rounded-lg bg-cyan-600 text-xs font-bold">Overlay Limpo</button></div><div id="previewLikesContainer" class="min-h-[210px] rounded-xl border border-ts-border p-4 flex items-center justify-center checkerboard-bg"></div></div>
-          <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 grid grid-cols-1 md:grid-cols-2 gap-4"><div class="space-y-2"><div class="flex gap-2"><button data-rank-count="likes" data-val="3" class="likes-count-btn flex-1 py-1.5 rounded-lg text-xs font-bold border border-ts-border bg-ts-card">3</button><button data-rank-count="likes" data-val="5" class="likes-count-btn flex-1 py-1.5 rounded-lg text-xs font-bold border border-blue-500 bg-blue-600/25">5</button><button data-rank-count="likes" data-val="10" class="likes-count-btn flex-1 py-1.5 rounded-lg text-xs font-bold border border-ts-border bg-ts-card">10</button></div><div class="flex justify-between text-xs"><span>Espaçamento</span><span id="likesGapVal">8px</span></div><input id="rangeLikesGap" type="range" min="2" max="24" value="8" class="w-full" /></div><div class="flex items-end gap-2"><input id="obsUrlLikes" readonly class="flex-1 bg-ts-bg border border-ts-border rounded-lg px-2.5 py-1.5 text-xs font-mono text-cyan-300" /><button data-copy="obsUrlLikes" class="copy-btn px-3 py-1.5 rounded-lg bg-ts-card border border-ts-border text-xs font-bold">Copiar</button></div></div>
-        </section>
-
-        <!-- SHARES -->
-        <section id="tab-shares" class="tab-panel hidden max-w-5xl mx-auto p-4 lg:p-6 space-y-4">
-          <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-3"><div class="flex justify-between"><h2 class="text-base font-bold">Ranking de Shares</h2><div class="flex gap-2"><button id="btnResetShares" type="button" class="px-3 py-1.5 rounded-lg bg-ts-card border border-ts-border text-xs font-bold">Zerar Batalha</button><button data-clean="shares" class="btn-open-clean px-3 py-1.5 rounded-lg bg-cyan-600 text-xs font-bold">Overlay Limpo</button></div></div><div id="previewSharesContainer" class="min-h-[200px] rounded-xl border border-ts-border p-4 flex items-center justify-center checkerboard-bg"></div></div>
-          <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 flex gap-3 items-center justify-between"><div class="flex gap-2"><button data-rank-count="shares" data-val="3" class="shares-count-btn px-3 py-1.5 rounded-lg text-xs font-bold border border-blue-500 bg-blue-600/25">Top 3</button><button data-rank-count="shares" data-val="5" class="shares-count-btn px-3 py-1.5 rounded-lg text-xs font-bold border border-ts-border bg-ts-card">Top 5</button></div><div class="flex gap-2 flex-1 max-w-md"><input id="obsUrlShares" readonly class="flex-1 bg-ts-bg border border-ts-border rounded-lg px-2.5 py-1.5 text-xs font-mono text-cyan-300" /><button data-copy="obsUrlShares" class="copy-btn px-3 py-1.5 rounded-lg bg-ts-card border border-ts-border text-xs font-bold">Copiar</button></div></div>
-        </section>
-
-        <!-- BIG GIFTER -->
-        <section id="tab-gifter" class="tab-panel hidden max-w-5xl mx-auto p-4 lg:p-6 space-y-4">
-          <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-3"><div class="flex justify-between"><h2 class="text-base font-bold">Big Gifter 3D</h2><button data-clean="gifter" class="btn-open-clean px-3 py-1.5 rounded-lg bg-cyan-600 text-xs font-bold">Overlay Limpo</button></div><div id="previewGifterContainer" class="min-h-[210px] rounded-xl border border-ts-border p-4 flex items-center justify-center checkerboard-bg"></div></div>
-          <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 grid grid-cols-1 md:grid-cols-2 gap-4"><div class="space-y-2.5"><div class="grid grid-cols-5 gap-1.5"><button data-gframe="none" class="gframe-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card">Sem</button><button data-gframe="gold" class="gframe-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card text-yellow-300">Ouro</button><button data-gframe="silver" class="gframe-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card text-slate-200">Prata</button><button data-gframe="bronze" class="gframe-btn py-1.5 rounded-lg text-[11px] font-bold border border-ts-border bg-ts-card text-amber-400">Bronze</button><button data-gframe="crystal" class="gframe-btn py-1.5 rounded-lg text-[11px] font-bold border border-cyan-400 bg-cyan-500/20 text-cyan-300">Cristal</button></div><div class="flex flex-wrap items-center gap-3"><div class="flex items-center gap-1.5"><input id="colorGifterTitle" type="color" value="#facc15" /><span class="text-[11px]">Título</span></div><div class="flex items-center gap-1.5"><input id="colorGifterCoins" type="color" value="#ffd700" /><span class="text-[11px]">Moedas</span></div><label class="px-2.5 py-1 rounded-lg bg-ts-bg border border-ts-border text-[11px] text-cyan-300 font-bold cursor-pointer">PNG Presente<input id="inputGifterPng" type="file" accept="image/*" class="hidden" /></label><button id="btnClearGifterPng" type="button" class="text-[11px] text-slate-400 hover:text-rose-400">Limpar</button></div></div><div class="space-y-2"><div class="flex justify-between text-xs"><span>Escala</span><span id="gifterScaleVal">100%</span></div><input id="rangeGifterScale" type="range" min="70" max="160" value="100" class="w-full" /><div class="flex gap-2"><input id="obsUrlGifter" readonly class="flex-1 bg-ts-bg border border-ts-border rounded-lg px-2.5 py-1.5 text-xs font-mono text-cyan-300" /><button data-copy="obsUrlGifter" class="copy-btn px-3 py-1.5 rounded-lg bg-ts-card border border-ts-border text-xs font-bold">Copiar</button></div></div></div>
-        </section>
-
-        <!-- NOTIFICAÇÕES -->
-        <section id="tab-notificacoes" class="tab-panel hidden max-w-5xl mx-auto p-4 lg:p-6 space-y-4">
-          <div class="flex flex-wrap gap-2"><button data-notif-type="follow" class="notif-sub-btn px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white">Novo Seguidor</button><button data-notif-type="slim" class="notif-sub-btn px-4 py-2 rounded-xl text-xs font-bold bg-ts-card border border-ts-border">Seguidor Slim</button><button data-notif-type="heartme" class="notif-sub-btn px-4 py-2 rounded-xl text-xs font-bold bg-ts-card border border-ts-border">HeartMe</button><button data-notif-type="strong" class="notif-sub-btn px-4 py-2 rounded-xl text-xs font-bold bg-ts-card border border-ts-border">Strong On</button></div>
-          <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-3"><div class="flex justify-between"><h2 class="text-base font-bold">Notificações OBS</h2><div class="flex gap-2"><button id="btnTestNotif" type="button" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-xs font-bold">Testar</button><button data-clean="notif" class="btn-open-clean px-3 py-1.5 rounded-lg bg-cyan-600 text-xs font-bold">Overlay Limpo</button></div></div><div id="previewNotifContainer" class="min-h-[160px] rounded-xl border border-ts-border p-4 flex items-center justify-center checkerboard-bg"></div></div>
-          <div class="bg-ts-panel border border-ts-border rounded-2xl p-4 grid grid-cols-1 md:grid-cols-3 gap-3"><input id="inputNotifMsg" type="text" value="Obrigado por seguir!" class="bg-ts-bg border border-ts-border rounded-lg px-3 py-1.5 text-xs" /><div class="flex items-center gap-2"><input id="colorNotif" type="color" value="#22c55e" /><span id="notifColorHex" class="text-xs font-mono">#22C55E</span></div><input id="inputStrongMin" type="number" value="500" class="bg-ts-bg border border-ts-border rounded-lg px-3 py-1.5 text-xs" /><div class="md:col-span-3 flex gap-2"><input id="obsUrlNotif" readonly class="flex-1 bg-ts-bg border border-ts-border rounded-lg px-3 py-1.5 text-xs font-mono text-cyan-300" /><button data-copy="obsUrlNotif" class="copy-btn px-3 py-1.5 rounded-lg bg-ts-card border border-ts-border text-xs font-bold">Copiar</button></div></div>
-        </section>
-
-        <!-- VOICE BOT -->
+        <!-- 5. SOUND ALERTS / VOICE BOT -->
         <section id="tab-tts" class="tab-panel hidden max-w-4xl mx-auto p-4 lg:p-6 space-y-4">
           <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-4"><div class="flex justify-between"><h2 class="text-base font-bold">Voice Bot (TTS PT-BR)</h2><label class="flex items-center gap-2 text-xs font-bold text-emerald-300"><input id="chkTtsEnabled" type="checkbox" checked /> ATIVADO</label></div><div class="grid grid-cols-1 md:grid-cols-2 gap-3"><select id="selTtsVoice" class="bg-ts-bg border border-ts-border rounded-lg px-3 py-2 text-xs"></select><input id="inputTtsPrefix" type="text" value="!tts" class="bg-ts-bg border border-ts-border rounded-lg px-3 py-2 text-xs font-mono" /><div><div class="flex justify-between text-xs"><span>Volume</span><span id="ttsVolVal">100%</span></div><input id="rangeTtsVol" type="range" min="10" max="100" value="100" class="w-full" /></div><div><div class="flex justify-between text-xs"><span>Velocidade</span><span id="ttsRateVal">1.2x</span></div><input id="rangeTtsRate" type="range" min="0.6" max="2.0" step="0.1" value="1.2" class="w-full" /></div></div><div class="flex gap-2"><input id="inputTtsTestMsg" type="text" value="!tts Salve galera! Bora bater a meta da live!" class="flex-1 bg-ts-bg border border-ts-border rounded-lg px-3 py-2 text-xs" /><button id="btnTestTts" type="button" class="px-4 py-2 rounded-lg bg-blue-600 text-xs font-bold">Testar Voz</button></div></div>
+        </section>
+
+        <!-- 6. INTEGRAÇÕES & GUIA (TIKTOK STUDIO, OBS, PRISM) -->
+        <section id="tab-guia" class="tab-panel hidden max-w-5xl mx-auto p-4 lg:p-6 space-y-4">
+          <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-2">
+            <h2 class="text-xl font-black text-white">Guia Rápido: TikTok LIVE Studio, OBS Studio e PRISM Live</h2>
+            <p class="text-xs text-slate-300">Os arquivos <strong>.WEBM</strong> do Effect Battle já vão recortados com fundo transparente. Escolha abaixo onde você faz suas lives:</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-2.5">
+              <div class="text-sm font-black text-cyan-300">1. TikTok LIVE Studio (PC)</div>
+              <ol class="text-xs text-slate-300 space-y-2 list-decimal list-inside leading-relaxed">
+                <li>Em <strong>Effect Battle</strong>, clique em <strong>Baixar (.WEBM)</strong> no efeito desejado.</li>
+                <li>No TikTok LIVE Studio: <strong>Adicionar fonte → Vídeo</strong> (ou <strong>Imagem</strong> para molduras .PNG).</li>
+                <li>Selecione o arquivo baixado — ele já entra transparente sobre sua câmera!</li>
+                <li>Para alertas automáticos, adicione uma fonte <strong>Link / Navegador</strong> com o link da aba <strong>Events → Tela de Sobreposição</strong>.</li>
+              </ol>
+            </div>
+
+            <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-2.5">
+              <div class="text-sm font-black text-emerald-300">2. OBS Studio (PC)</div>
+              <ol class="text-xs text-slate-300 space-y-2 list-decimal list-inside leading-relaxed">
+                <li>Clique em <strong>+ → Fonte de Mídia</strong> e escolha o <strong>.WEBM</strong> baixado.</li>
+                <li>Marque <strong>"Reiniciar reprodução quando a fonte ficar ativa"</strong> e <strong>"Desligar fonte quando não visível (Shutdown source)"</strong> para economizar memória.</li>
+                <li>Para Rankings e Triggers automáticos, use <strong>+ → Navegador</strong> com os links copiados do painel.</li>
+              </ol>
+            </div>
+
+            <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-2.5">
+              <div class="text-sm font-black text-pink-400">3. PRISM Live Studio (Android / PC)</div>
+              <ol class="text-xs text-slate-300 space-y-2 list-decimal list-inside leading-relaxed">
+                <li>No <strong>PRISM Android</strong>, use <strong>My Studio → Widget → Web</strong> (até 4 widgets na tela).</li>
+                <li>Em <strong>Effect Battle</strong>, toque em <strong>Link Web (PRISM)</strong> e cole lá — assim o <strong>.WEBM</strong> entra transparente na câmera do celular!</li>
+                <li>Molduras <strong>.PNG</strong> entram em <strong>My Studio → Media</strong>.</li>
+                <li>Para transmitir ao TikTok pelo PRISM, conecte sua chave em <strong>Custom RTMP</strong> (ou use Câmera Virtual no PC).</li>
+              </ol>
+            </div>
+          </div>
         </section>
 
         <!-- ADMIN 1: PUBLICAR PACK GLOBAL -->
         <section id="tab-admpack" class="tab-panel hidden max-w-5xl mx-auto p-4 lg:p-6 space-y-4">
           <div class="bg-ts-panel border border-emerald-500/40 rounded-2xl p-5 space-y-4">
             <div class="flex flex-wrap justify-between items-center gap-3">
-              <div>
-                <h2 class="text-base font-black text-emerald-300">Publicar Pack Global (Visível para Compradores)</h2>
-                <p class="text-xs text-slate-400">Suba os vídeos (.mp4/.webm/.png) na pasta pack/ do GitHub com qualquer nome, escolha cada um abaixo e clique em Publicar para Clientes.</p>
-              </div>
+              <div><h2 class="text-base font-black text-emerald-300">Publicar Effect Battle Global (Visível para Compradores)</h2><p class="text-xs text-slate-400">Suba os .webm na pasta pack/ do GitHub, escolha a categoria (X2, X3, Luva, Tap, Batalha 3D, Molduras) e clique em Publicar.</p></div>
               <div class="flex gap-2">
                 <button id="btnAdminPublishCatalog" type="button" class="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950 font-black text-xs">Publicar para Clientes</button>
                 <button id="btnAdminDownloadCatalog" type="button" class="px-3 py-2 rounded-xl bg-ts-card border border-ts-border text-xs font-bold text-white">Baixar catalogo.json</button>
               </div>
             </div>
-
-            <div class="bg-ts-bg border border-ts-border rounded-xl p-3 space-y-2">
-              <label class="block text-[11px] font-bold text-cyan-300">Vídeo da Apresentação na Vitrine (URL ou caminho no GitHub):</label>
+            <div class="bg-ts-bg border border-ts-border rounded-xl p-3 space-y-1.5">
+              <label class="block text-[11px] font-bold text-cyan-300">Vídeo Comercial da Vitrine:</label>
               <input id="admComercialUrl" type="text" value="pack/comercial.webm" class="w-full bg-ts-panel border border-ts-border rounded-lg px-3 py-1.5 text-xs font-mono text-white" />
             </div>
-
-            <div class="bg-ts-bg border border-ts-border rounded-xl p-3 space-y-2">
-              <div class="grid grid-cols-1 sm:grid-cols-5 gap-2">
-                <input id="admNewPackName" type="text" placeholder="Nome (ex: Diamante)" class="bg-ts-panel border border-ts-border rounded-lg px-2.5 py-1.5 text-xs text-white" />
-                <input id="admNewPackCat" type="text" placeholder="Categoria (Efeito 3D)" class="bg-ts-panel border border-ts-border rounded-lg px-2.5 py-1.5 text-xs text-white" />
-                <input id="admNewPackFile" type="text" placeholder="pack/video.mp4" class="bg-ts-panel border border-ts-border rounded-lg px-2.5 py-1.5 text-xs font-mono text-white" />
-                <input id="admNewPackFmt" type="text" value="MP4" class="bg-ts-panel border border-ts-border rounded-lg px-2.5 py-1.5 text-xs text-white" />
-                <button id="btnAdmAddPackItem" type="button" class="py-1.5 rounded-lg bg-blue-600 text-xs font-bold text-white">+ Adicionar Item</button>
-              </div>
-              <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-ts-border/50">
-                <select id="selNewPackFromGh" class="flex-1 min-w-[180px] bg-ts-panel border border-ts-border rounded-lg px-2.5 py-1.5 text-xs text-emerald-300">
-                  <option value="">📂 Escolher arquivo da pasta pack/...</option>
-                </select>
-                <label class="px-2.5 py-1.5 rounded-lg bg-blue-600/25 border border-blue-500/40 text-[11px] font-bold text-blue-200 cursor-pointer shrink-0">
-                  📱 Nome do celular
-                  <input id="inpNewPackLocal" type="file" accept="video/*,image/*,.zip" class="hidden" />
-                </label>
-              </div>
+            <div class="bg-ts-bg border border-ts-border rounded-xl p-3 grid grid-cols-1 sm:grid-cols-5 gap-2">
+              <input id="admNewPackName" type="text" placeholder="Nome (ex: X2 Cromado)" class="bg-ts-panel border border-ts-border rounded-lg px-2.5 py-1.5 text-xs text-white" />
+              <select id="admNewPackCat" class="bg-ts-panel border border-ts-border rounded-lg px-2 py-1.5 text-xs text-white"><option value="Batalha 3D">Batalha 3D</option><option value="X2">X2</option><option value="X3">X3</option><option value="Luva">Luva</option><option value="Tap">Tap</option><option value="Molduras">Molduras</option></select>
+              <input id="admNewPackFile" type="text" placeholder="pack/x2-cromado.webm" class="bg-ts-panel border border-ts-border rounded-lg px-2.5 py-1.5 text-xs font-mono text-white" />
+              <input id="admNewPackFmt" type="text" value="WEBM Transparente" class="bg-ts-panel border border-ts-border rounded-lg px-2.5 py-1.5 text-xs text-white" />
+              <button id="btnAdmAddPackItem" type="button" class="py-1.5 rounded-lg bg-blue-600 text-xs font-bold text-white">+ Adicionar</button>
             </div>
-
             <div id="adminCatalogList" class="space-y-2"></div>
           </div>
         </section>
 
-        <!-- ADMIN 2: ESTÚDIO CHROMA KEY (.WEBM TRANSPARENTE) -->
+        <!-- ADMIN 2: ESTÚDIO CHROMA (.WEBM) -->
         <section id="tab-vfx" class="tab-panel hidden lg:h-full flex flex-col lg:flex-row">
           <aside class="w-full lg:w-[37%] lg:min-w-[340px] border-b lg:border-b-0 lg:border-r border-ts-border bg-ts-panel lg:overflow-y-auto p-4 space-y-4">
             <section class="p-3.5 rounded-xl bg-gradient-to-b from-emerald-950/45 to-ts-card border-2 border-emerald-500/60 space-y-3">
@@ -435,7 +482,7 @@
               </div>
               <div class="grid grid-cols-3 gap-2">
                 <div><div class="flex justify-between text-[9px] text-slate-400"><span>Corte</span><span id="keyThreshVal">0.08</span></div><input id="rangeKeyThresh" type="range" min="0.01" max="0.45" step="0.01" value="0.08" class="w-full" /></div>
-                <div><div class="flex justify-between text-[9px] text-slate-400"><span>Suavidade</span><span id="keySmoothVal">0.14</span></div><input id="rangeKeySmooth" type="range" min="0.02" max="0.40" step="0.01" value="0.14" class="w-full" /></div>
+                <div><div class="flex justify-between text-[9px] text-slate-400"><span>Suave</span><span id="keySmoothVal">0.14</span></div><input id="rangeKeySmooth" type="range" min="0.02" max="0.40" step="0.01" value="0.14" class="w-full" /></div>
                 <div><div class="flex justify-between text-[9px] text-slate-400"><span>Despill</span><span id="keyDespillVal">0.90</span></div><input id="rangeKeyDespill" type="range" min="0.00" max="1.00" step="0.05" value="0.90" class="w-full" /></div>
               </div>
             </section>
@@ -467,7 +514,7 @@
           </div>
         </section>
 
-        <!-- ADMIN 3: LINKS VIP GRÁTIS PARA INFLUENCIADORES -->
+        <!-- ADMIN 3: LINKS VIP -->
         <section id="tab-admlinks" class="tab-panel hidden max-w-4xl mx-auto p-4 lg:p-6 space-y-4">
           <div class="bg-ts-panel border border-ts-border rounded-2xl p-5 space-y-4">
             <h2 class="text-base font-black text-amber-300">Gerar Link VIP Grátis (Influenciadores)</h2>
@@ -481,11 +528,12 @@
             <div class="flex justify-between text-xs font-bold text-slate-400"><span>Cadastrados</span><span id="admCountBadge">0</span></div>
             <div id="admClientList" class="space-y-2 max-h-60 overflow-y-auto"></div>
             <div class="bg-ts-bg border border-ts-border rounded-xl p-3 flex flex-wrap items-center justify-between gap-2">
-              <span class="text-xs font-bold text-slate-300">Alterar Senha Admin (local):</span>
+              <span class="text-xs font-bold text-slate-300">Alterar Senha Admin:</span>
               <div class="flex gap-2"><input id="admNewPassInput" type="password" placeholder="Nova senha..." class="bg-ts-panel border border-ts-border rounded-lg px-3 py-1 text-xs text-white" /><button id="btnAdminChangePass" type="button" class="px-3 py-1 rounded-lg bg-blue-600 text-xs font-bold text-white">Salvar</button></div>
             </div>
           </div>
         </section>
+
       </main>
     </div>
   </div>
@@ -496,41 +544,39 @@
   <script type="module">
     import * as THREE from 'three';
 
+    const API_BASE = window.location.hostname.includes('vercel.app') ? '' : 'https://tikscan-pro.vercel.app';
     const ADMIN_PASS_KEY='tikscan_admin_pass_v1', ADMIN_CLIENTS_KEY='tikscan_admin_clients_v1', ADMIN_SESSION_KEY='tikscan_is_admin_v1';
     function getAdminPass(){return localStorage.getItem(ADMIN_PASS_KEY)||'admin123';}
-    function escAttr(v){return String(v||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
     function signClientToken(u,e,p){const s=`${String(u).toLowerCase().trim()}|${e}|${p}|TIKSCAN_PRO_BR_2026`;let a=0x811c9dc5,b=0x9e3779b9;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);a^=c;a=Math.imul(a,0x01000193);b^=c+i;b=Math.imul(b,0x85ebca6b);}return((a>>>0).toString(36)+(b>>>0).toString(36)).slice(0,10);}
     function loadAdminClients(){try{return JSON.parse(localStorage.getItem(ADMIN_CLIENTS_KEY)||'[]');}catch{return[];}}
     function saveAdminClients(l){localStorage.setItem(ADMIN_CLIENTS_KEY,JSON.stringify(l));renderAdminClients();}
     function buildClientInviteUrl(c){const clean=window.location.href.split('?')[0].split('#')[0],p=new URLSearchParams({u:c.user,exp:c.exp,plan:c.plan,k:c.sig});if(c.ws)p.set('ws',c.ws);return`${clean}?${p.toString()}`;}
 
     let globalCatalog={comercialUrl:'pack/comercial.webm',itens:[]};
-    let isAdminUser=false, activeClientLink=window.location.href;
-    let githubPackFiles=[], packFilesFetchedOnce=false;
+    let isAdminUser=false, activeClientLink=window.location.href, currentCatFilter='Todos';
 
     async function fetchGlobalCatalog(){
       try{
-        const r=await fetch('/api/catalogo?t='+Date.now(),{cache:'no-store'});
-        if(r.ok){globalCatalog=await r.json();}
+        const r=await fetch(`${API_BASE}/api/catalogo?t=${Date.now()}`,{cache:'no-store'});
+        if(r.ok)globalCatalog=await r.json();
       }catch{}
       if(!globalCatalog.itens||!globalCatalog.itens.length){
         try{
-          const r2=await fetch('pack/catalogo.json?t='+Date.now(),{cache:'no-store'});
+          const r2=await fetch(`pack/catalogo.json?t=${Date.now()}`,{cache:'no-store'});
           if(r2.ok){const d=await r2.json();globalCatalog=Array.isArray(d)?{comercialUrl:'pack/comercial.webm',itens:d}:d;}
         }catch{}
       }
       renderPublicCatalogPreview();
       renderClientPackDownloads();
+      renderEventsActions();
+      renderTriggersList();
       renderAdminCatalogEditor();
       setupPublicVideo();
     }
 
     function setupPublicVideo(){
-      const vid=document.getElementById('publicPromoVideo'),fb=document.getElementById('publicPromoFallback');
-      if(!vid)return;
-      vid.classList.remove('hidden');
+      const vid=document.getElementById('publicPromoVideo'),fb=document.getElementById('publicPromoFallback');if(!vid)return;
       vid.src=globalCatalog.comercialUrl||'pack/comercial.webm';
-      vid.load();
       vid.onerror=()=>{vid.classList.add('hidden');fb.classList.remove('hidden');};
       vid.onloadeddata=()=>{vid.classList.remove('hidden');fb.classList.add('hidden');};
     }
@@ -538,75 +584,162 @@
     function renderPublicCatalogPreview(){
       const grid=document.getElementById('publicPackPreviewGrid');if(!grid)return;
       const items=(globalCatalog.itens||[]).filter(x=>x.ativo!==false);
-      grid.innerHTML=items.map(it=>`<div class="bg-ts-panel border border-ts-border rounded-xl p-3 space-y-1"><div class="text-[10px] font-bold uppercase text-cyan-400">${escAttr(it.categoria||'Efeito')}</div><div class="text-xs font-extrabold text-white truncate">${escAttr(it.nome)}</div><div class="text-[10px] text-slate-400">${escAttr(it.formato||'WEBM')}</div></div>`).join('');
+      grid.innerHTML=items.map(it=>`<div class="bg-ts-panel border border-ts-border rounded-xl p-3 space-y-1"><div class="text-[10px] font-bold uppercase text-cyan-400">${it.categoria||'Efeito'}</div><div class="text-xs font-extrabold text-white truncate">${it.nome}</div><div class="text-[10px] text-slate-400">${it.formato||'WEBM'}</div></div>`).join('');
     }
 
+    const baseCleanUrl=window.location.href.split('?')[0].split('#')[0];
     function renderClientPackDownloads(){
       const grid=document.getElementById('clientPackGrid');if(!grid)return;
-      const items=(globalCatalog.itens||[]).filter(x=>x.ativo!==false);
-      if(!items.length){grid.innerHTML='<div class="col-span-full text-xs text-slate-400 text-center py-8 border border-dashed border-ts-border rounded-2xl">Nenhum efeito publicado ainda pelo administrador.</div>';return;}
+      const all=(globalCatalog.itens||[]).filter(x=>x.ativo!==false);
+      document.getElementById('sidebarPackBadge').textContent=all.length||'PACK';
+      const items=currentCatFilter==='Todos'?all:all.filter(x=>(x.categoria||'').toLowerCase()===currentCatFilter.toLowerCase());
+      if(!items.length){grid.innerHTML='<div class="col-span-full text-xs text-slate-400 text-center py-8 border border-dashed border-ts-border rounded-2xl">Nenhum efeito nesta categoria ainda.</div>';return;}
       grid.innerHTML=items.map(it=>{
-        const isVideo=/\.(webm|mp4)$/i.test(it.arquivo||'');
-        const isImage=/\.(png|jpe?g|webp|gif)$/i.test(it.arquivo||'');
+        const isVid=/\.(webm|mp4)$/i.test(it.arquivo||'');
         const fname=(it.arquivo||'efeito.webm').split('/').pop();
-        return`<div class="bg-ts-panel border border-ts-border hover:border-cyan-400/60 rounded-2xl p-4 flex flex-col justify-between gap-3 transition">
-          <div class="space-y-1.5">
-            <div class="flex justify-between items-center gap-2"><span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-cyan-500/15 text-cyan-300">${escAttr(it.categoria||'VFX')}</span><span class="text-[10px] font-mono text-slate-400">${escAttr(it.formato||'')}</span></div>
-            <div class="text-sm font-black text-white">${escAttr(it.nome)}</div>
-            ${isVideo?`<video src="${escAttr(it.arquivo)}" muted playsinline loop controls class="w-full h-36 object-contain rounded-xl bg-black/50 border border-ts-border"></video>`:isImage?`<img src="${escAttr(it.arquivo)}" alt="${escAttr(it.nome)}" class="w-full h-36 object-contain rounded-xl bg-black/50 border border-ts-border" />`:`<div class="h-20 rounded-xl bg-ts-bg border border-ts-border flex items-center justify-center text-xs font-bold text-slate-400">${escAttr(fname)}</div>`}
+        const prismLink=`${baseCleanUrl}?fx=${encodeURIComponent(it.arquivo||'')}`;
+        return`<div class="bg-ts-panel border border-ts-border hover:border-pink-500/60 rounded-2xl p-3.5 flex flex-col justify-between gap-3 transition">
+          <div class="space-y-2">
+            <div class="h-44 rounded-xl checkerboard-bg border border-ts-border overflow-hidden flex items-center justify-center">
+              ${isVid?`<video src="${it.arquivo}" muted playsinline loop onmouseover="this.play()" onmouseout="this.pause()" onclick="this.paused?this.play():this.pause()" class="w-full h-full object-contain cursor-pointer"></video>`:`<div class="text-xs font-bold text-slate-300 px-3 text-center">${fname}</div>`}
+            </div>
+            <div>
+              <div class="flex items-center justify-between gap-2"><span class="text-sm font-black text-white truncate">${it.nome}</span><span class="text-[9px] px-1.5 py-0.5 rounded bg-blue-500/20 text-cyan-300 font-bold shrink-0">${it.categoria||'VFX'}</span></div>
+              <div class="text-[10px] font-mono text-slate-400 mt-0.5">${it.formato||'.WEBM TRANSPARENTE'}</div>
+            </div>
           </div>
-          <a href="${escAttr(it.arquivo)}" download="${escAttr(fname)}" target="_blank" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950 font-black text-xs text-center uppercase">Baixar Arquivo</a>
+          <div class="space-y-1.5">
+            <a href="${it.arquivo}" download="${fname}" target="_blank" class="block w-full py-2 rounded-xl bg-gradient-to-r from-pink-600 to-rose-600 hover:brightness-110 text-white font-black text-xs text-center uppercase">Baixar (.WEBM)</a>
+            ${isVid?`<button data-copy-fx="${prismLink}" type="button" class="copy-fx-btn w-full py-1.5 rounded-xl bg-ts-bg border border-cyan-500/40 text-cyan-300 font-bold text-[11px] hover:bg-cyan-500/10">Copiar Link Web (PRISM)</button>`:''}
+          </div>
         </div>`;
       }).join('');
+      grid.querySelectorAll('.copy-fx-btn').forEach(b=>b.addEventListener('click',()=>{navigator.clipboard?.writeText(b.dataset.copyFx);showToast('Link Web transparente copiado para o PRISM!');}));
     }
 
-    document.getElementById('btnPayMercadoPago').addEventListener('click',async()=>{
-      const u=document.getElementById('mpInputUser').value.trim(),err=document.getElementById('mpCheckoutErr'),btn=document.getElementById('btnPayMercadoPago');
+    document.querySelectorAll('.eb-filter').forEach(b=>b.addEventListener('click',()=>{
+      currentCatFilter=b.dataset.catFilter;
+      document.querySelectorAll('.eb-filter').forEach(x=>{const on=x===b;x.classList.toggle('bg-pink-600',on);x.classList.toggle('text-white',on);x.classList.toggle('bg-ts-card',!on);x.classList.toggle('border',!on);});
+      renderClientPackDownloads();
+    }));
+
+    // =========================================================================
+    // CHECKOUT PIX QR CODE + POLLING AUTOMÁTICO MERCADO PAGO
+    // =========================================================================
+    let pixPollTimer=null;
+    document.getElementById('btnGeneratePix').addEventListener('click',async()=>{
+      const u=document.getElementById('mpInputUser').value.trim(),em=document.getElementById('mpInputEmail').value.trim(),err=document.getElementById('mpCheckoutErr'),btn=document.getElementById('btnGeneratePix');
       err.classList.add('hidden');
-      if(!u){err.textContent='Digite seu @ do TikTok antes de continuar.';err.classList.remove('hidden');return;}
-      btn.disabled=true;btn.textContent='Abrindo Mercado Pago...';
+      if(!u){err.textContent='Digite seu @ do TikTok para continuar.';err.classList.remove('hidden');return;}
+      btn.disabled=true;btn.textContent='Gerando QR Code Pix...';
       try{
-        const res=await fetch('/api/criar-pagamento',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tiktokUser:u})});
+        const res=await fetch(`${API_BASE}/api/criar-pagamento`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tiktokUser:u,email:em})});
         const data=await res.json();
-        if(!res.ok||!data.init_point)throw new Error(data.error||'Erro ao iniciar pagamento.');
-        window.location.href=data.init_point;
+        if(!res.ok||!data.qr_code)throw new Error(data.error||'Erro ao gerar Pix. Confira sua Chave Pix e Token na Vercel.');
+        document.getElementById('pixFormBox').classList.add('hidden');
+        document.getElementById('pixQrBox').classList.remove('hidden');
+        document.getElementById('pixQrImg').src=`data:image/png;base64,${data.qr_code_base64}`;
+        document.getElementById('pixCopiaCola').value=data.qr_code;
+        clearInterval(pixPollTimer);
+        pixPollTimer=setInterval(async()=>{
+          try{
+            const cr=await fetch(`${API_BASE}/api/confirmar-pagamento?payment_id=${encodeURIComponent(data.payment_id)}`);
+            const cd=await cr.json();
+            if(cd.approved&&cd.k){
+              clearInterval(pixPollTimer);
+              const p=new URLSearchParams({u:cd.user,exp:cd.exp,plan:cd.plan,k:cd.k});
+              window.location.href=`${baseCleanUrl}?${p.toString()}`;
+            }
+          }catch{}
+        },3000);
       }catch(e){
         err.textContent=e.message;err.classList.remove('hidden');
-        btn.disabled=false;btn.textContent='Adquirir Acesso PRO — R$ 29,99 (Pix / Cartão)';
+        btn.disabled=false;btn.textContent='Pagar R$ 29,99 via Pix (QR Code)';
       }
     });
+    document.getElementById('btnCopyPixCode').addEventListener('click',()=>{navigator.clipboard?.writeText(document.getElementById('pixCopiaCola').value);showToast('Código Pix Copia e Cola copiado!');});
+    document.getElementById('btnCancelPix').addEventListener('click',()=>{clearInterval(pixPollTimer);document.getElementById('pixQrBox').classList.add('hidden');document.getElementById('pixFormBox').classList.remove('hidden');document.getElementById('btnGeneratePix').disabled=false;document.getElementById('btnGeneratePix').textContent='Pagar R$ 29,99 via Pix (QR Code)';});
 
-    async function handleMercadoPagoReturn(paymentId){
-      document.getElementById('mpProcessingScreen').classList.remove('hidden');
-      try{
-        const res=await fetch(`/api/confirmar-pagamento?payment_id=${encodeURIComponent(paymentId)}`);
-        const d=await res.json();
-        if(d.approved&&d.k){
-          const clean=window.location.href.split('?')[0].split('#')[0];
-          const p=new URLSearchParams({u:d.user,exp:d.exp,plan:d.plan,k:d.k});
-          const targetUrl=`${clean}?${p.toString()}`;
-          localStorage.setItem('tikscan_saved_client_url',targetUrl);
-          window.location.replace(targetUrl);
-          return;
-        }
-        document.getElementById('mpProcTitle').textContent='Pagamento Pendente';
-        document.getElementById('mpProcMsg').textContent='Se você pagou por Pix agora, aguarde alguns segundos e clique em verificar novamente.';
-        const rb=document.getElementById('mpRetryBtn');rb.classList.remove('hidden');rb.onclick=()=>handleMercadoPagoReturn(paymentId);
-      }catch{
-        document.getElementById('mpProcTitle').textContent='Erro ao validar pagamento';
-        document.getElementById('mpRetryBtn').classList.remove('hidden');
-      }
-    }
-
-    const SCAN_STORAGE='tikscan_pro_state_v4',PACK_STORAGE_KEY='tikarcade_vfx_pack_v4';
+    // =========================================================================
+    // ESTADO, TRIGGERS (X2/X3/LUVA/HEARTME/ROSA) & TELA DE SOBREPOSIÇÃO
+    // =========================================================================
+    const SCAN_STORAGE='tikscan_pro_state_v5',PACK_STORAGE_KEY='tikarcade_vfx_pack_v4';
     const syncChannel=new BroadcastChannel('tikscan_pro_sync');
     const defaultUsers=[{name:'Maria_live',color:'#ec4899',coins:25800,weeklyCoins:84200,likes:4200,shares:9},{name:'joao_tk',color:'#3b82f6',coins:14200,weeklyCoins:51400,likes:2800,shares:6},{name:'ana_stars',color:'#f59e0b',coins:8500,weeklyCoins:29100,likes:1500,shares:4}];
-    const liveData={tiktokUser:'@live_demo',testMode:true,activeTab:'pack',cleanOverlayMode:null,users:JSON.parse(JSON.stringify(defaultUsers)),bigGifter:{name:'Raynnara Lira',giftName:'Presente VIP',giftImg:null,coins:1000,color:'#a855f7'},totalLikes:10000,moedasCfg:{period:'diario',count:3,mode:'podium',transparent:true,gamesFrames:false,anim:'none',scale:100,font:'system',coinColor:'#facc15',customFrames:{1:null,2:null,3:null}},likesCfg:{count:5,gap:8},sharesCfg:{count:3},gifterCfg:{titleColor:'#facc15',coinColor:'#ffd700',scale:100,frame:'crystal',flipped:false},notifCfg:{type:'follow',msg:'Obrigado por seguir!',color:'#22c55e',strongMin:500,lastTrigger:{user:'Seguidor_Live',coins:1000}}};
-    try{const r=localStorage.getItem(SCAN_STORAGE);if(r)Object.assign(liveData,JSON.parse(r));}catch{}
+    const defaultTriggers=[
+      {id:'x2',label:'Multiplicador X2 (Batalha)',badge:'2X',color:'text-amber-300',match:'x2',actionId:'x2'},
+      {id:'x3',label:'Multiplicador X3 (Batalha)',badge:'3X',color:'text-orange-300',match:'x3',actionId:'x3'},
+      {id:'luva',label:'Carta Luva de Impulso usada',badge:'LUVA',color:'text-rose-300',match:'luva',actionId:'luva-boxe'},
+      {id:'heartme',label:'Gift Específico: HeartMe',badge:'HEARTME',color:'text-pink-300',match:'heart',actionId:'guerreira'},
+      {id:'rose',label:'Gift: Rosa / Tap-Tap',badge:'ROSA',color:'text-emerald-300',match:'rosa',actionId:'tap-tap'}
+    ];
+    const liveData={tiktokUser:'@live_demo',activeTab:'effectbattle',cleanOverlayMode:null,users:JSON.parse(JSON.stringify(defaultUsers)),bigGifter:{name:'Raynnara Lira',giftName:'Presente VIP',giftImg:null,coins:1000,color:'#a855f7'},totalLikes:10000,moedasCfg:{period:'diario',count:3,mode:'podium',transparent:true,gamesFrames:false,anim:'none',scale:100,font:'system',coinColor:'#facc15',customFrames:{1:null,2:null,3:null}},likesCfg:{count:5,gap:8},sharesCfg:{count:3},gifterCfg:{titleColor:'#facc15',coinColor:'#ffd700',scale:100,frame:'crystal',flipped:false},notifCfg:{type:'follow',msg:'Obrigado por seguir!',color:'#22c55e',strongMin:500,lastTrigger:{user:'Seguidor_Live',coins:1000}},triggers:defaultTriggers};
+    try{const r=localStorage.getItem(SCAN_STORAGE);if(r){const p=JSON.parse(r);Object.assign(liveData,p);if(!p.triggers)liveData.triggers=defaultTriggers;}}catch{}
     function persistScan(bc=true){localStorage.setItem(SCAN_STORAGE,JSON.stringify(liveData));if(bc)syncChannel.postMessage({type:'SYNC_STATE',payload:liveData});}
     const toastBox=document.getElementById('toastBox'),toastText=document.getElementById('toastText');let toastTimer=null;
     function showToast(m){toastText.textContent=m;toastBox.classList.remove('opacity-0','translate-y-2');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toastBox.classList.add('opacity-0','translate-y-2'),3000);}
 
+    function fireOverlayFxById(itemId){
+      const items=(globalCatalog.itens||[]).filter(x=>x.ativo!==false);
+      const item=items.find(x=>x.id===itemId)||items.find(x=>x.nome.toLowerCase().includes(String(itemId).toLowerCase()));
+      if(!item||!item.arquivo)return showToast('Suba o arquivo .WEBM desse efeito na pasta pack/!');
+      const payload={type:'PLAY_FX',arquivo:item.arquivo,nome:item.nome,ts:Date.now()};
+      syncChannel.postMessage(payload);
+      localStorage.setItem('tikscan_fx_event',JSON.stringify(payload));
+      playFxOnElement(document.getElementById('eventsPreviewStageVid'),item.arquivo,document.getElementById('eventsPreviewIdle'));
+      playFxOnElement(document.getElementById('fxStageVideo'),item.arquivo,null);
+      showToast(`Disparando na Tela: ${item.nome}`);
+    }
+
+    function playFxOnElement(vidEl,src,idleEl){
+      if(!vidEl||!src)return;
+      if(idleEl)idleEl.classList.add('hidden');
+      vidEl.classList.remove('hidden');
+      vidEl.src=src;vidEl.currentTime=0;vidEl.muted=false;
+      vidEl.play().catch(()=>{vidEl.muted=true;vidEl.play().catch(()=>{});});
+      vidEl.onended=()=>{vidEl.classList.add('hidden');if(idleEl)idleEl.classList.remove('hidden');};
+    }
+
+    function renderEventsActions(){
+      const list=document.getElementById('eventsActionsList'),q=(document.getElementById('searchActionInput')?.value||'').toLowerCase();
+      if(!list)return;
+      const items=(globalCatalog.itens||[]).filter(x=>x.ativo!==false&&/\.(webm|mp4)$/i.test(x.arquivo||''));
+      document.getElementById('evCountAcoes').textContent=items.length;
+      const filt=q?items.filter(x=>x.nome.toLowerCase().includes(q)):items;
+      list.innerHTML=filt.length?filt.map(it=>`
+        <div class="bg-ts-bg border border-ts-border rounded-xl px-4 py-3 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3 min-w-0">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shrink-0"></span>
+            <div class="min-w-0"><div class="text-xs font-extrabold text-white truncate">${it.nome}</div><div class="text-[10px] text-slate-400"><span class="px-1.5 py-0.5 rounded bg-ts-card font-bold">Vídeo</span> • ${it.categoria||'Efeito'}</div></div>
+          </div>
+          <button data-fire-fx="${it.id}" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-[11px] font-bold text-white shrink-0">▶ Testar</button>
+        </div>`).join(''):'<div class="text-xs text-slate-500 text-center py-4">Nenhuma ação encontrada.</div>';
+      list.querySelectorAll('[data-fire-fx]').forEach(b=>b.addEventListener('click',()=>fireOverlayFxById(b.dataset.fireFx)));
+    }
+    document.getElementById('searchActionInput')?.addEventListener('input',renderEventsActions);
+
+    function renderTriggersList(){
+      const list=document.getElementById('eventsTriggersList');if(!list)return;
+      const items=(globalCatalog.itens||[]).filter(x=>x.ativo!==false&&/\.(webm|mp4)$/i.test(x.arquivo||''));
+      document.getElementById('evCountTriggers').textContent=liveData.triggers.length;
+      list.innerHTML=liveData.triggers.map((tr,idx)=>`
+        <div class="bg-ts-bg border border-ts-border rounded-xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="space-y-0.5">
+            <div class="text-xs font-extrabold ${tr.color}">${tr.label}</div>
+            <div class="text-[10px] text-slate-400">Filtro: Todos • Dispara automaticamente na Tela de Sobreposição</div>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <select data-tr-sel="${idx}" class="bg-ts-panel border border-ts-border rounded-lg px-2.5 py-1.5 text-xs text-cyan-300 font-bold">
+              ${items.map(it=>`<option value="${it.id}" ${tr.actionId===it.id?'selected':''}>${it.nome}</option>`).join('')}
+            </select>
+            <button data-tr-test="${idx}" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-[11px] font-bold text-white">▶ Testar</button>
+          </div>
+        </div>`).join('');
+      list.querySelectorAll('[data-tr-sel]').forEach(s=>s.addEventListener('change',()=>{liveData.triggers[s.dataset.trSel].actionId=s.value;persistScan(false);}));
+      list.querySelectorAll('[data-tr-test]').forEach(b=>b.addEventListener('click',()=>fireOverlayFxById(liveData.triggers[b.dataset.trTest].actionId)));
+    }
+
+    // OVERLAYS MARKUP
     function getAnimClass(a){return a==='girar'?'av-girar':a==='pulsar'?'av-pulsar':a==='quicar'?'av-quicar':a==='balancar'?'av-balancar':a==='brilhar'?'av-brilhar':'';}
     function getFontFamily(k){return k==='impact'?'Impact,"Arial Black",sans-serif':k==='mono'?'ui-monospace,monospace':'Inter,system-ui,sans-serif';}
     function renderAvatarBadge(u,rank,cfg={}){const ini=(u.name||'TT').replace(/[^A-Za-z0-9]/g,'').slice(0,2).toUpperCase()||'TT',cp=cfg.customFrames?.[rank],f=cfg.gamesFrames?'frame-games':rank===1?'frame-gold':rank===2?'frame-silver':rank===3?'frame-bronze':'',a=rank<=3?getAnimClass(cfg.anim||'none'):'',s=rank===1&&cfg.mode==='podium'?'w-20 h-20 text-xl':'w-12 h-12 text-xs';return`<div class="relative inline-flex items-center justify-center ${s} rounded-full ${f} ${a} shrink-0" style="background-color:${u.color||'#3b82f6'}"><span class="font-black text-white">${ini}</span>${cp?`<img src="${cp}" class="absolute inset-0 w-full h-full object-contain scale-125 pointer-events-none" />`:''}${rank<=3?`<span class="absolute -bottom-1.5 px-1.5 rounded-full text-[9px] font-black bg-black/85 border border-white/25 text-yellow-300">${rank}º</span>`:''}</div>`;}
@@ -620,50 +753,85 @@
 
     function speakTextTTS(raw){if(!document.getElementById('chkTtsEnabled')?.checked||!window.speechSynthesis)return;const p=document.getElementById('inputTtsPrefix').value.trim();let c=String(raw||'').trim();if(p&&!c.startsWith(p))return;if(p&&c.startsWith(p))c=c.slice(p.length).trim();if(!c)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(c);u.lang='pt-BR';u.volume=Number(document.getElementById('rangeTtsVol').value)/100;u.rate=Number(document.getElementById('rangeTtsRate').value);speechSynthesis.speak(u);}
 
+    // EVENT ENGINE (RECEBE DO BRIDGE WS OU SIMULADOR)
     const names=['Maria_live','joao_tk','ana_stars','pedro_go','Raynnara Lira'],colors=['#ec4899','#3b82f6','#f59e0b','#10b981','#8b5cf6'];
     function pickUser(n){let u=liveData.users.find(x=>x.name===n);if(!u){u={name:n,color:colors[Math.floor(Math.random()*colors.length)],coins:0,weeklyCoins:0,likes:0,shares:0};liveData.users.push(u);}return u;}
     function handleEvent(evt){
       const n=evt.user||names[Math.floor(Math.random()*names.length)],u=pickUser(n);
-      if(evt.type==='gift'){const c=Number(evt.coins)||1;u.coins+=c;u.weeklyCoins+=c;if(c>=liveData.bigGifter.coins)liveData.bigGifter={...liveData.bigGifter,name:u.name,giftName:evt.giftName||'Presente VIP',coins:c,color:u.color};if(c>=liveData.notifCfg.strongMin){liveData.notifCfg.lastTrigger={user:u.name,coins:c};showToast(`STRONG ON: @${u.name}`);}}
+      if(evt.type==='battle_multiplier'){const tr=liveData.triggers.find(t=>t.id===(evt.multiplier===3?'x3':'x2'));if(tr)fireOverlayFxById(tr.actionId);}
+      else if(evt.type==='boost_glove'){const tr=liveData.triggers.find(t=>t.id==='luva');if(tr)fireOverlayFxById(tr.actionId);}
+      else if(evt.type==='gift'){
+        const c=Number(evt.coins)||1;u.coins+=c;u.weeklyCoins+=c;
+        if(c>=liveData.bigGifter.coins)liveData.bigGifter={...liveData.bigGifter,name:u.name,giftName:evt.giftName||'Presente VIP',coins:c,color:u.color};
+        if(c>=liveData.notifCfg.strongMin)liveData.notifCfg.lastTrigger={user:u.name,coins:c};
+        const gn=(evt.giftName||'').toLowerCase();
+        const tr=liveData.triggers.find(t=>gn.includes(t.match));
+        if(tr)fireOverlayFxById(tr.actionId);
+      }
       else if(evt.type==='follow')liveData.notifCfg.lastTrigger={user:n,coins:0};
       else if(evt.type==='like'){const c=Number(evt.count)||25;u.likes+=c;liveData.totalLikes+=c;}
       else if(evt.type==='share')u.shares+=1;
       else if(evt.type==='chat'&&evt.comment)speakTextTTS(evt.comment);
       persistScan(true);refreshAllPreviews();
     }
-    document.querySelectorAll('.sim-btn').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.sim;if(k==='gift1')handleEvent({type:'gift',coins:1});else if(k==='gift100')handleEvent({type:'gift',coins:100});else if(k==='strong')handleEvent({type:'gift',coins:500});else if(k==='follow')handleEvent({type:'follow'});else if(k==='like')handleEvent({type:'like',count:25});else if(k==='share')handleEvent({type:'share'});}));
-    let autoIv=null;document.getElementById('btnAutoLive').addEventListener('click',e=>{if(autoIv){clearInterval(autoIv);autoIv=null;e.target.textContent='Auto-Live: OFF';}else{e.target.textContent='Auto-Live: ON';autoIv=setInterval(()=>{const r=Math.random();if(r<0.45)handleEvent({type:'like',count:30});else if(r<0.8)handleEvent({type:'gift',coins:[1,50,150,500][Math.floor(Math.random()*4)]});else handleEvent({type:'share'});},1400);}});
+    document.querySelectorAll('.sim-btn').forEach(b=>b.addEventListener('click',()=>{
+      const k=b.dataset.sim;
+      if(k==='x2')handleEvent({type:'battle_multiplier',multiplier:2});
+      else if(k==='x3')handleEvent({type:'battle_multiplier',multiplier:3});
+      else if(k==='luva')handleEvent({type:'boost_glove'});
+      else if(k==='heartme')handleEvent({type:'gift',coins:1,giftName:'HeartMe'});
+      else if(k==='rose')handleEvent({type:'gift',coins:1,giftName:'Rosa'});
+    }));
 
-    const titles={pack:'Baixar Meu Pack',guia:'Guia TikTok Studio & OBS',conexao:'Conexão Live',moedas:'Ranking de Moedas',likes:'Ranking Tap-Tap',shares:'Ranking de Shares',gifter:'Big Gifter 3D',notificacoes:'Notificações OBS',tts:'Voice Bot (TTS)',admpack:'Publicar Pack Global (Admin)',vfx:'Estúdio Chroma Key (.WEBM)',admlinks:'Links VIP Influenciadores'};
+    // NAVEGAÇÃO
+    const titles={effectbattle:'Effect Battle (.WEBM Transparente)',events:'Events & Triggers Automáticos',sobreposicoes:'Sobreposições ao Vivo (OBS / PRISM)',conexao:'Conexão TikTok Live',tts:'Sound Alerts & Voice Bot (TTS)',guia:'Integrações & Guia de Uso',admpack:'Publicar Pack Global (Admin)',vfx:'Estúdio Chroma Key (.WEBM)',admlinks:'Links VIP Influenciadores'};
     function closeMobileDrawer(){if(window.innerWidth<1024){const sb=document.getElementById('sidebarDrawer');sb.classList.add('hidden');sb.classList.remove('fixed','inset-y-0','left-0','z-40');}}
     function switchTab(id){
-      if(!isAdminUser&&['admpack','vfx','admlinks'].includes(id))id='pack';
+      if(!isAdminUser&&['admpack','vfx','admlinks'].includes(id))id='effectbattle';
       liveData.activeTab=id;
       document.querySelectorAll('.side-tab').forEach(b=>{const c=b.dataset.tab===id;b.classList.toggle('bg-blue-600',c);b.classList.toggle('text-white',c);b.classList.toggle('text-slate-300',!c);});
       document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('hidden',p.id!==`tab-${id}`));
-      document.getElementById('topSectionTitle').textContent=titles[id]||'TIK SCAN PRO';
-      const showSim=['conexao','moedas','likes','shares','gifter','notificacoes'].includes(id);
-      document.getElementById('liveSimToolbar').classList.toggle('hidden',!showSim);
+      document.getElementById('topSectionTitle').textContent=titles[id]||'TIK SCAN';
       if(id!=='vfx'){const v=document.getElementById('userUploadedVideo');if(!v.paused)v.pause();}
       refreshAllPreviews();
     }
     document.querySelectorAll('.side-tab').forEach(b=>b.addEventListener('click',()=>{switchTab(b.dataset.tab);closeMobileDrawer();}));
-    document.querySelectorAll('[data-goto-tab]').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.gotoTab)));
     document.getElementById('btnMobileMenu').addEventListener('click',()=>{const sb=document.getElementById('sidebarDrawer');if(sb.classList.contains('hidden')){sb.classList.remove('hidden');sb.classList.add('fixed','inset-y-0','left-0','z-40');}else closeMobileDrawer();});
     document.getElementById('btnCloseMobileMenu').addEventListener('click',closeMobileDrawer);
+
+    document.querySelectorAll('.ev-sub-btn').forEach(b=>b.addEventListener('click',()=>{
+      document.querySelectorAll('.ev-sub-btn').forEach(x=>{const on=x===b;x.classList.toggle('bg-blue-600',on);x.classList.toggle('text-white',on);x.classList.toggle('bg-ts-card',!on);x.classList.toggle('border',!on);});
+      document.querySelectorAll('.ev-sub-panel').forEach(p=>p.classList.toggle('hidden',p.id!==`evSub-${b.dataset.evSub}`));
+    }));
+    document.querySelectorAll('.ov-sub-btn').forEach(b=>b.addEventListener('click',()=>{
+      document.querySelectorAll('.ov-sub-btn').forEach(x=>{const on=x===b;x.classList.toggle('bg-blue-600',on);x.classList.toggle('text-white',on);x.classList.toggle('bg-ts-card',!on);x.classList.toggle('border',!on);});
+      document.querySelectorAll('.ov-sub-panel').forEach(p=>p.classList.toggle('hidden',p.id!==`ovSub-${b.dataset.ovSub}`));
+    }));
 
     function enterCleanMode(tp){liveData.cleanOverlayMode=tp;document.body.classList.add('obs-clean-mode');document.getElementById('mainAppShell').classList.add('hidden');document.getElementById('publicLandingShell').classList.add('hidden');document.getElementById('obsCleanScreen').classList.remove('hidden');refreshAllPreviews();}
     function exitCleanMode(){liveData.cleanOverlayMode=null;document.body.classList.remove('obs-clean-mode');document.getElementById('obsCleanScreen').classList.add('hidden');document.getElementById('mainAppShell').classList.remove('hidden');refreshAllPreviews();}
     document.querySelectorAll('.btn-open-clean').forEach(b=>b.addEventListener('click',()=>enterCleanMode(b.dataset.clean)));
     document.getElementById('btnExitCleanMode').addEventListener('click',exitCleanMode);
-    syncChannel.onmessage=e=>{if(e.data?.type==='SYNC_STATE'){const cm=liveData.cleanOverlayMode;Object.assign(liveData,e.data.payload);liveData.cleanOverlayMode=cm;refreshAllPreviews();}};
-    const base=window.location.href.split('?')[0].split('#')[0];
-    ['Moedas','Likes','Shares','Gifter','Notif'].forEach(k=>{const el=document.getElementById(`obsUrl${k}`);if(el)el.value=`${base}?overlay=${k.toLowerCase()}`;});
-    document.querySelectorAll('.copy-btn').forEach(b=>b.addEventListener('click',()=>{navigator.clipboard?.writeText(document.getElementById(b.dataset.copy).value);showToast('Link OBS copiado!');}));
-    function updateUserLabels(u,m){document.getElementById('sidebarUserHandle').textContent=u;document.getElementById('connCardUser').textContent=u;document.getElementById('inputTiktokUser').value=u;document.getElementById('sidebarConnStatus').textContent=`● ${m}`;document.getElementById('connCardStatus').textContent=`● ${m}`;}
-    function connectWsUrl(url){if(!url)return;try{const ws=new WebSocket(url);ws.onopen=()=>{document.getElementById('connStatusPill').textContent='● WS: Online';updateUserLabels(liveData.tiktokUser,'CONECTADO');};ws.onmessage=m=>{try{handleEvent(JSON.parse(m.data));}catch{}};ws.onerror=()=>showToast('Sem Bridge ativo.');}catch{}}
-    document.getElementById('btnConnectUser').addEventListener('click',()=>{liveData.tiktokUser=document.getElementById('inputTiktokUser').value.trim()||'@live_demo';updateUserLabels(liveData.tiktokUser,'CONECTADO');persistScan(true);});
-    document.getElementById('btnActivateTestMode').addEventListener('click',()=>{updateUserLabels(liveData.tiktokUser,'MODO SIMULAÇÃO');showToast('Simulação ativa!');});
+
+    syncChannel.onmessage=e=>{
+      if(e.data?.type==='SYNC_STATE'){const cm=liveData.cleanOverlayMode;Object.assign(liveData,e.data.payload);liveData.cleanOverlayMode=cm;refreshAllPreviews();}
+      else if(e.data?.type==='PLAY_FX'){playFxOnElement(document.getElementById('fxStageVideo'),e.data.arquivo,null);}
+    };
+    window.addEventListener('storage',e=>{if(e.key==='tikscan_fx_event'&&e.newValue){try{const d=JSON.parse(e.newValue);if(d.arquivo)playFxOnElement(document.getElementById('fxStageVideo'),d.arquivo,null);}catch{}}});
+
+    ['Moedas','Likes','Shares','Gifter','Notif'].forEach(k=>{const el=document.getElementById(`obsUrl${k}`);if(el)el.value=`${baseCleanUrl}?overlay=${k.toLowerCase()}`;});
+    document.getElementById('obsUrlEventos').value=`${baseCleanUrl}?overlay=eventos`;
+    document.querySelectorAll('.copy-btn').forEach(b=>b.addEventListener('click',()=>{navigator.clipboard?.writeText(document.getElementById(b.dataset.copy).value);showToast('Link copiado!');}));
+
+    function updateUserLabels(u,m,ok=false){
+      document.getElementById('sidebarUserHandle').textContent=u;document.getElementById('connCardUser').textContent=u;document.getElementById('inputTiktokUser').value=u;
+      document.getElementById('sidebarConnStatus').textContent=`● ${m}`;document.getElementById('connCardStatus').textContent=`● ${m}`;
+      const ban=document.getElementById('liveStatusBanner'),dot=document.getElementById('liveStatusDot'),msg=document.getElementById('liveStatusMsg');
+      if(ok){ban.className='bg-emerald-950/45 border-b border-emerald-500/40 px-4 py-2 flex flex-wrap items-center justify-between gap-2 text-xs shrink-0';dot.className='w-2.5 h-2.5 rounded-full bg-emerald-400';msg.textContent=`Bridge WS conectado em ${u} — Triggers automáticos ativos!`;}
+      else{ban.className='bg-rose-950/50 border-b border-rose-500/40 px-4 py-2 flex flex-wrap items-center justify-between gap-2 text-xs shrink-0';dot.className='w-2.5 h-2.5 rounded-full bg-rose-500';msg.textContent=`Bridge WS desconectado para ${u}. Use os botões ao lado para simular ou conecte seu Bridge.`;}
+    }
+    function connectWsUrl(url){if(!url)return;try{const ws=new WebSocket(url);ws.onopen=()=>{document.getElementById('connStatusPill').textContent='● WS: Online';updateUserLabels(liveData.tiktokUser,'AO VIVO',true);};ws.onmessage=m=>{try{handleEvent(JSON.parse(m.data));}catch{}};ws.onerror=()=>showToast('Bridge WS offline; simulador pronto.');}catch{}}
+    document.getElementById('btnConnectUser').addEventListener('click',()=>{liveData.tiktokUser=document.getElementById('inputTiktokUser').value.trim()||'@live_demo';updateUserLabels(liveData.tiktokUser,'PRONTO');persistScan(true);});
     document.getElementById('btnDisconnect').addEventListener('click',()=>updateUserLabels(liveData.tiktokUser,'OFFLINE'));
     document.getElementById('btnConnectWs').addEventListener('click',()=>connectWsUrl(document.getElementById('inputWsUrl').value.trim()));
     document.getElementById('btnClearAllLive').addEventListener('click',()=>{liveData.users=[];liveData.totalLikes=0;persistScan(true);refreshAllPreviews();});
@@ -701,135 +869,47 @@
     document.getElementById('rangeTtsVol').addEventListener('input',e=>document.getElementById('ttsVolVal').textContent=`${e.target.value}%`);
     document.getElementById('rangeTtsRate').addEventListener('input',e=>document.getElementById('ttsRateVal').textContent=`${e.target.value}x`);
     document.getElementById('btnTestTts').addEventListener('click',()=>speakTextTTS(document.getElementById('inputTtsTestMsg').value));
-    document.getElementById('btnCopyMyAccessLink').addEventListener('click',()=>{navigator.clipboard?.writeText(activeClientLink);showToast('Seu link exclusivo foi copiado!');});
+    document.getElementById('btnCopyMyAccessLink').addEventListener('click',()=>{navigator.clipboard?.writeText(activeClientLink);showToast('Link exclusivo copiado!');});
 
-    function detectFileFormat(path){
-      const p=String(path||'').toLowerCase();
-      if(p.endsWith('.mp4'))return 'MP4';
-      if(p.endsWith('.webm'))return 'WEBM Transparente';
-      if(p.endsWith('.png')||p.endsWith('.zip'))return 'PNG Transparente';
-      return '';
-    }
-
-    async function loadGithubPackFiles(forceToast=false){
-      try{
-        const r=await fetch('https://api.github.com/repos/melomiqueias83-netizen/tikscan-pro/contents/pack?t='+Date.now());
-        if(!r.ok)throw new Error('Erro ao buscar pasta pack/');
-        const data=await r.json();
-        if(Array.isArray(data)){
-          githubPackFiles=data.filter(f=>f.type==='file'&&f.name!=='catalogo.json').map(f=>'pack/'+f.name);
-          renderAdminCatalogEditor();
-          if(forceToast)showToast(`${githubPackFiles.length} arquivos carregados da pasta pack/!`);
-        }
-      }catch(e){
-        if(forceToast)showToast('Não consegui listar a pasta pack/ agora.');
-      }
-    }
-
+    // =========================================================================
+    // ADMIN: CATÁLOGO GLOBAL + LINKS VIP + CHROMA KEY
+    // =========================================================================
     function renderAdminCatalogEditor(){
-      const list=document.getElementById('adminCatalogList'),cu=document.getElementById('admComercialUrl'),newSel=document.getElementById('selNewPackFromGh');
-      if(!list)return;
-      if(!packFilesFetchedOnce){packFilesFetchedOnce=true;loadGithubPackFiles(false);}
+      const list=document.getElementById('adminCatalogList'),cu=document.getElementById('admComercialUrl');if(!list)return;
       if(cu)cu.value=globalCatalog.comercialUrl||'pack/comercial.webm';
-      const makeOptions=(selected)=>`<option value="">📂 Escolher arquivo da pasta pack/...</option>`+githubPackFiles.map(f=>`<option value="${escAttr(f)}" ${f===selected?'selected':''}>${escAttr(f.replace('pack/',''))}</option>`).join('');
-      if(newSel)newSel.innerHTML=makeOptions('');
       const itens=globalCatalog.itens||[];
-      const toolbarHtml=`
-        <div class="bg-ts-panel border border-cyan-500/30 rounded-xl p-3 mb-2 space-y-2">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <span class="text-xs font-bold text-cyan-300">Arquivos na pasta pack/ do GitHub: ${githubPackFiles.length}</span>
-            <button type="button" id="btnRefreshGhPack" class="px-3 py-1.5 rounded-lg bg-cyan-600/25 border border-cyan-500/40 text-xs font-bold text-cyan-200">🔄 Atualizar lista do GitHub</button>
+      list.innerHTML=itens.map((it,idx)=>`
+        <div class="bg-ts-bg border border-ts-border rounded-xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 flex-1">
+            <input data-cat-edit="nome" data-idx="${idx}" value="${it.nome||''}" class="bg-ts-panel border border-ts-border rounded-lg px-2.5 py-1 text-xs text-white font-bold" />
+            <select data-cat-edit="categoria" data-idx="${idx}" class="bg-ts-panel border border-ts-border rounded-lg px-2 py-1 text-xs text-cyan-300">
+              ${['Batalha 3D','X2','X3','Luva','Tap','Molduras'].map(c=>`<option value="${c}" ${(it.categoria||'')===c?'selected':''}>${c}</option>`).join('')}
+            </select>
+            <input data-cat-edit="arquivo" data-idx="${idx}" value="${it.arquivo||''}" class="bg-ts-panel border border-ts-border rounded-lg px-2.5 py-1 text-xs font-mono text-slate-200" />
+            <input data-cat-edit="formato" data-idx="${idx}" value="${it.formato||''}" class="bg-ts-panel border border-ts-border rounded-lg px-2.5 py-1 text-xs text-slate-400" />
           </div>
-          <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-            <span class="text-[11px] text-slate-300 shrink-0">🎬 Vídeo da Vitrine:</span>
-            <select id="selComercialFromPack" class="flex-1 bg-ts-bg border border-ts-border rounded-lg px-2.5 py-1.5 text-xs text-cyan-200">${makeOptions(globalCatalog.comercialUrl||'')}</select>
-          </div>
-        </div>`;
-      list.innerHTML=toolbarHtml+itens.map((it,idx)=>`
-        <div class="bg-ts-bg border border-ts-border rounded-xl p-3 flex flex-col gap-2">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 flex-1">
-              <input data-cat-edit="nome" data-idx="${idx}" value="${escAttr(it.nome||'')}" class="bg-ts-panel border border-ts-border rounded-lg px-2.5 py-1 text-xs text-white font-bold" />
-              <input data-cat-edit="arquivo" data-idx="${idx}" value="${escAttr(it.arquivo||'')}" class="bg-ts-panel border border-ts-border rounded-lg px-2.5 py-1 text-xs font-mono text-cyan-300" />
-              <input data-cat-edit="formato" data-idx="${idx}" value="${escAttr(it.formato||'')}" class="bg-ts-panel border border-ts-border rounded-lg px-2.5 py-1 text-xs text-slate-300" />
-            </div>
-            <div class="flex items-center gap-2 shrink-0">
-              <label class="flex items-center gap-1 text-[11px] text-slate-300 cursor-pointer"><input type="checkbox" data-cat-toggle="${idx}" ${it.ativo!==false?'checked':''} /> Visível</label>
-              <button data-cat-del="${idx}" class="px-2 py-1 text-xs text-rose-400">✕</button>
-            </div>
-          </div>
-          <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-ts-border/50">
-            <select data-cat-pick="${idx}" class="flex-1 min-w-[180px] bg-ts-panel border border-ts-border rounded-lg px-2.5 py-1.5 text-xs text-emerald-300">${makeOptions(it.arquivo||'')}</select>
-            <label class="px-2.5 py-1.5 rounded-lg bg-blue-600/25 border border-blue-500/40 text-[11px] font-bold text-blue-200 cursor-pointer shrink-0">
-              📱 Nome do celular
-              <input type="file" accept="video/*,image/*,.zip" data-cat-local="${idx}" class="hidden" />
-            </label>
+          <div class="flex items-center gap-2 shrink-0">
+            <label class="flex items-center gap-1 text-[11px] text-slate-300 cursor-pointer"><input type="checkbox" data-cat-toggle="${idx}" ${it.ativo!==false?'checked':''} /> Visível</label>
+            <button data-cat-del="${idx}" class="px-2 py-1 text-xs text-rose-400">✕</button>
           </div>
         </div>`).join('');
-      document.getElementById('btnRefreshGhPack')?.addEventListener('click',()=>loadGithubPackFiles(true));
-      document.getElementById('selComercialFromPack')?.addEventListener('change',e=>{
-        if(!e.target.value)return;
-        globalCatalog.comercialUrl=e.target.value;
-        if(cu)cu.value=e.target.value;
-        setupPublicVideo();
-        showToast('Vídeo da vitrine selecionado!');
-      });
-      list.querySelectorAll('[data-cat-pick]').forEach(sel=>sel.addEventListener('change',()=>{
-        if(!sel.value)return;
-        const idx=Number(sel.dataset.catPick);
-        globalCatalog.itens[idx].arquivo=sel.value;
-        const arqInp=list.querySelector(`[data-cat-edit="arquivo"][data-idx="${idx}"]`);
-        if(arqInp)arqInp.value=sel.value;
-        const fmt=detectFileFormat(sel.value);
-        if(fmt){globalCatalog.itens[idx].formato=fmt;const fmtInp=list.querySelector(`[data-cat-edit="formato"][data-idx="${idx}"]`);if(fmtInp)fmtInp.value=fmt;}
-        renderClientPackDownloads();
-      }));
-      list.querySelectorAll('[data-cat-local]').forEach(inp=>inp.addEventListener('change',()=>{
-        const f=inp.files?.[0];if(!f)return;
-        const idx=Number(inp.dataset.catLocal),path='pack/'+f.name;
-        globalCatalog.itens[idx].arquivo=path;
-        const arqInp=list.querySelector(`[data-cat-edit="arquivo"][data-idx="${idx}"]`);
-        if(arqInp)arqInp.value=path;
-        const fmt=detectFileFormat(path);
-        if(fmt){globalCatalog.itens[idx].formato=fmt;const fmtInp=list.querySelector(`[data-cat-edit="formato"][data-idx="${idx}"]`);if(fmtInp)fmtInp.value=fmt;}
-        if(/[\sÀ-ÿ]/.test(f.name))showToast('Atenção: evite espaços/acentos ao subir no GitHub!');
-        else showToast(`Vinculado: ${f.name}`);
-        renderClientPackDownloads();
-      }));
-      list.querySelectorAll('[data-cat-edit]').forEach(inp=>inp.addEventListener('input',()=>{globalCatalog.itens[inp.dataset.idx][inp.dataset.catEdit]=inp.value;renderClientPackDownloads();}));
-      list.querySelectorAll('[data-cat-toggle]').forEach(chk=>chk.addEventListener('change',()=>{globalCatalog.itens[chk.dataset.catToggle].ativo=chk.checked;renderClientPackDownloads();}));
-      list.querySelectorAll('[data-cat-del]').forEach(btn=>btn.addEventListener('click',()=>{globalCatalog.itens.splice(Number(btn.dataset.catDel),1);renderAdminCatalogEditor();renderClientPackDownloads();}));
+      list.querySelectorAll('[data-cat-edit]').forEach(inp=>inp.addEventListener('change',()=>{globalCatalog.itens[inp.dataset.idx][inp.dataset.catEdit]=inp.value;renderClientPackDownloads();renderEventsActions();renderTriggersList();}));
+      list.querySelectorAll('[data-cat-toggle]').forEach(chk=>chk.addEventListener('change',()=>{globalCatalog.itens[chk.dataset.catToggle].ativo=chk.checked;renderClientPackDownloads();renderEventsActions();renderTriggersList();}));
+      list.querySelectorAll('[data-cat-del]').forEach(btn=>btn.addEventListener('click',()=>{globalCatalog.itens.splice(Number(btn.dataset.catDel),1);renderAdminCatalogEditor();renderClientPackDownloads();renderEventsActions();renderTriggersList();}));
     }
-
-    document.getElementById('selNewPackFromGh').addEventListener('change',e=>{
-      if(!e.target.value)return;
-      document.getElementById('admNewPackFile').value=e.target.value;
-      const fmt=detectFileFormat(e.target.value);
-      if(fmt)document.getElementById('admNewPackFmt').value=fmt;
-    });
-    document.getElementById('inpNewPackLocal').addEventListener('change',e=>{
-      const f=e.target.files?.[0];if(!f)return;
-      const path='pack/'+f.name;
-      document.getElementById('admNewPackFile').value=path;
-      const fmt=detectFileFormat(path);
-      if(fmt)document.getElementById('admNewPackFmt').value=fmt;
-      showToast(`Arquivo selecionado: ${f.name}`);
-    });
     document.getElementById('admComercialUrl').addEventListener('input',e=>{globalCatalog.comercialUrl=e.target.value.trim();setupPublicVideo();});
     document.getElementById('btnAdmAddPackItem').addEventListener('click',()=>{
-      const nome=document.getElementById('admNewPackName').value.trim(),cat=document.getElementById('admNewPackCat').value.trim()||'Efeito 3D',arq=document.getElementById('admNewPackFile').value.trim(),fmt=document.getElementById('admNewPackFmt').value.trim()||detectFileFormat(arq)||'MP4';
+      const nome=document.getElementById('admNewPackName').value.trim(),cat=document.getElementById('admNewPackCat').value,arq=document.getElementById('admNewPackFile').value.trim(),fmt=document.getElementById('admNewPackFmt').value.trim()||'WEBM Transparente';
       if(!nome||!arq)return showToast('Preencha Nome e Arquivo!');
       globalCatalog.itens.push({id:Date.now().toString(36),nome,categoria:cat,arquivo:arq,formato:fmt,ativo:true});
-      document.getElementById('admNewPackName').value='';document.getElementById('admNewPackFile').value='';document.getElementById('selNewPackFromGh').value='';
-      renderAdminCatalogEditor();renderClientPackDownloads();
+      document.getElementById('admNewPackName').value='';document.getElementById('admNewPackFile').value='';
+      renderAdminCatalogEditor();renderClientPackDownloads();renderEventsActions();renderTriggersList();
     });
-    document.getElementById('btnAdminDownloadCatalog').addEventListener('click',()=>{
-      const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(globalCatalog,null,2)],{type:'application/json'}));a.download='catalogo.json';document.body.appendChild(a);a.click();a.remove();
-    });
+    document.getElementById('btnAdminDownloadCatalog').addEventListener('click',()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(globalCatalog,null,2)],{type:'application/json'}));a.download='catalogo.json';document.body.appendChild(a);a.click();a.remove();});
     document.getElementById('btnAdminPublishCatalog').addEventListener('click',async()=>{
       const pass=sessionStorage.getItem('tikscan_admin_pwd')||getAdminPass();
       try{
-        const r=await fetch('/api/salvar-catalogo',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pass,catalog:globalCatalog})});
+        const r=await fetch(`${API_BASE}/api/salvar-catalogo`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pass,catalog:globalCatalog})});
         const d=await r.json();
         if(!r.ok)throw new Error(d.error||'Configure GH_TOKEN na Vercel ou baixe o catalogo.json.');
         showToast('Pack publicado para todos os clientes!');
@@ -837,9 +917,8 @@
     });
 
     function renderAdminClients(){
-      const list=loadAdminClients(),el=document.getElementById('admClientList');
-      document.getElementById('admCountBadge').textContent=`${list.length} cadastrados`;
-      if(!list.length){el.innerHTML='<div class="text-xs text-slate-500 text-center py-4 border border-dashed border-ts-border rounded-xl">Nenhum influenciador VIP cadastrado.</div>';return;}
+      const list=loadAdminClients(),el=document.getElementById('admClientList');document.getElementById('admCountBadge').textContent=`${list.length} cadastrados`;
+      if(!list.length){el.innerHTML='<div class="text-xs text-slate-500 text-center py-4 border border-dashed border-ts-border rounded-xl">Nenhum influenciador cadastrado.</div>';return;}
       const td=new Date().toISOString().slice(0,10);
       el.innerHTML=list.map(c=>{const ex=c.exp!=='vitalicio'&&c.exp<td,url=buildClientInviteUrl(c),wa=encodeURIComponent(`Seu acesso exclusivo ao TIK SCAN PRO (${c.plan}) para ${c.user}:\n${url}`);return`<div class="bg-ts-bg border border-ts-border rounded-xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2"><div class="min-w-0"><div class="flex items-center gap-2"><span class="text-xs font-extrabold text-white">${c.user}</span><span class="text-[10px] px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 font-bold">${c.plan}</span><span class="text-[10px] font-bold ${ex?'text-rose-400':'text-emerald-400'}">${c.exp==='vitalicio'?'Vitalício':`até ${c.exp}`}</span></div><div class="text-[10px] font-mono text-slate-500 truncate mt-0.5">${url}</div></div><div class="flex items-center gap-1.5 shrink-0"><button data-adm-copy="${c.id}" class="px-2.5 py-1.5 rounded-lg bg-ts-card border border-ts-border text-[11px] font-bold text-cyan-300">Copiar</button><a href="https://wa.me/?text=${wa}" target="_blank" class="px-2.5 py-1.5 rounded-lg bg-emerald-600/25 border border-emerald-500/40 text-[11px] font-bold text-emerald-300">WhatsApp</a><button data-adm-del="${c.id}" class="px-2 py-1.5 text-xs text-slate-500 hover:text-rose-400">✕</button></div></div>`;}).join('');
       el.querySelectorAll('[data-adm-copy]').forEach(b=>b.addEventListener('click',()=>{const it=loadAdminClients().find(x=>x.id===b.dataset.admCopy);if(it){navigator.clipboard?.writeText(buildClientInviteUrl(it));showToast(`Link de ${it.user} copiado!`);}}));
@@ -848,12 +927,12 @@
     document.getElementById('btnAdminCreateClient').addEventListener('click',()=>{let u=document.getElementById('admClientUser').value.trim();if(!u)return showToast('Digite o @!');if(!u.startsWith('@'))u='@'+u;const plan=document.getElementById('admClientPlan').value,days=document.getElementById('admClientDays').value,ws=document.getElementById('admClientWs').value.trim();let exp='vitalicio';if(days!=='vitalicio'){const dt=new Date();dt.setDate(dt.getDate()+Number(days));exp=dt.toISOString().slice(0,10);}const sig=signClientToken(u,exp,plan),l=loadAdminClients();l.unshift({id:Date.now().toString(36),user:u,plan,exp,ws,sig});saveAdminClients(l);document.getElementById('admClientUser').value='';showToast(`Link VIP gerado para ${u}!`);});
     document.getElementById('btnAdminChangePass').addEventListener('click',()=>{const np=document.getElementById('admNewPassInput').value.trim();if(np.length<4)return showToast('Mínimo 4 caracteres.');localStorage.setItem(ADMIN_PASS_KEY,np);sessionStorage.setItem('tikscan_admin_pwd',np);document.getElementById('admNewPassInput').value='';showToast('Senha alterada!');});
 
+    // ESTÚDIO CHROMA (.WEBM)
     function openVideoDb(){return new Promise((res,rej)=>{const r=indexedDB.open('tikscan_video_pack_db',1);r.onupgradeneeded=()=>r.result.createObjectStore('videos');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);});}
     async function saveVideoBlob(id,blob){try{const db=await openVideoDb();db.transaction('videos','readwrite').objectStore('videos').put(blob,id);}catch{}}
     async function loadVideoBlob(id){try{const db=await openVideoDb();return await new Promise(res=>{const r=db.transaction('videos').objectStore('videos').get(id);r.onsuccess=()=>res(r.result||null);r.onerror=()=>res(null);});}catch{return null;}}
     async function deleteVideoBlob(id){try{const db=await openVideoDb();db.transaction('videos','readwrite').objectStore('videos').delete(id);}catch{}}
-
-    const vfxState={playing:true,recording:false,time:0,muted:false,firedCues:new Set(),hasVideo:false,videoBlob:null,videoName:'',videoDur:0,videoW:1080,videoH:1920,keyMode:1,keyThresh:0.08,keySmooth:0.14,keyDespill:0.90,hideCorner:1,customAudioBuffer:null};
+    const vfxState={playing:true,recording:false,time:0,muted:false,hasVideo:false,videoBlob:null,videoName:'',videoDur:0,videoW:1080,videoH:1920,keyMode:1,keyThresh:0.08,keySmooth:0.14,keyDespill:0.90,hideCorner:1,customAudioBuffer:null};
     class ProAudioEngine{
       constructor(){this.ctx=null;this.masterRec=null;this.speakerGain=null;this.destination=null;this.activeCustomSource=null;this.videoMediaSrc=null;this.videoGain=null;}
       ensureInit(){if(this.ctx){if(this.ctx.state==='suspended')this.ctx.resume();return;}const AC=window.AudioContext||window.webkitAudioContext;this.ctx=new AC();this.destination=this.ctx.createMediaStreamDestination();this.masterRec=this.ctx.createGain();this.masterRec.gain.value=0.95;this.masterRec.connect(this.destination);this.speakerGain=this.ctx.createGain();this.speakerGain.gain.value=vfxState.muted?0:0.90;this.masterRec.connect(this.speakerGain);this.speakerGain.connect(this.ctx.destination);const k=this.ctx.createOscillator(),kg=this.ctx.createGain();kg.gain.value=0.00001;k.connect(kg);kg.connect(this.destination);k.start();}
@@ -865,20 +944,16 @@
     }
     const audioEngine=new ProAudioEngine();
     document.getElementById('btnToggleMute').addEventListener('click',()=>{audioEngine.ensureInit();vfxState.muted=!vfxState.muted;audioEngine.setMuted(vfxState.muted);document.getElementById('muteLabel').textContent=vfxState.muted?'Mudo':'Som Ativo';});
-
     const vfxCanvas=document.getElementById('vfxCanvas');
     const renderer=new THREE.WebGLRenderer({canvas:vfxCanvas,alpha:true,antialias:true,premultipliedAlpha:false,preserveDrawingBuffer:true});
     renderer.setSize(1080,1920,false);renderer.setPixelRatio(1);renderer.setClearColor(0x000000,0);renderer.outputColorSpace=THREE.SRGBColorSpace;
     const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(45,1080/1920,0.1,100);camera.position.set(0,0,11.5);
     const stageGroup=new THREE.Group();scene.add(stageGroup);let videoTex=null,videoShaderMat=null;
-
     function buildVideoStage(){
       stageGroup.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){if(o.material.uniforms?.uTex?.value)o.material.uniforms.uTex.value.dispose();o.material.dispose();}});
-      while(stageGroup.children.length)stageGroup.remove(stageGroup.children[0]);
-      videoTex=null;videoShaderMat=null;
+      while(stageGroup.children.length)stageGroup.remove(stageGroup.children[0]);videoTex=null;videoShaderMat=null;
       const emp=document.getElementById('emptyStageOverlay');if(!vfxState.hasVideo){emp.classList.remove('hidden');return;}emp.classList.add('hidden');
-      const vid=document.getElementById('userUploadedVideo');
-      videoTex=new THREE.VideoTexture(vid);videoTex.minFilter=THREE.LinearFilter;videoTex.magFilter=THREE.LinearFilter;videoTex.colorSpace=THREE.SRGBColorSpace;
+      const vid=document.getElementById('userUploadedVideo');videoTex=new THREE.VideoTexture(vid);videoTex.minFilter=THREE.LinearFilter;videoTex.magFilter=THREE.LinearFilter;videoTex.colorSpace=THREE.SRGBColorSpace;
       const visH=2*Math.tan(THREE.MathUtils.degToRad(22.5))*11.5,visW=visH*(1080/1920),vAsp=(vfxState.videoW||1080)/(vfxState.videoH||1920),sAsp=1080/1920;
       const pW=vAsp>sAsp?visW:visH*vAsp,pH=vAsp>sAsp?visW/vAsp:visH;
       videoShaderMat=new THREE.ShaderMaterial({
@@ -889,25 +964,11 @@
       });
       stageGroup.add(new THREE.Mesh(new THREE.PlaneGeometry(pW,pH),videoShaderMat));
     }
-    function animateVfx(){
-      requestAnimationFrame(animateVfx);if(liveData.activeTab!=='vfx'&&!vfxState.recording)return;
-      const vid=document.getElementById('userUploadedVideo'),dur=vfxState.videoDur||0;
-      if(vfxState.hasVideo){if(videoTex&&vid.readyState>=2)videoTex.needsUpdate=true;if(vid.paused&&(vfxState.playing||vfxState.recording))vid.play().catch(()=>{});if(videoShaderMat){videoShaderMat.uniforms.uMode.value=vfxState.keyMode;videoShaderMat.uniforms.uThreshold.value=vfxState.keyThresh;videoShaderMat.uniforms.uSmooth.value=vfxState.keySmooth;videoShaderMat.uniforms.uDespill.value=vfxState.keyDespill;videoShaderMat.uniforms.uHideCorner.value=vfxState.hideCorner;}vfxState.time=vid.currentTime||0;}
-      renderer.render(scene,camera);document.getElementById('timeDisplay').textContent=`${vfxState.time.toFixed(2)}s`;document.getElementById('totalDurDisplay').textContent=`${dur.toFixed(2)}s`;document.getElementById('timelineProgress').style.width=dur>0?`${Math.min(100,(vfxState.time/dur)*100)}%`:'0%';
-    }
+    function animateVfx(){requestAnimationFrame(animateVfx);if(liveData.activeTab!=='vfx'&&!vfxState.recording)return;const vid=document.getElementById('userUploadedVideo'),dur=vfxState.videoDur||0;if(vfxState.hasVideo){if(videoTex&&vid.readyState>=2)videoTex.needsUpdate=true;if(vid.paused&&(vfxState.playing||vfxState.recording))vid.play().catch(()=>{});if(videoShaderMat){videoShaderMat.uniforms.uMode.value=vfxState.keyMode;videoShaderMat.uniforms.uThreshold.value=vfxState.keyThresh;videoShaderMat.uniforms.uSmooth.value=vfxState.keySmooth;videoShaderMat.uniforms.uDespill.value=vfxState.keyDespill;videoShaderMat.uniforms.uHideCorner.value=vfxState.hideCorner;}vfxState.time=vid.currentTime||0;}renderer.render(scene,camera);document.getElementById('timeDisplay').textContent=`${vfxState.time.toFixed(2)}s`;document.getElementById('totalDurDisplay').textContent=`${dur.toFixed(2)}s`;document.getElementById('timelineProgress').style.width=dur>0?`${Math.min(100,(vfxState.time/dur)*100)}%`:'0%';}
     function loadPack(){try{const r=localStorage.getItem(PACK_STORAGE_KEY);return r?JSON.parse(r).filter(x=>x&&x.videoId):[];}catch{return[];}}
     function savePack(items){localStorage.setItem(PACK_STORAGE_KEY,JSON.stringify(items));renderPackList();}
     function renderPackList(){const pack=loadPack(),list=document.getElementById('savedPackList');document.getElementById('packCountBadge').textContent=pack.length;list.innerHTML='';pack.forEach(item=>{const row=document.createElement('div');row.className='flex items-center justify-between gap-2 bg-ts-bg border border-ts-border rounded-lg px-2.5 py-2';const btn=document.createElement('button');btn.type='button';btn.className='flex-1 text-left text-xs font-bold text-white truncate';btn.textContent=item.text||'Vídeo';btn.onclick=async()=>{audioEngine.ensureInit();const b=await loadVideoBlob(item.videoId);if(b)loadAdminVideo(b,item.text,false,item.keyMode??1);};const del=document.createElement('button');del.type='button';del.className='text-xs text-slate-500 hover:text-rose-400';del.textContent='✕';del.onclick=()=>{deleteVideoBlob(item.videoId);savePack(loadPack().filter(p=>p.id!==item.id));};row.append(btn,del);list.appendChild(row);});}
-    function loadAdminVideo(blob,fileName,autoSave=true,customKey=null){
-      const vid=document.getElementById('userUploadedVideo');if(vid.src&&vid.src.startsWith('blob:'))URL.revokeObjectURL(vid.src);vid.src=URL.createObjectURL(blob);
-      vid.onloadeddata=()=>{
-        audioEngine.connectVideoAudio(vid);vfxState.hasVideo=true;vfxState.videoBlob=blob;vfxState.videoName=fileName;vfxState.videoW=vid.videoWidth||1080;vfxState.videoH=vid.videoHeight||1920;vfxState.videoDur=(vid.duration&&isFinite(vid.duration))?vid.duration:6.0;vid.currentTime=0;vid.playbackRate=1.0;
-        if(customKey!==null)vfxState.keyMode=customKey;else{try{const tc=document.createElement('canvas');tc.width=32;tc.height=32;const tx=tc.getContext('2d');tx.drawImage(vid,0,0,32,32);const px=tx.getImageData(2,2,1,1).data;vfxState.keyMode=(px[1]>px[0]*1.25&&px[1]>px[2]*1.25)?1:(px[0]<25&&px[1]<25&&px[2]<25)?2:0;}catch{vfxState.keyMode=1;}}
-        document.getElementById('selKeyMode').value=String(vfxState.keyMode);document.getElementById('mediaStatusLabel').textContent=`${fileName} (${vfxState.videoW}x${vfxState.videoH})`;
-        if(autoSave){const id='vid_'+Date.now().toString(36);saveVideoBlob(id,blob);const p=loadPack();p.unshift({id,text:fileName.replace(/\.[^.]+$/,''),videoId:id,keyMode:vfxState.keyMode});savePack(p);}
-        audioEngine.updateVideoAudioRouting();buildVideoStage();vfxState.playing=true;vid.play().catch(()=>{});
-      };
-    }
+    function loadAdminVideo(blob,fileName,autoSave=true,customKey=null){const vid=document.getElementById('userUploadedVideo');if(vid.src&&vid.src.startsWith('blob:'))URL.revokeObjectURL(vid.src);vid.src=URL.createObjectURL(blob);vid.onloadeddata=()=>{audioEngine.connectVideoAudio(vid);vfxState.hasVideo=true;vfxState.videoBlob=blob;vfxState.videoName=fileName;vfxState.videoW=vid.videoWidth||1080;vfxState.videoH=vid.videoHeight||1920;vfxState.videoDur=(vid.duration&&isFinite(vid.duration))?vid.duration:6.0;vid.currentTime=0;vid.playbackRate=1.0;if(customKey!==null)vfxState.keyMode=customKey;else{try{const tc=document.createElement('canvas');tc.width=32;tc.height=32;const tx=tc.getContext('2d');tx.drawImage(vid,0,0,32,32);const px=tx.getImageData(2,2,1,1).data;vfxState.keyMode=(px[1]>px[0]*1.25&&px[1]>px[2]*1.25)?1:(px[0]<25&&px[1]<25&&px[2]<25)?2:0;}catch{vfxState.keyMode=1;}}document.getElementById('selKeyMode').value=String(vfxState.keyMode);document.getElementById('mediaStatusLabel').textContent=`${fileName} (${vfxState.videoW}x${vfxState.videoH})`;if(autoSave){const id='vid_'+Date.now().toString(36);saveVideoBlob(id,blob);const p=loadPack();p.unshift({id,text:fileName.replace(/\.[^.]+$/,''),videoId:id,keyMode:vfxState.keyMode});savePack(p);}audioEngine.updateVideoAudioRouting();buildVideoStage();vfxState.playing=true;vid.play().catch(()=>{});};}
     document.getElementById('inputVideoFile').addEventListener('change',e=>{const f=e.target.files?.[0];if(!f)return;loadAdminVideo(f,f.name,true,null);e.target.value='';});
     document.getElementById('inputAudioFile').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f)return;audioEngine.ensureInit();vfxState.customAudioBuffer=await audioEngine.ctx.decodeAudioData(await f.arrayBuffer());audioEngine.updateVideoAudioRouting();document.getElementById('btnClearAudio').classList.remove('hidden');});
     document.getElementById('btnClearAudio').addEventListener('click',()=>{vfxState.customAudioBuffer=null;audioEngine.stopCustomAudio();audioEngine.updateVideoAudioRouting();document.getElementById('btnClearAudio').classList.add('hidden');});
@@ -931,58 +992,48 @@
     });
 
     function enterAdminInterface(){
-      isAdminUser=true;
-      sessionStorage.setItem(ADMIN_SESSION_KEY,'1');
-      document.getElementById('adminLoginModal').classList.add('hidden');
-      document.getElementById('publicLandingShell').classList.add('hidden');
-      document.getElementById('mainAppShell').classList.remove('hidden');
-      document.getElementById('adminSidebarSection').classList.remove('hidden');
-      document.getElementById('btnAdminLogout').classList.remove('hidden');
-      document.getElementById('roleBadgeLabel').textContent='ADMINISTRADOR';
-      document.getElementById('headerPlanPill').textContent='ADMIN';
-      updateUserLabels(liveData.tiktokUser,'MODO ADMIN');
-      renderAdminClients();renderAdminCatalogEditor();renderPackList();buildVideoStage();
-      switchTab('admpack');
+      isAdminUser=true;sessionStorage.setItem(ADMIN_SESSION_KEY,'1');
+      document.getElementById('adminLoginModal').classList.add('hidden');document.getElementById('publicLandingShell').classList.add('hidden');document.getElementById('mainAppShell').classList.remove('hidden');
+      document.getElementById('adminSidebarSection').classList.remove('hidden');document.getElementById('btnAdminLogout').classList.remove('hidden');
+      document.getElementById('roleBadgeLabel').textContent='ADMINISTRADOR';document.getElementById('headerPlanPill').textContent='ADMIN';
+      updateUserLabels(liveData.tiktokUser,'MODO ADMIN');renderAdminClients();renderAdminCatalogEditor();renderPackList();buildVideoStage();switchTab('effectbattle');
     }
     document.getElementById('btnOpenAdminGate').addEventListener('click',()=>document.getElementById('adminLoginModal').classList.remove('hidden'));
     document.getElementById('btnCloseAdminLogin').addEventListener('click',()=>document.getElementById('adminLoginModal').classList.add('hidden'));
-    document.getElementById('btnEnterAdminMode').addEventListener('click',()=>{
-      const p=document.getElementById('inputAdminGatePass').value;
-      if(p===getAdminPass()){sessionStorage.setItem('tikscan_admin_pwd',p);document.getElementById('adminGateErr').classList.add('hidden');enterAdminInterface();}
-      else document.getElementById('adminGateErr').classList.remove('hidden');
-    });
-    document.getElementById('inputAdminGatePass').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('btnEnterAdminMode').click();});
-    document.getElementById('btnAdminLogout').addEventListener('click',()=>{sessionStorage.removeItem(ADMIN_SESSION_KEY);window.location.href='/';});
+    document.getElementById('btnEnterAdminMode').addEventListener('click',()=>{const p=document.getElementById('inputAdminGatePass').value;if(p===getAdminPass()){sessionStorage.setItem('tikscan_admin_pwd',p);document.getElementById('adminGateErr').classList.add('hidden');enterAdminInterface();}else document.getElementById('adminGateErr').classList.remove('hidden');});
+    document.getElementById('btnAdminLogout').addEventListener('click',()=>{sessionStorage.removeItem(ADMIN_SESSION_KEY);window.location.href=baseCleanUrl;});
 
     fetchGlobalCatalog();
     requestAnimationFrame(animateVfx);
 
-    const qp=new URLSearchParams(window.location.search),invU=qp.get('u'),invE=qp.get('exp'),invP=qp.get('plan'),invK=qp.get('k'),invW=qp.get('ws'),ov=qp.get('overlay'),mpRet=qp.get('mp_retorno'),payId=qp.get('payment_id')||qp.get('collection_id');
-    if(ov&&['moedas','likes','shares','gifter','notif'].includes(ov)){
+    const qp=new URLSearchParams(window.location.search),invU=qp.get('u'),invE=qp.get('exp'),invP=qp.get('plan'),invK=qp.get('k'),invW=qp.get('ws'),ov=qp.get('overlay'),fxParam=qp.get('fx');
+    if(fxParam){
+      document.body.classList.add('obs-clean-mode');
+      document.getElementById('fxPlayerScreen').classList.remove('hidden');
+      const v=document.getElementById('fxStageVideo');
+      v.loop=qp.get('loop')==='1';
+      playFxOnElement(v,fxParam,null);
+    }else if(ov==='eventos'){
+      document.body.classList.add('obs-clean-mode');
+      document.getElementById('fxPlayerScreen').classList.remove('hidden');
+      if(invW)connectWsUrl(invW);
+    }else if(ov&&['moedas','likes','shares','gifter','notif'].includes(ov)){
       enterCleanMode(ov);
-    }else if(mpRet&&payId){
-      handleMercadoPagoReturn(payId);
     }else if(invU&&invE&&invP&&invK){
       const exp=signClientToken(invU,invE,invP),td=new Date().toISOString().slice(0,10);
       if(invK!==exp){document.getElementById('accessBlockedReason').textContent='Assinatura inválida.';document.getElementById('accessBlockedScreen').classList.remove('hidden');}
       else if(invE!=='vitalicio'&&invE<td){document.getElementById('accessBlockedReason').textContent=`Acesso expirado em ${invE}.`;document.getElementById('accessBlockedScreen').classList.remove('hidden');}
       else{
-        isAdminUser=false;
-        activeClientLink=window.location.href;
-        liveData.tiktokUser=invU;
-        document.getElementById('mainAppShell').classList.remove('hidden');
-        document.getElementById('sidebarPlanBadge').textContent=invP.split(' ')[0].toUpperCase();
-        document.getElementById('headerPlanPill').textContent=invP;
-        updateUserLabels(invU,'ACESSO LIBERADO');
-        if(invW){document.getElementById('inputWsUrl').value=invW;connectWsUrl(invW);}
-        switchTab('pack');
+        isAdminUser=false;activeClientLink=window.location.href;liveData.tiktokUser=invU;
+        document.getElementById('mainAppShell').classList.remove('hidden');document.getElementById('headerPlanPill').textContent=invP;
+        updateUserLabels(invU,'PRONTO');if(invW){document.getElementById('inputWsUrl').value=invW;connectWsUrl(invW);}
+        switchTab('effectbattle');
       }
     }else if(sessionStorage.getItem(ADMIN_SESSION_KEY)==='1'){
       enterAdminInterface();
     }else{
       document.getElementById('publicLandingShell').classList.remove('hidden');
       if(qp.get('admin')==='1')document.getElementById('adminLoginModal').classList.remove('hidden');
-      if(mpRet==='failure')showToast('Pagamento cancelado ou não aprovado.');
     }
   </script>
 </body>
